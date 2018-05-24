@@ -1,0 +1,4 @@
+- Login/Sign-up cu Firebase
+- Menu activity (de adaugat informatii basic de profil si cele 3 categorii)
+- Extindere Menu activity in 3 fragmenturi din care se pot aplica filtre individuale
+- Pagina cu rezultate (teoretic ar trebui rezultate luate tot de pe o baza de date live din firebase - pt primul sprint putem lua dintr-un json improvizat salvat local)
