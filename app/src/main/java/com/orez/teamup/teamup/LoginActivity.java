@@ -7,6 +7,11 @@ import android.widget.EditText;
 
 
 public class LoginActivity extends AppCompatActivity {
+    /*user si parola de test:
+    test@test.com
+    test123
+    cu toate ca inca nu am functionalitatea de login facuta
+     */
     EditText mUsernameEt;
     EditText mPasswordEt;
     Button mLoginBtn;
