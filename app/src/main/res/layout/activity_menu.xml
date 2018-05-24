@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MenuActivity">
 
+    <fragment
+        android:id="@+id/fragmentPlace"
+        android:name="com.orez.teamup.teamup.Sports"
+        android:layout_width="0px"
+        android:layout_height="match_parent" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="72dp"
@@ -38,6 +44,7 @@
         android:layout_marginEnd="162dp"
         android:layout_marginStart="161dp"
         android:layout_marginTop="84dp"
+        android:onClick="ChangeFragment"
         android:text="Sports"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
