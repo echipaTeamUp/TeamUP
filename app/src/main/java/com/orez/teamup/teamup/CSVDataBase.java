@@ -8,7 +8,7 @@ public class CSVDataBase {
     private List<User> db = new ArrayList<>();
 
     public CSVDataBase(String _path){
-        this.path = path;
+        this.path = _path;
     }
 
     public void addUser(User _user){
