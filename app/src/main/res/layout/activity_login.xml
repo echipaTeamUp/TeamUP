@@ -7,11 +7,33 @@
     tools:context=".LoginActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="221dp"
-        android:text="Button"
+        android:text="@string/signin"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/usernameEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/passwordEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="105dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/loginBtn"
         app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>
