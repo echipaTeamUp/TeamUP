@@ -4,7 +4,7 @@
 
 # User-specific configurations
 
-.idea/
+/.idea
 
 .DS_Store
 /build
