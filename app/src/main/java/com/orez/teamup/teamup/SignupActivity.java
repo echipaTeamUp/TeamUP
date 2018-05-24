@@ -29,33 +29,34 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        memailEt=(EditText) findViewById(R.id.signup_emailEt);
-        mpassEt=(EditText) findViewById(R.id.signup_passwordEt);
-        msignupBtn=(Button) findViewById(R.id.signupBtn);
-        mpassrepeatEt=(EditText) findViewById(R.id.signup_password_repeatEt);
+        memailEt = (EditText) findViewById(R.id.signup_emailEt);
+        mpassEt = (EditText) findViewById(R.id.signup_passwordEt);
+        msignupBtn = (Button) findViewById(R.id.signupBtn);
+        mpassrepeatEt = (EditText) findViewById(R.id.signup_password_repeatEt);
         mAuth = FirebaseAuth.getInstance();
         msignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(isEmailValid(memailEt.getText().toString().trim()) && mpassEt.getText().toString().trim().length()>=6 &&
+                if (isEmailValid(memailEt.getText().toString().trim()) && mpassEt.getText().toString().trim().length() >= 6 &&
                         mpassEt.getText().toString().trim().equals(mpassrepeatEt.getText().toString().trim()))
                     //Daca mailul e valid si are parola de minim 6 caractere si parolele se potrivesc
                     signup();
-                else if(!isEmailValid(memailEt.getText().toString().trim()))
+                else if (!isEmailValid(memailEt.getText().toString().trim()))
                     //Daca mailul nu e valid
                     Toast.makeText(SignupActivity.this, "Invalid email", Toast.LENGTH_SHORT).show();
-                else if(mpassEt.getText().toString().trim().length()<6)
+                else if (mpassEt.getText().toString().trim().length() < 6)
                     //Daca parola e prea scurta
                     Toast.makeText(SignupActivity.this, "Passwords should be at least 6 characters long", Toast.LENGTH_SHORT).show();
-                else if(!mpassEt.getText().toString().trim().equals(mpassrepeatEt.getText().toString().trim()))
+                else if (!mpassEt.getText().toString().trim().equals(mpassrepeatEt.getText().toString().trim()))
                     //Daca parolele nu se potrivesc
                     Toast.makeText(SignupActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-    protected void signup(){
+
+    protected void signup() {
         mAuth.createUserWithEmailAndPassword(memailEt.getText().toString(), mpassEt.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -66,11 +67,9 @@ public class SignupActivity extends AppCompatActivity {
                             Toast.makeText(SignupActivity.this, "Signup succeded",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            try{
+                            try {
                                 throw task.getException();
-                            }
-                            catch (FirebaseAuthUserCollisionException existEmail)
-                            {
+                            } catch (FirebaseAuthUserCollisionException existEmail) {
                                 //Daca mailul e deja folosit
                                 Toast.makeText(SignupActivity.this, "Email already exists",
                                         Toast.LENGTH_SHORT).show();
@@ -78,7 +77,6 @@ public class SignupActivity extends AppCompatActivity {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
                             //Daca nu a fost inregistrat cu succes din alt motiv
                             Toast.makeText(SignupActivity.this, "Signup failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -86,6 +84,7 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 });
     }
+
     //Verifica validitatea mailului
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();

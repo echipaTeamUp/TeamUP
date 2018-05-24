@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 
 public class LoginActivity extends AppCompatActivity {
     /*user si parola de test:
@@ -18,6 +20,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText mPasswordEt;
     Button mLoginBtn;
     Button mSignupBtn;
+    private FirebaseAuth mAuth;
+// ...
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +31,12 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordEt = (EditText) findViewById(R.id.login_passwordEt);
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
-
+        mAuth = FirebaseAuth.getInstance();
         //OnClick care duce la activitatea de signup
         mSignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this,SignupActivity.class);
+                Intent i = new Intent(LoginActivity.this, SignupActivity.class);
                 startActivity(i);
             }
         });
