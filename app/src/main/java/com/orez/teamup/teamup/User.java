@@ -1,20 +1,26 @@
 package com.orez.teamup.teamup;
 
 public class User {
-    public int ID;
+    private int ID;
     private String name;
     private String email;
+    private String password;
 
     public User(){
         this.ID = 0;
         this.name = "";
         this.email = "";
+        this.password = "";
     }
 
     public User(User user){
         this.ID = user.ID;
         this.name = user.name;
         this.email = user.email;
+    }
+
+    public int getID(){
+        return this.ID;
     }
 
     public String getName(){
