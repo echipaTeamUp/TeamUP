@@ -59,24 +59,30 @@ public class LoginActivity extends AppCompatActivity {
     }
     //practic incearca logarea
     void login() {
-        mAuth.signInWithEmailAndPassword(mEmailEt.getText().toString().trim(),
-                mPasswordEt.getText().toString().trim())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // A mers
-                            Intent i = new Intent(LoginActivity.this, MenuActivity.class);
-                            startActivity(i);
-                            FirebaseUser user = mAuth.getCurrentUser();
+        if(!mEmailEt.getText().toString().isEmpty() && !mPasswordEt.getText().toString().isEmpty()) {
+            //daca stringurile sunt goale da crash metoda de la firebase
+            mAuth.signInWithEmailAndPassword(mEmailEt.getText().toString().trim(),
+                    mPasswordEt.getText().toString().trim())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // A mers
+                                Intent i = new Intent(LoginActivity.this, MenuActivity.class);
+                                startActivity(i);
+                                FirebaseUser user = mAuth.getCurrentUser();
 
-                        } else {
-                            // Nu a mers
-                            Toast.makeText(LoginActivity.this, "Ai gresit datele,baiatul meu",
-                                    Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Nu a mers
+                                Toast.makeText(LoginActivity.this, "Ai gresit datele, baiatul meu",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        } else{
+            Toast.makeText(LoginActivity.this, "N-ai introdus datele, baiatul meu",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
 
