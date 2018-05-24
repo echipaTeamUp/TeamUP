@@ -16,30 +16,41 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
+    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     EditText mpassEt;
     EditText memailEt;
     EditText mpassrepeatEt;
+    EditText mfirstnameEt;
+    EditText mlastnameEt;
+    EditText mbirthdayEt;
     Button msignupBtn;
+    FirebaseUser user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
         memailEt = (EditText) findViewById(R.id.signup_emailEt);
         mpassEt = (EditText) findViewById(R.id.signup_passwordEt);
         msignupBtn = (Button) findViewById(R.id.signupBtn);
         mpassrepeatEt = (EditText) findViewById(R.id.signup_password_repeatEt);
+        mfirstnameEt=(EditText) findViewById(R.id.signup_first_nameEt);
+        mlastnameEt=(EditText) findViewById(R.id.signup_last_nameEt);
+        mbirthdayEt=(EditText) findViewById(R.id.signup_birthdayEt);
         mAuth = FirebaseAuth.getInstance();
         msignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (isEmailValid(memailEt.getText().toString().trim()) && mpassEt.getText().toString().trim().length() >= 6 &&
-                        mpassEt.getText().toString().trim().equals(mpassrepeatEt.getText().toString().trim()))
+                        mpassEt.getText().toString().trim().equals(mpassrepeatEt.getText().toString().trim()) && checkdata())
                     //Daca mailul e valid si are parola de minim 6 caractere si parolele se potrivesc
                     signup();
                 else if (!isEmailValid(memailEt.getText().toString().trim()))
@@ -51,6 +62,9 @@ public class SignupActivity extends AppCompatActivity {
                 else if (!mpassEt.getText().toString().trim().equals(mpassrepeatEt.getText().toString().trim()))
                     //Daca parolele nu se potrivesc
                     Toast.makeText(SignupActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                else if (!checkdata())
+                    //Daca nu e completat numele sau parola
+                    Toast.makeText(SignupActivity.this, "You should fill in all the fields", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -63,9 +77,10 @@ public class SignupActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //Daca a fost inregistrat cu succes
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            user = mAuth.getCurrentUser();
                             Toast.makeText(SignupActivity.this, "Signup succeded",
                                     Toast.LENGTH_SHORT).show();
+                            setvalues();
                         } else {
                             try {
                                 throw task.getException();
@@ -88,5 +103,22 @@ public class SignupActivity extends AppCompatActivity {
     //Verifica validitatea mailului
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+    boolean checkdata(){
+        if(mfirstnameEt.getText().toString().trim().equals("")||
+                mlastnameEt.getText().toString().trim().equals("")||
+                mbirthdayEt.getText().toString().trim().equals(""))
+            return false;
+        else return true;
+    }
+    void setvalues(){
+        //pune ce mai trebuie in database
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+    mDatabase.child("id").child(user.getUid()).child("First name").
+            setValue(mfirstnameEt.getText().toString().trim());
+        mDatabase.child("id").child(user.getUid()).child("Last name").
+                setValue(mlastnameEt.getText().toString().trim());
+        mDatabase.child("id").child(user.getUid()).child("Birthday").
+                setValue(mbirthdayEt.getText().toString().trim());
     }
 }
