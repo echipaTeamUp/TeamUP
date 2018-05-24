@@ -32,16 +32,34 @@ public class SignupActivity extends AppCompatActivity {
         msignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(memailEt.toString().trim()!="" && mpassEt.toString().trim().length()>=6){
-                mAuth.createUserWithEmailAndPassword(memailEt.toString(), mpassEt.toString());
-                Toast.makeText(SignupActivity.this,"Signed up",Toast.LENGTH_SHORT).show();
-                }
-                else if(mpassEt.length()<=6)
-                    Toast.makeText(SignupActivity.this,"Password should be at least 6 characters long",Toast.LENGTH_LONG).show();
+                //Daca exista ceva orice in casuta de mail si are parola de minim 6 caractere
+                if(memailEt.getText().toString().trim()!="" && mpassEt.getText().toString().trim().length()>=6)
+                    signup();
+                else if(mpassEt.getText().toString().trim().length()<6)
+                    Toast.makeText(SignupActivity.this, "Password should be at least 6 characters long", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(SignupActivity.this,"Invalid email",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, "Invalid email", Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+    protected void signup(){
+        mAuth.createUserWithEmailAndPassword(memailEt.getText().toString(), mpassEt.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //Daca a fost inregistrat cu succes
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(SignupActivity.this, "Signup succeded",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            //Daca nu a fost inregistrat cu succes
+                            Toast.makeText(SignupActivity.this, "Signup failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
     }
 }
