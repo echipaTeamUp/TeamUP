@@ -8,45 +8,63 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_width="72dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="170dp"
+        android:layout_marginStart="169dp"
+        android:layout_marginTop="40dp"
+        android:contentDescription="imagine tare"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@android:drawable/sym_def_app_icon"
-        tools:layout_editor_absoluteX="169dp" />
+        app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="129dp"
+        android:layout_marginStart="129dp"
         android:layout_marginTop="8dp"
         android:text="text super interesant aici"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="129dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/sportsBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="84dp"
         android:text="Sports"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="210dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/esportsBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginStart="160dp"
         android:layout_marginTop="52dp"
         android:text="E-sports"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        tools:layout_editor_absoluteX="161dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sportsBtn" />
 
     <Button
         android:id="@+id/workBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginStart="161dp"
         android:layout_marginTop="52dp"
         android:text="Work"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
-        tools:layout_editor_absoluteX="161dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/esportsBtn" />
 </android.support.constraint.ConstraintLayout>
