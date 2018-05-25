@@ -1,5 +1,6 @@
 package com.orez.teamup.teamup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -98,5 +99,14 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         else
             return false;
+    }
+    //pentru cand se intoarce din signup
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1 && resultCode== Activity.RESULT_OK){
+            mPasswordEt.setText(data.getStringExtra("pass"));
+            mEmailEt.setText(data.getStringExtra("email"));
+        }
     }
 }

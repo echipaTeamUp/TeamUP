@@ -1,5 +1,6 @@
 package com.orez.teamup.teamup;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -124,6 +125,10 @@ public class SignupActivity extends AppCompatActivity {
     }
     //in mod surprinzator, se intoarce in login si completeaza automat casutele
     public void returntologin(){
-        Intent i=getIntent();
+        Intent i=new Intent();
+        i.putExtra("email",memailEt.getText().toString());
+        i.putExtra("pass",mpassEt.getText().toString());
+        setResult(Activity.RESULT_OK,i);
+        finish();
     }
 }
