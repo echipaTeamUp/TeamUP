@@ -1,6 +1,9 @@
 package com.orez.teamup.teamup;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +42,10 @@ public class LoginActivity extends AppCompatActivity {
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
         mAuth = FirebaseAuth.getInstance();
+        //toast in caz ca nu esti conectat la internet
+        if(!verifyInternetConnectivty())
+            Toast.makeText(LoginActivity.this,"Please connect to the internet", Toast.LENGTH_SHORT).show();
+
         //OnClick care duce la activitatea de signup
         mSignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +91,13 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
-
-
+    //functie care verifica daca esti conectat la net
+    protected boolean verifyInternetConnectivty(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if(networkInfo!=null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
 }
