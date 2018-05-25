@@ -1,12 +1,15 @@
 package com.orez.teamup.teamup;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +20,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
+
 
 public class SignupActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
@@ -64,6 +70,13 @@ public class SignupActivity extends AppCompatActivity {
                 else if (!checkdata())
                     //Daca nu e completat numele sau parola
                     Toast.makeText(SignupActivity.this, "You should fill in all the fields", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //daca ai selectat campul de zi de nastere
+        mbirthdayEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkdate();
             }
         });
 
@@ -130,5 +143,38 @@ public class SignupActivity extends AppCompatActivity {
         i.putExtra("pass",mpassEt.getText().toString());
         setResult(Activity.RESULT_OK,i);
         finish();
+    }
+    //verifica data si daca userul e destul de mare
+    public void checkdate() {
+
+        final Calendar c = Calendar.getInstance();
+        final int mDay, mYear, mMonth;
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        if(isoldenough(mYear,mMonth+1,mDay,year,monthOfYear+1,dayOfMonth))
+                            mbirthdayEt.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        else
+                            Toast.makeText(SignupActivity.this, "You must be 16 or older to sign up", Toast.LENGTH_SHORT).show();
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+    public boolean isoldenough(int cyear,int cmonth,int cday,int year,int month,int day){
+        if(cyear-year>16)
+            return true;
+        if(cyear-year==16 && (month<cmonth))
+            return true;
+        if(cyear-year==16 && cmonth==month && day<=cday)
+            return true;
+        else return false;
     }
 }

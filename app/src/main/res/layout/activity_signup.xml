@@ -97,10 +97,12 @@
         android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="@string/birthday"
-        android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_password-repeatEt" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_password-repeatEt"
+        android:focusable="false"
+        />
+
 
 </android.support.constraint.ConstraintLayout>
