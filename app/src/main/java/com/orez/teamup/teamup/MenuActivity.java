@@ -20,6 +20,6 @@ public class MenuActivity extends AppCompatActivity {
     public void loadSportsActivity(View view){
         Intent i = new Intent(MenuActivity.this, Sports.class);
         startActivity(i);
-        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }
