@@ -1,19 +1,17 @@
 package com.orez.teamup.teamup;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -81,6 +79,7 @@ public class SignupActivity extends AppCompatActivity {
                             Toast.makeText(SignupActivity.this, "Signup succeded",
                                     Toast.LENGTH_SHORT).show();
                             setvalues();
+                            returntologin();
                         } else {
                             try {
                                 throw task.getException();
@@ -104,6 +103,7 @@ public class SignupActivity extends AppCompatActivity {
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+    //Verifica daca datele sunt goale
     boolean checkdata(){
         if(mfirstnameEt.getText().toString().trim().equals("")||
                 mlastnameEt.getText().toString().trim().equals("")||
@@ -111,8 +111,9 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         else return true;
     }
+    //pune ce mai trebuie in database
     void setvalues(){
-        //pune ce mai trebuie in database
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
     mDatabase.child("id").child(user.getUid()).child("First name").
             setValue(mfirstnameEt.getText().toString().trim());
@@ -120,5 +121,9 @@ public class SignupActivity extends AppCompatActivity {
                 setValue(mlastnameEt.getText().toString().trim());
         mDatabase.child("id").child(user.getUid()).child("Birthday").
                 setValue(mbirthdayEt.getText().toString().trim());
+    }
+    //in mod surprinzator, se intoarce in login si completeaza automat casutele
+    public void returntologin(){
+        Intent i=getIntent();
     }
 }
