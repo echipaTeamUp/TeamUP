@@ -1,5 +1,6 @@
 package com.orez.teamup.teamup;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,10 +17,9 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
     }
 
-    public void ChangeFragment(View view){
-        Fragment fragment = new Sports();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.hide(fragment).commit();
+    public void loadSportsActivity(View view){
+        Intent i = new Intent(MenuActivity.this, Sports.class);
+        startActivity(i);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 }
