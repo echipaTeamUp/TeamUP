@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".Sports">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="animatie cool?"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="28dp" />
+    <ListView
+        android:id="@+id/SportsLst"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView> /  >
 </android.support.constraint.ConstraintLayout>
