@@ -3,10 +3,13 @@ package com.orez.teamup.teamup;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 public class Sports extends Activity {
 
+    Button mListBtn;
     ListView mListView;
 
     @Override
@@ -14,7 +17,9 @@ public class Sports extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sports);
 
+        mListBtn.setText(new String("gay"));
         mListView = findViewById(R.id.SportsLst);
+        mListView.addView(mListBtn);
     }
 
     // animeaza cand apesi pe back ca sa te intorci in activitatea trecuta
