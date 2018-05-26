@@ -8,9 +8,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 
-public class Sports extends Activity {
-
-    ListView mListView;
+public class SportsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +22,4 @@ public class Sports extends Activity {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
-
-
-
 }

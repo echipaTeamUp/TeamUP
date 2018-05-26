@@ -21,8 +21,10 @@
         </activity>
         <activity android:name=".MenuActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".Sports" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".SportsActivity" />
+        <activity android:name=".FilterActivity" />
+        <activity android:name=".FilterSportsActivity"></activity>
     </application>
 
 </manifest>
