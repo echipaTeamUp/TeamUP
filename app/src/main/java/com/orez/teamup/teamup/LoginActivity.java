@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +34,7 @@ public class LoginActivity extends Activity {
     EditText mPasswordEt;
     Button mLoginBtn;
     Button mSignupBtn;
+    Button mGoogleLogin;
     private FirebaseAuth mAuth;
 
     @Override
@@ -41,6 +46,7 @@ public class LoginActivity extends Activity {
         mPasswordEt = (EditText) findViewById(R.id.login_passwordEt);
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
+        mGoogleLogin=(Button) findViewById(R.id.login_googleBtn);
         mAuth = FirebaseAuth.getInstance();
         //toast in caz ca nu esti conectat la internet
         if (!verifyInternetConnectivty())
@@ -61,6 +67,13 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 login();
 
+            }
+        });
+
+        mGoogleLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // googlelogin();
             }
         });
     }
@@ -112,4 +125,8 @@ public class LoginActivity extends Activity {
             mEmailEt.setText(data.getStringExtra("email"));
         }
     }
+    public void googlelogin(){
+
+    }
+
 }
