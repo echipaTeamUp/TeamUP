@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
 
 
@@ -33,6 +35,7 @@ public class SignupActivity extends AppCompatActivity {
     EditText mbirthdayEt;
     Button msignupBtn;
     FirebaseUser user;
+    int minAge = 16;
 
 
     @Override
@@ -44,9 +47,9 @@ public class SignupActivity extends AppCompatActivity {
         mpassEt = (EditText) findViewById(R.id.signup_passwordEt);
         msignupBtn = (Button) findViewById(R.id.signupBtn);
         mpassrepeatEt = (EditText) findViewById(R.id.signup_password_repeatEt);
-        mfirstnameEt=(EditText) findViewById(R.id.signup_first_nameEt);
-        mlastnameEt=(EditText) findViewById(R.id.signup_last_nameEt);
-        mbirthdayEt=(EditText) findViewById(R.id.signup_birthdayEt);
+        mfirstnameEt = (EditText) findViewById(R.id.signup_first_nameEt);
+        mlastnameEt = (EditText) findViewById(R.id.signup_last_nameEt);
+        mbirthdayEt = (EditText) findViewById(R.id.signup_birthdayEt);
         mAuth = FirebaseAuth.getInstance();
         msignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,33 +118,37 @@ public class SignupActivity extends AppCompatActivity {
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
     //Verifica daca datele sunt goale
-    boolean checkdata(){
-        if(mfirstnameEt.getText().toString().trim().equals("")||
-                mlastnameEt.getText().toString().trim().equals("")||
+    boolean checkdata() {
+        if (mfirstnameEt.getText().toString().trim().equals("") ||
+                mlastnameEt.getText().toString().trim().equals("") ||
                 mbirthdayEt.getText().toString().trim().equals(""))
             return false;
         else return true;
     }
+
     //pune ce mai trebuie in database
-    void setvalues(){
+    void setvalues() {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-    mDatabase.child("id").child(user.getUid()).child("First name").
-            setValue(mfirstnameEt.getText().toString().trim());
+        mDatabase.child("id").child(user.getUid()).child("First name").
+                setValue(mfirstnameEt.getText().toString().trim());
         mDatabase.child("id").child(user.getUid()).child("Last name").
                 setValue(mlastnameEt.getText().toString().trim());
         mDatabase.child("id").child(user.getUid()).child("Birthday").
                 setValue(mbirthdayEt.getText().toString().trim());
     }
+
     //in mod surprinzator, se intoarce in login si completeaza automat casutele
-    public void returntologin(){
-        Intent i=new Intent();
-        i.putExtra("email",memailEt.getText().toString());
-        i.putExtra("pass",mpassEt.getText().toString());
-        setResult(Activity.RESULT_OK,i);
+    public void returntologin() {
+        Intent i = new Intent();
+        i.putExtra("email", memailEt.getText().toString());
+        i.putExtra("pass", mpassEt.getText().toString());
+        setResult(Activity.RESULT_OK, i);
         finish();
     }
+
     //verifica data si daca userul e destul de mare
     public void checkdate() {
 
@@ -158,20 +165,21 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        if(isoldenough(mYear,mMonth+1,mDay,year,monthOfYear+1,dayOfMonth))
+                        if (isoldenough(mYear, mMonth + 1, mDay, year, monthOfYear + 1, dayOfMonth))
                             mbirthdayEt.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                         else
-                            Toast.makeText(SignupActivity.this, "You must be 16 or older to sign up", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this, "You must be " + Integer.toString(minAge) + " or older to sign up", Toast.LENGTH_SHORT).show();
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
-    public boolean isoldenough(int cyear,int cmonth,int cday,int year,int month,int day){
-        if(cyear-year>16)
+
+    public boolean isoldenough(int cyear, int cmonth, int cday, int year, int month, int day) {
+        if (cyear - year > minAge)
             return true;
-        if(cyear-year==16 && (month<cmonth))
+        if (cyear - year == minAge && (month < cmonth))
             return true;
-        if(cyear-year==16 && cmonth==month && day<=cday)
+        if (cyear - year == minAge && cmonth == month && day <= cday)
             return true;
         else return false;
     }
