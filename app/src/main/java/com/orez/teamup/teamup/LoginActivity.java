@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
     /*user si parola de test:
     test@test.com
     test123
@@ -49,15 +49,15 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleLogin=(Button) findViewById(R.id.login_googleBtn);
         mAuth = FirebaseAuth.getInstance();
         //toast in caz ca nu esti conectat la internet
-        if(!verifyInternetConnectivty())
-            Toast.makeText(LoginActivity.this,"Please connect to the internet", Toast.LENGTH_SHORT).show();
+        if (!verifyInternetConnectivty())
+            Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
 
         //OnClick care duce la activitatea de signup
         mSignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivityForResult(i,1);
+                startActivityForResult(i, 1);
             }
         });
 
@@ -77,9 +77,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     //practic incearca logarea
     void login() {
-        if(!mEmailEt.getText().toString().isEmpty() && !mPasswordEt.getText().toString().isEmpty()) {
+        if (!mEmailEt.getText().toString().isEmpty() && !mPasswordEt.getText().toString().isEmpty()) {
             //daca stringurile sunt goale da crash metoda de la firebase
             mAuth.signInWithEmailAndPassword(mEmailEt.getText().toString().trim(),
                     mPasswordEt.getText().toString().trim())
@@ -99,25 +100,27 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
-        } else{
+        } else {
             Toast.makeText(LoginActivity.this, "N-ai introdus datele, baiatul meu",
                     Toast.LENGTH_SHORT).show();
         }
     }
+
     //functie care verifica daca esti conectat la net
-    protected boolean verifyInternetConnectivty(){
+    protected boolean verifyInternetConnectivty() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if(networkInfo!=null && networkInfo.isConnected())
+        if (networkInfo != null && networkInfo.isConnected())
             return true;
         else
             return false;
     }
+
     //pentru cand se intoarce din signup
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1 && resultCode== Activity.RESULT_OK){
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             mPasswordEt.setText(data.getStringExtra("pass"));
             mEmailEt.setText(data.getStringExtra("email"));
         }

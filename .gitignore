@@ -12,3 +12,4 @@
 /captures
 .externalNativeBuild
 *.apk
+.idea/caches/build_file_checksums.ser

@@ -1,5 +1,5 @@
-- Login/Sign-up cu Firebase
 - Menu activity (de adaugat informatii basic de profil)
 - Extindere Menu activity in 3 activity-uri cu animatii custom
+- Lista cu sporturi si filtre pt sporturi (ca pe OneDrive)
 - Pagina cu rezultate (teoretic ar trebui rezultate luate tot de pe o baza de date live din firebase - pt primul sprint putem lua dintr-un json improvizat salvat local)
 - Logare automata daca ai deja cont (plis)

@@ -14,7 +14,7 @@ public class Sports extends Activity {
 
     // animeaza cand apesi pe back ca sa te intorci in activitatea trecuta
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }

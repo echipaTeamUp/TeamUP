@@ -18,7 +18,7 @@ public class MenuActivity extends Activity {
         setContentView(R.layout.activity_menu);
     }
 
-    public void loadSportsActivity(View view){
+    public void loadSportsActivity(View view) {
         Intent i = new Intent(MenuActivity.this, Sports.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
