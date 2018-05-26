@@ -5,18 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -42,40 +37,49 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        mEmailEt = (EditText) findViewById(R.id.login_usernameEt);
-        mPasswordEt = (EditText) findViewById(R.id.login_passwordEt);
-        mLoginBtn = (Button) findViewById(R.id.loginBtn);
-        mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
-        mGoogleLogin=(Button) findViewById(R.id.login_googleBtn);
-        mAuth = FirebaseAuth.getInstance();
-        //toast in caz ca nu esti conectat la internet
-        if (!verifyInternetConnectivty())
-            Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
 
-        //OnClick care duce la activitatea de signup
-        mSignupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivityForResult(i, 1);
-            }
-        });
+        //daca esti deja logat te duce direct in menu activity
+        if(mAuth.getCurrentUser() != null){
+            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
 
-        //OnClick pentru logare
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
+            mEmailEt = (EditText) findViewById(R.id.login_usernameEt);
+            mPasswordEt = (EditText) findViewById(R.id.login_passwordEt);
+            mLoginBtn = (Button) findViewById(R.id.loginBtn);
+            mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
+            mGoogleLogin = (Button) findViewById(R.id.login_googleBtn);
+            mAuth = FirebaseAuth.getInstance();
+            //toast in caz ca nu esti conectat la internet
+            if (!verifyInternetConnectivty())
+                Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
 
-            }
-        });
+            //OnClick care duce la activitatea de signup
+            mSignupBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(LoginActivity.this, SignupActivity.class);
+                    startActivityForResult(i, 1);
+                }
+            });
 
-        mGoogleLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // googlelogin();
-            }
-        });
+            //OnClick pentru logare
+            mLoginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    login();
+
+                }
+            });
+
+            mGoogleLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // googlelogin();
+                }
+            });
+        }
     }
 
     //practic incearca logarea
