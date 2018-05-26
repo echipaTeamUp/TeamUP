@@ -1,7 +1,22 @@
 package com.orez.teamup.teamup;
 
 public class User {
-    private int ID;
+    private String First_name="ups nu a mers";
+    private String Last_name;
+    private String Birthday;
+
+    public String getFirst_name() {
+        return First_name;
+    }
+
+    public String getLast_name() {
+        return Last_name;
+    }
+
+    public String getBirthday() {
+        return Birthday;
+    }
+    /*private int ID;
     private String name;
     private String email;
     private String password;
@@ -37,5 +52,5 @@ public class User {
 
     public void setEmail(String _email){
         this.email = _email;
-    }
+    }*/
 }

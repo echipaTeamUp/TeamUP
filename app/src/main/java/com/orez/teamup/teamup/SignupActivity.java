@@ -132,9 +132,9 @@ public class SignupActivity extends Activity {
     void setvalues() {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("id").child(user.getUid()).child("First name").
+        mDatabase.child("id").child(user.getUid()).child("First_name").
                 setValue(mfirstnameEt.getText().toString().trim());
-        mDatabase.child("id").child(user.getUid()).child("Last name").
+        mDatabase.child("id").child(user.getUid()).child("Last_name").
                 setValue(mlastnameEt.getText().toString().trim());
         mDatabase.child("id").child(user.getUid()).child("Birthday").
                 setValue(mbirthdayEt.getText().toString().trim());
