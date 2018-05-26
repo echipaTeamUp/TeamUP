@@ -24,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Calendar;
 
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends Activity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     EditText mpassEt;
