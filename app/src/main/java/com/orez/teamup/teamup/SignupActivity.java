@@ -36,6 +36,7 @@ public class SignupActivity extends Activity {
     Button msignupBtn;
     FirebaseUser user;
     int minAge = 16;
+    User muser;
 
 
     @Override
@@ -132,12 +133,10 @@ public class SignupActivity extends Activity {
     void setvalues() {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("id").child(user.getUid()).child("First_name").
-                setValue(mfirstnameEt.getText().toString().trim());
-        mDatabase.child("id").child(user.getUid()).child("Last_name").
-                setValue(mlastnameEt.getText().toString().trim());
-        mDatabase.child("id").child(user.getUid()).child("Birthday").
-                setValue(mbirthdayEt.getText().toString().trim());
+        muser=new User(mfirstnameEt.getText().toString().trim(),mlastnameEt.getText().toString().trim(),
+                mbirthdayEt.getText().toString());
+        mDatabase.child("id").child(user.getUid()).
+                setValue(muser);
     }
 
     //in mod surprinzator, se intoarce in login si completeaza automat casutele

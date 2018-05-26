@@ -1,7 +1,7 @@
 package com.orez.teamup.teamup;
 
 public class User {
-    private String First_name="ups nu a mers";
+    private String First_name="nu a mers :(";
     private String Last_name;
     private String Birthday;
 
@@ -15,6 +15,27 @@ public class User {
 
     public String getBirthday() {
         return Birthday;
+    }
+
+    public void setFirst_name(String first_name) {
+        First_name = first_name;
+    }
+
+    public void setLast_name(String last_name) {
+        Last_name = last_name;
+    }
+
+    public void setBirthday(String birthday) {
+        Birthday = birthday;
+    }
+    public User() {
+
+    }
+
+    public User(String First_name, String Last_name,String Birthday) {
+        this.First_name=First_name;
+        this.Last_name=Last_name;
+        this.Birthday=Birthday;
     }
     /*private int ID;
     private String name;
