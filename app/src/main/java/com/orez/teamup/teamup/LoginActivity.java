@@ -45,7 +45,7 @@ public class LoginActivity extends Activity {
             Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
 
         //daca esti deja logat te duce direct in menu activity
-        if(mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null) {
             retrieve_user();
         }
         //daca nu esti logat
@@ -96,7 +96,6 @@ public class LoginActivity extends Activity {
                                 retrieve_user();
 
 
-
                             } else {
                                 // Nu a mers
                                 Toast.makeText(LoginActivity.this, "Ai gresit datele, baiatul meu",
@@ -129,23 +128,25 @@ public class LoginActivity extends Activity {
             mEmailEt.setText(data.getStringExtra("email"));
         }
     }
+
     //pune datele in obiectul user si trece in meniu
-    public void retrieve_user(){
+    public void retrieve_user() {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference myRef = database.child("id").child(uid);
-        user=new User();
+        user = new User();
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
                 Intent i = new Intent(LoginActivity.this, MenuActivity.class);
-                i.putExtra("User",user);
+                i.putExtra("User", user);
                 startActivity(i);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(LoginActivity.this,databaseError.toException().toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, databaseError.toException().toString(), Toast.LENGTH_LONG).show();
             }
 
         });

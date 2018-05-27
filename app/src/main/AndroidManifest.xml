@@ -24,7 +24,8 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SportsActivity" />
         <activity android:name=".FilterActivity" />
-        <activity android:name=".FilterSportsActivity"></activity>
+        <activity android:name=".FilterSportsActivity" />
+        <activity android:name=".ResultsActivity"></activity>
     </application>
 
 </manifest>
