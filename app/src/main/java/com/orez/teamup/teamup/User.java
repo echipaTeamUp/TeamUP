@@ -3,7 +3,7 @@ package com.orez.teamup.teamup;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private String First_name="nu a mers :(";
+    private String First_name = "nu a mers:(";
     private String Last_name;
     private String Birthday;
 
@@ -30,14 +30,15 @@ public class User implements Serializable {
     public void setBirthday(String birthday) {
         Birthday = birthday;
     }
+
     public User() {
 
     }
 
-    public User(String First_name, String Last_name,String Birthday) {
-        this.First_name=First_name;
-        this.Last_name=Last_name;
-        this.Birthday=Birthday;
+    public User(String First_name, String Last_name, String Birthday) {
+        this.First_name = First_name;
+        this.Last_name = Last_name;
+        this.Birthday = Birthday;
     }
     /*private int ID;
     private String name;

@@ -2,6 +2,11 @@ package com.orez.teamup.teamup;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +28,7 @@ public class MenuActivity extends Activity {
         Intent i=getIntent();
         user=(User) i.getSerializableExtra("User");
         profile_image=(ImageView) findViewById(R.id.menu_profile_image);
+        profile_image.setImageResource(R.mipmap.ic_launcher_round);
         //Daca apesi pe imagine, te duce la profil
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends Activity {
     TextView user_nameTv;
     User user;
     Button msignoutBtn;
