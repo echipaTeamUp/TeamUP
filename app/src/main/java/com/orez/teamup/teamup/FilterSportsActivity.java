@@ -48,7 +48,7 @@ class FilterSports {
     }
 
     public void setMaxDistance(int maxDistance){
-        this.maxDistance = maxDistance
+        this.maxDistance = maxDistance;
     }
 
     public int getMinAge(){

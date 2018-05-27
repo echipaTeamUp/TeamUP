@@ -127,7 +127,7 @@ public class LoginActivity extends Activity {
             mEmailEt.setText(data.getStringExtra("email"));
         }
     }
-    //pune datele in obiectul user
+    //pune datele in obiectul user si trece in meniu
     public void retrieve_user(){
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
