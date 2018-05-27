@@ -15,21 +15,32 @@ public class MenuActivity extends Activity {
 
     ImageView profile_image;
     User user;
+    Button mWorkBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         //primeste obiectul user din activitatea de login
-        Intent i=getIntent();
-        user=(User) i.getSerializableExtra("User");
-        profile_image=(ImageView) findViewById(R.id.menu_profile_image);
+        Intent i = getIntent();
+        user = (User) i.getSerializableExtra("User");
+        profile_image = (ImageView) findViewById(R.id.menu_profile_image);
         //Daca apesi pe imagine, te duce la profil
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MenuActivity.this,ProfileActivity.class);
-                i.putExtra("User",user);
-                startActivityForResult(i,1);
+                Intent i = new Intent(MenuActivity.this, ProfileActivity.class);
+                i.putExtra("User", user);
+                startActivityForResult(i, 1);
+            }
+        });
+
+        mWorkBtn = (Button) findViewById(R.id.workBtn);
+        mWorkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MenuActivity.this, ResultsActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -44,7 +55,7 @@ public class MenuActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //Daca vine din profile
-        if(requestCode==1 && resultCode==Activity.RESULT_OK){
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             setResult(Activity.RESULT_OK);
             finish();
         }
