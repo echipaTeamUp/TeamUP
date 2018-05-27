@@ -3,6 +3,7 @@ package com.orez.teamup.teamup;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -17,6 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginActivity extends Activity {
@@ -37,6 +43,8 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+        if (!verifyInternetConnectivty())
+            Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
 
         //daca esti deja logat te duce direct in menu activity
         if(mAuth.getCurrentUser() != null){
@@ -52,8 +60,7 @@ public class LoginActivity extends Activity {
             mGoogleLogin = (Button) findViewById(R.id.login_googleBtn);
             mAuth = FirebaseAuth.getInstance();
             //toast in caz ca nu esti conectat la internet
-            if (!verifyInternetConnectivty())
-                Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
+
 
             //OnClick care duce la activitatea de signup
             mSignupBtn.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +88,7 @@ public class LoginActivity extends Activity {
             });
         }
     }
-
+    User user;
     //practic incearca logarea
     void login() {
         if (!mEmailEt.getText().toString().isEmpty() && !mPasswordEt.getText().toString().isEmpty()) {
@@ -93,9 +100,26 @@ public class LoginActivity extends Activity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // A mers
+                                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                               String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                DatabaseReference myRef = database.child("id").child(uid);
+                                user=new User();
+                                myRef.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        user = dataSnapshot.getValue(User.class);
+                                        Toast.makeText(LoginActivity.this,"a intrat",Toast.LENGTH_LONG).show();
+                                    }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Toast.makeText(LoginActivity.this,databaseError.toException().toString(),Toast.LENGTH_LONG).show();
+                                    }
+
+                                });
+
                                 Intent i = new Intent(LoginActivity.this, MenuActivity.class);
                                 startActivity(i);
-                                FirebaseUser user = mAuth.getCurrentUser();
+
 
                             } else {
                                 // Nu a mers
