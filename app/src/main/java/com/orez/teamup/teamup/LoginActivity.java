@@ -26,32 +26,30 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginActivity extends Activity {
-    /*user si parola de test:
-    test@test.com
-    test123
-    cu toate ca inca nu am functionalitatea de login facuta
-     */
+
     EditText mEmailEt;
     EditText mPasswordEt;
     Button mLoginBtn;
     Button mSignupBtn;
     Button mGoogleLogin;
     private FirebaseAuth mAuth;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+        //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
             Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
 
         //daca esti deja logat te duce direct in menu activity
         if(mAuth.getCurrentUser() != null){
-            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
+            retrieve_user();
+        }
+        //daca nu esti logat
+        else {
 
             mEmailEt = (EditText) findViewById(R.id.login_usernameEt);
             mPasswordEt = (EditText) findViewById(R.id.login_passwordEt);
@@ -59,8 +57,6 @@ public class LoginActivity extends Activity {
             mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
             mGoogleLogin = (Button) findViewById(R.id.login_googleBtn);
             mAuth = FirebaseAuth.getInstance();
-            //toast in caz ca nu esti conectat la internet
-
 
             //OnClick care duce la activitatea de signup
             mSignupBtn.setOnClickListener(new View.OnClickListener() {
@@ -80,15 +76,10 @@ public class LoginActivity extends Activity {
                 }
             });
 
-            mGoogleLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // googlelogin();
-                }
-            });
+
         }
     }
-    User user;
+
     //practic incearca logarea
     void login() {
         if (!mEmailEt.getText().toString().isEmpty() && !mPasswordEt.getText().toString().isEmpty()) {
@@ -100,25 +91,8 @@ public class LoginActivity extends Activity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // A mers
-                                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                               String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                DatabaseReference myRef = database.child("id").child(uid);
-                                user=new User();
-                                myRef.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        user = dataSnapshot.getValue(User.class);
-                                        Toast.makeText(LoginActivity.this,"a intrat",Toast.LENGTH_LONG).show();
-                                    }
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        Toast.makeText(LoginActivity.this,databaseError.toException().toString(),Toast.LENGTH_LONG).show();
-                                    }
+                                retrieve_user();
 
-                                });
-
-                                Intent i = new Intent(LoginActivity.this, MenuActivity.class);
-                                startActivity(i);
 
 
                             } else {
@@ -144,7 +118,7 @@ public class LoginActivity extends Activity {
             return false;
     }
 
-    //pentru cand se intoarce din signup
+    //pentru cand se intoarce din signup, completeaza automat campurile
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -153,7 +127,26 @@ public class LoginActivity extends Activity {
             mEmailEt.setText(data.getStringExtra("email"));
         }
     }
-    public void googlelogin(){
+    //pune datele in obiectul user
+    public void retrieve_user(){
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference myRef = database.child("id").child(uid);
+        user=new User();
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                Intent i = new Intent(LoginActivity.this, MenuActivity.class);
+                i.putExtra("User",user);
+                startActivity(i);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(LoginActivity.this,databaseError.toException().toString(),Toast.LENGTH_LONG).show();
+            }
+
+        });
 
     }
 

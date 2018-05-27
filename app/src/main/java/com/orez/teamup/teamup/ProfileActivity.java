@@ -15,34 +15,12 @@ import com.google.firebase.database.ValueEventListener;
 public class ProfileActivity extends AppCompatActivity {
     TextView user_nameTv;
     User user;
-    String uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        user=new User();
+        user=(User) getIntent().getSerializableExtra("User");
         user_nameTv=(TextView) findViewById(R.id.profile_name);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference myRef = database.child("id").child(uid);
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                Toast.makeText(ProfileActivity.this,"a intrat",Toast.LENGTH_LONG).show();
-                user_nameTv.setText(user.getFirst_name());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(ProfileActivity.this,databaseError.toException().toString(),Toast.LENGTH_LONG).show();
-            }
-
-        });
+        user_nameTv.setText(user.getFirst_name()+" "+user.getLast_name());
     }
 }

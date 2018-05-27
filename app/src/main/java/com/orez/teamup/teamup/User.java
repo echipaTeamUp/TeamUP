@@ -1,6 +1,8 @@
 package com.orez.teamup.teamup;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String First_name="nu a mers :(";
     private String Last_name;
     private String Birthday;
