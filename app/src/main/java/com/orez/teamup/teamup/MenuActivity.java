@@ -29,7 +29,7 @@ public class MenuActivity extends Activity {
             public void onClick(View v) {
                 Intent i=new Intent(MenuActivity.this,ProfileActivity.class);
                 i.putExtra("User",user);
-                startActivity(i);
+                startActivityForResult(i,1);
             }
         });
     }
@@ -40,4 +40,13 @@ public class MenuActivity extends Activity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Daca vine din profile
+        if(requestCode==1 && resultCode==Activity.RESULT_OK){
+            setResult(Activity.RESULT_OK);
+            finish();
+        }
+    }
 }
