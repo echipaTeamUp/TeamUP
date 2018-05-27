@@ -11,10 +11,10 @@ enum skillGroup {
 }
 
 class FilterSports {
-    public int minAge;
-    public int maxAge;
-    public int maxDistance;
-    public skillGroup skill;
+    private int minAge;
+    private int maxAge;
+    private int maxDistance;
+    private skillGroup skill;
 
     public FilterSports(int _minAge, int _maxAge, int _maxDistance, skillGroup _sg) {
         this.minAge = _minAge;
@@ -28,6 +28,43 @@ class FilterSports {
         this.maxAge = 100;
         this.maxDistance = 20000;
         this.skill = skillGroup.ALL;
+    }
+
+    public void setAge(int min, int max){
+        this.maxAge = max;
+        this.minAge = min;
+    }
+
+    public void setMinAge(int minAge){
+        this.minAge = minAge;
+    }
+
+    public void setMaxAge(int maxAge){
+        this.maxDistance = maxAge;
+    }
+
+    public void setSkill(skillGroup sg){
+        this.skill = sg;
+    }
+
+    public void setMaxDistance(int maxDistance){
+        this.maxDistance = maxDistance
+    }
+
+    public int getMinAge(){
+        return this.minAge;
+    }
+
+    public int getMaxAge(){
+        return this.maxAge;
+    }
+
+    public skillGroup getSkill(){
+        return this.skill;
+    }
+
+    public int getMaxDistance(){
+        return this.maxDistance;
     }
 }
 
