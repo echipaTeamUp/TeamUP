@@ -21,6 +21,8 @@ public class Lobby {
     private lobbyAvailability availability;
     private int maxSize;
 
+    private static int _id;
+
     public Lobby(String name, lobbyAvailability availability, int maxSize){
         this.id = Lobby.getNewID();
         this.name = name;
@@ -58,23 +60,27 @@ public class Lobby {
 
     public void setName(String name) {
         this.name = name;
+        writeToDB();
     }
 
     public void setAvailability(lobbyAvailability availability) {
         this.availability = availability;
+        writeToDB();
     }
 
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
+        writeToDB();
     }
 
     public void addUser(String userID){
         users.add(userID);
+        writeToDB();
     }
 
     public void writeToDB(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby");
-        ref.setValue(this);
+        ref.child(Integer.toString(this.getId())).setValue(this);
     }
 
     private static int getNewID(){
@@ -83,7 +89,7 @@ public class Lobby {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                _id = dataSnapshot.getValue(int.class);
             }
 
             @Override
@@ -91,5 +97,39 @@ public class Lobby {
 
             }
         });
+
+        ref.setValue(_id + 1);
+        return _id;
+    }
+}
+
+class LobbySports extends Lobby{
+
+    private int minAge;
+    private int maxAge;
+    private int maxDistance;
+    private skillGroup skillGroup;
+
+    LobbySports(String name, lobbyAvailability availability, int maxSize,
+                int minAge, int maxAge, int maxDistance, skillGroup skillGroup){
+        super(name, availability, maxSize);
+        this.minAge = minAge;
+        this.maxAge = maxAge;
+        this.maxDistance = maxDistance;
+        this.skillGroup = skillGroup;
+    }
+
+    LobbySports(){
+        super();
+        this.minAge = 0;
+        this.maxAge = 100;
+        this.maxDistance = 20000;
+        this.skillGroup = com.orez.teamup.teamup.skillGroup.AMATEUR;
+    }
+
+    @Override
+    public void writeToDB(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
+        ref.child(Integer.toString(this.getId())).setValue(this);
     }
 }
