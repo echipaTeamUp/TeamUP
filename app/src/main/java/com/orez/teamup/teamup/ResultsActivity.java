@@ -20,8 +20,8 @@ public class ResultsActivity extends Activity {
         setContentView(R.layout.activity_results);
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = db.child("lobby");
 
+        /*
         ref.addValueEventListener(new ValueEventListener(){
 
             @Override
@@ -37,5 +37,6 @@ public class ResultsActivity extends Activity {
                         Toast.LENGTH_LONG);
             }
         });
+        */
     }
 }
