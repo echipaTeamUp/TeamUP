@@ -18,25 +18,5 @@ public class ResultsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-
-        /*
-        ref.addValueEventListener(new ValueEventListener(){
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot){
-                String val = dataSnapshot.getValue(String.class);
-                Toast.makeText(ResultsActivity.this, val,
-                        Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error){
-                Toast.makeText(ResultsActivity.this, "failed",
-                        Toast.LENGTH_LONG);
-            }
-        });
-        */
     }
 }

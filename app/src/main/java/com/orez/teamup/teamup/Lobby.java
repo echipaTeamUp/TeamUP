@@ -21,16 +21,16 @@ public class Lobby {
     private lobbyAvailability availability;
     private int maxSize;
 
-    public Lobby(int id, String name, lobbyAvailability availability, int maxSize){
-        this.id = id;
+    public Lobby(String name, lobbyAvailability availability, int maxSize){
+        this.id = Lobby.getNewID();
         this.name = name;
         this.availability = availability;
         this.maxSize = maxSize;
         this.users = new ArrayList<>();
     }
 
-    public Lobby(int id){
-        this.id = id;
+    public Lobby(){
+        this.id = Lobby.getNewID();
         this.name = "lobby".concat(Integer.toString(id));
         this.availability = lobbyAvailability.ANYONE;
         this.maxSize = 10;
@@ -74,18 +74,22 @@ public class Lobby {
 
     public void writeToDB(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby");
-        ref.child("id").setValue(this.id);
-        ref.child("name").setValue(this.name);
-        ref.child("availability").setValue(this.availability.toString());
-        ref.child("maxSize").setValue(Integer.toString(this.maxSize));
-
-        String users = "";
-        for (String i : this.users){
-            if (users.length() > 0)
-                users.concat(",");
-            users.concat(i);
-        }
-        ref.child("users").setValue(users);
+        ref.setValue(this);
     }
 
+    private static int getNewID(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
