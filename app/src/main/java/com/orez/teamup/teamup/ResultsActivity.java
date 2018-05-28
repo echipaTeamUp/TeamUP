@@ -19,23 +19,9 @@ public class ResultsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = db.child("lobby");
-
-        ref.addValueEventListener(new ValueEventListener(){
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot){
-                String val = dataSnapshot.getValue(String.class);
-                Toast.makeText(ResultsActivity.this, val,
-                        Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error){
-                Toast.makeText(ResultsActivity.this, "failed",
-                        Toast.LENGTH_LONG);
-            }
-        });
+        LobbySports xd = new LobbySports();
+        xd.writeToDB();
+        Toast.makeText(ResultsActivity.this, Integer.toString(xd.getId()),
+                Toast.LENGTH_SHORT).show();
     }
 }

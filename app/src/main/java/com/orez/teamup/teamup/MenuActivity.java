@@ -27,16 +27,18 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         //primeste obiectul user din activitatea de login
-<<<<<<< HEAD
+//<<<<<<< HEAD ??? ce e asta?
         Intent i=getIntent();
         user=(User) i.getSerializableExtra("User");
         profile_image=(ImageView) findViewById(R.id.menu_profile_image);
         profile_image.setImageResource(R.mipmap.ic_launcher_round);
+        /* Tibi catre cipi: codul asta nu e in regula asa ca l-am comentat
 =======
         Intent i = getIntent();
         user = (User) i.getSerializableExtra("User");
         profile_image = (ImageView) findViewById(R.id.menu_profile_image);
 >>>>>>> 98d85475bd7af9ce3ccf1ad676d4bcbae72da771
+        */
         //Daca apesi pe imagine, te duce la profil
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
