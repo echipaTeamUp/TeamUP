@@ -120,7 +120,6 @@ class LobbySports extends Lobby{
     }
 
     LobbySports(){
-        super();
         this.minAge = 0;
         this.maxAge = 100;
         this.maxDistance = 20000;
@@ -132,4 +131,7 @@ class LobbySports extends Lobby{
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
         ref.child(Integer.toString(this.getId())).setValue(this);
     }
+
+
 }
+

@@ -95,7 +95,6 @@ public class LoginActivity extends Activity {
                                 // A mers
                                 retrieve_user();
 
-
                             } else {
                                 // Nu a mers
                                 Toast.makeText(LoginActivity.this, "Ai gresit datele, baiatul meu",
@@ -142,6 +141,7 @@ public class LoginActivity extends Activity {
                 Intent i = new Intent(LoginActivity.this, MenuActivity.class);
                 i.putExtra("User", user);
                 startActivity(i);
+                finish();
             }
 
             @Override
