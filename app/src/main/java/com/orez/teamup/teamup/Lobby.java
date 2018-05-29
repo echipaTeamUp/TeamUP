@@ -1,6 +1,7 @@
 package com.orez.teamup.teamup;
 
 import android.provider.ContactsContract;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,13 +80,13 @@ public class Lobby {
     }
 
     public void writeToDB(){
-        // TODO: write users list
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby");
-        ref.child(Integer.toString(this.getId())).setValue(this);
-        DatabaseReference usersRef = ref.child(Integer.toString(this.getId()));
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
+                .child(Integer.toString(this.getId()));
+        ref.setValue(this);
 
+        DatabaseReference usersRef = ref.child("users");
         for (String user : users){
-            usersRef.child(Integer.toString(users.indexOf(user))).setValue(user);
+            usersRef.child(users.indexOf(user) + "").setValue(user);
         }
     }
 
@@ -123,14 +124,14 @@ class LobbySports extends Lobby{
 
     @Override
     public void writeToDB(){
-        // TODO: write users list
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
-        ref.child(Integer.toString(this.getId())).setValue(this);
+        Toast.makeText(ResultsActivity.class, "didiidid", Toast.LENGTH_LONG).show();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
+                child(Integer.toString(this.getId()));
+        ref.setValue(this);
 
-        DatabaseReference usersRef = ref.child(Integer.toString(this.getId()));
-
+        DatabaseReference usersRef = ref.child("users");
         for (String user : users){
-            usersRef.child(Integer.toString(users.indexOf(user))).setValue(user);
+            usersRef.child(users.indexOf(user) + "").setValue(user);
         }
     }
 }
