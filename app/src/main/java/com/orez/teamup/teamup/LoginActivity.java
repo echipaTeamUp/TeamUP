@@ -13,11 +13,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,15 +41,22 @@ public class LoginActivity extends Activity {
     EditText mPasswordEt;
     Button mLoginBtn;
     Button mSignupBtn;
-    Button mGoogleLogin;
+    SignInButton mGoogleLoginBtn;
+    GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     User user;
+    private final static int RC_SIGN_IN=2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleLoginBtn = (SignInButton) findViewById(R.id.login_googleBtn);
         //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
             Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
@@ -55,7 +72,7 @@ public class LoginActivity extends Activity {
             mPasswordEt = (EditText) findViewById(R.id.login_passwordEt);
             mLoginBtn = (Button) findViewById(R.id.loginBtn);
             mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
-            mGoogleLogin = (Button) findViewById(R.id.login_googleBtn);
+
             mAuth = FirebaseAuth.getInstance();
 
             //OnClick care duce la activitatea de signup
@@ -80,6 +97,18 @@ public class LoginActivity extends Activity {
 
 
         }
+        //pentru logat cu google
+        mGoogleLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+
+
+            }
+        });
+
     }
 
     //practic incearca logarea
@@ -118,15 +147,31 @@ public class LoginActivity extends Activity {
             return false;
     }
 
-    //pentru cand se intoarce din signup, completeaza automat campurile
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //asta e pentru cand vine din signup, completeaza automat campurile
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             mPasswordEt.setText(data.getStringExtra("pass"));
             mEmailEt.setText(data.getStringExtra("email"));
         }
-    }
+        //asta e pentru cand vine din chestiuta de logat cu Google
+        if(requestCode==RC_SIGN_IN){
+
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                try {
+                    // A mers logarea cu google, face lagatura cu un user din firebase
+                    Toast.makeText(LoginActivity.this,"asta a mers",Toast.LENGTH_LONG).show();
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+
+                    firebaseAuthWithGoogle(account);
+                } catch (ApiException e) {
+                    // Nu a mers logarea cu Google
+                    Toast.makeText(LoginActivity.this,e.toString(),Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
 
     //pune datele in obiectul user si trece in meniu
     public void retrieve_user() {
@@ -151,6 +196,27 @@ public class LoginActivity extends Activity {
 
         });
 
+    }
+    // Face legatura dintre firebase si Google
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // A mers
+
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            retrieve_user();
+
+                        } else {
+                            // Nu a mers
+                           Toast.makeText(LoginActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 }

@@ -58,13 +58,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/login_googleBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="54dp"
-        android:layout_marginEnd="162dp"
-        android:text="Login with Google"
+        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="136dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"></com.google.android.gms.common.SignInButton>
 </android.support.constraint.ConstraintLayout>
