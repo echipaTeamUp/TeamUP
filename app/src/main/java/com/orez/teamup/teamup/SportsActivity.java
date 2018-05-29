@@ -20,12 +20,13 @@ import java.util.List;
 
 public class SportsActivity extends Activity {
     private String[] st = {""};
-    private ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<String> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sports);
+        data = new ArrayList<String>();
         ListView mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(new MyListAdapter(SportsActivity.this, R.layout.list_item, data));
         data.add("gay");
