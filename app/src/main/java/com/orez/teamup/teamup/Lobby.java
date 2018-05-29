@@ -15,13 +15,13 @@ enum lobbyAvailability{
 }
 
 public class Lobby {
-    private int id;
-    private ArrayList<String> users;
-    private String name;
-    private lobbyAvailability availability;
-    private int maxSize;
+    protected int id;
+    protected ArrayList<String> users;
+    protected String name;
+    protected lobbyAvailability availability;
+    protected int maxSize;
 
-    private static int _id;
+    protected static int _id;
 
     public Lobby(String name, lobbyAvailability availability, int maxSize){
         this.id = Lobby.getNewID();
@@ -79,8 +79,14 @@ public class Lobby {
     }
 
     public void writeToDB(){
+        // TODO: write users list
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby");
         ref.child(Integer.toString(this.getId())).setValue(this);
+        DatabaseReference usersRef = ref.child(Integer.toString(this.getId()));
+
+        for (String user : users){
+            usersRef.child(Integer.toString(users.indexOf(user))).setValue(user);
+        }
     }
 
     private static int getNewID(){
@@ -105,31 +111,26 @@ public class Lobby {
 
 class LobbySports extends Lobby{
 
-    private int minAge;
-    private int maxAge;
-    private int maxDistance;
-    private skillGroup skillGroup;
+    protected ArrayList<FilterSports> filterList;
 
-    LobbySports(String name, lobbyAvailability availability, int maxSize,
-                int minAge, int maxAge, int maxDistance, skillGroup skillGroup){
+    LobbySports(String name, lobbyAvailability availability, int maxSize){
         super(name, availability, maxSize);
-        this.minAge = minAge;
-        this.maxAge = maxAge;
-        this.maxDistance = maxDistance;
-        this.skillGroup = skillGroup;
     }
 
     LobbySports(){
         super();
-        this.minAge = 0;
-        this.maxAge = 100;
-        this.maxDistance = 20000;
-        this.skillGroup = com.orez.teamup.teamup.skillGroup.AMATEUR;
     }
 
     @Override
     public void writeToDB(){
+        // TODO: write users list
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
         ref.child(Integer.toString(this.getId())).setValue(this);
+
+        DatabaseReference usersRef = ref.child(Integer.toString(this.getId()));
+
+        for (String user : users){
+            usersRef.child(Integer.toString(users.indexOf(user))).setValue(user);
+        }
     }
 }
