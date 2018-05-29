@@ -1,6 +1,7 @@
 package com.orez.teamup.teamup;
 
 import android.provider.ContactsContract;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +16,13 @@ enum lobbyAvailability{
 }
 
 public class Lobby {
-    private int id;
-    private ArrayList<String> users;
-    private String name;
-    private lobbyAvailability availability;
-    private int maxSize;
+    protected int id;
+    protected ArrayList<String> users;
+    protected String name;
+    protected lobbyAvailability availability;
+    protected int maxSize;
 
-    private static int _id;
+    protected static int _id;
 
     public Lobby(String name, lobbyAvailability availability, int maxSize){
         this.id = Lobby.getNewID();
@@ -79,8 +80,14 @@ public class Lobby {
     }
 
     public void writeToDB(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby");
-        ref.child(Integer.toString(this.getId())).setValue(this);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
+                .child(Integer.toString(this.getId()));
+        ref.setValue(this);
+
+        DatabaseReference usersRef = ref.child("users");
+        for (String user : users){
+            usersRef.child(users.indexOf(user) + "").setValue(user);
+        }
     }
 
     private static int getNewID(){
@@ -105,33 +112,26 @@ public class Lobby {
 
 class LobbySports extends Lobby{
 
-    private int minAge;
-    private int maxAge;
-    private int maxDistance;
-    private skillGroup skillGroup;
+    protected ArrayList<FilterSports> filterList;
 
-    LobbySports(String name, lobbyAvailability availability, int maxSize,
-                int minAge, int maxAge, int maxDistance, skillGroup skillGroup){
+    LobbySports(String name, lobbyAvailability availability, int maxSize){
         super(name, availability, maxSize);
-        this.minAge = minAge;
-        this.maxAge = maxAge;
-        this.maxDistance = maxDistance;
-        this.skillGroup = skillGroup;
     }
 
     LobbySports(){
-        this.minAge = 0;
-        this.maxAge = 100;
-        this.maxDistance = 20000;
-        this.skillGroup = com.orez.teamup.teamup.skillGroup.AMATEUR;
+        super();
     }
 
     @Override
     public void writeToDB(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
-        ref.child(Integer.toString(this.getId())).setValue(this);
+        Toast.makeText(ResultsActivity.class, "didiidid", Toast.LENGTH_LONG).show();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
+                child(Integer.toString(this.getId()));
+        ref.setValue(this);
+
+        DatabaseReference usersRef = ref.child("users");
+        for (String user : users){
+            usersRef.child(users.indexOf(user) + "").setValue(user);
+        }
     }
-
-
 }
-

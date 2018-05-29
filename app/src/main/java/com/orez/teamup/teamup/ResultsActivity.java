@@ -20,7 +20,7 @@ public class ResultsActivity extends Activity {
         setContentView(R.layout.activity_results);
 
         LobbySports xd = new LobbySports();
-        xd.writeToDB();
+        xd.addUser("1234");
         Toast.makeText(ResultsActivity.this, Integer.toString(xd.getId()),
                 Toast.LENGTH_SHORT).show();
     }
