@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import java.util.logging.Filter;
 
+
 enum skillGroup {
     AMATEUR, EXPERIENCED, PRO, ALL
 }
@@ -67,6 +68,7 @@ class FilterSports {
         return this.maxDistance;
     }
 }
+
 
 public class FilterSportsActivity extends Activity {
 
