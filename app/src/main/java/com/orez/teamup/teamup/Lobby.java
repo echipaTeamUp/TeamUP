@@ -118,6 +118,7 @@ public class Lobby {
             }
         });
 
+        // when getting a new id it increments by 1 for the next id to be unique
         ref.setValue(_id + 1);
         return _id;
     }
