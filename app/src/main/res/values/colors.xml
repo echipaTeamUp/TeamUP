@@ -3,4 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff4081</color>
+    <color name="translucentBlue">#8A27AAE1</color>
+    <color name="translucentWhite">#8aFFFFFF</color>
+    <color name="blueButtonText">#C5C5C5</color>
+    <color name="editText_Text">#707070</color>
 </resources>
