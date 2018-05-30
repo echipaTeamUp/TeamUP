@@ -3,6 +3,7 @@ package com.orez.teamup.teamup;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
 
@@ -34,9 +39,12 @@ public class SignupActivity extends Activity {
     EditText mlastnameEt;
     EditText mbirthdayEt;
     Button msignupBtn;
+    Button mphotoBtn;
+    Uri photouri;
     FirebaseUser user;
     int minAge = 16;
     User muser;
+    private StorageReference mStorageRef;
 
 
     @Override
@@ -47,11 +55,14 @@ public class SignupActivity extends Activity {
         memailEt = (EditText) findViewById(R.id.signup_emailEt);
         mpassEt = (EditText) findViewById(R.id.signup_passwordEt);
         msignupBtn = (Button) findViewById(R.id.signupBtn);
+        mphotoBtn=(Button) findViewById(R.id.signup_upload_photo);
         mpassrepeatEt = (EditText) findViewById(R.id.signup_password_repeatEt);
         mfirstnameEt = (EditText) findViewById(R.id.signup_first_nameEt);
         mlastnameEt = (EditText) findViewById(R.id.signup_last_nameEt);
         mbirthdayEt = (EditText) findViewById(R.id.signup_birthdayEt);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         msignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +90,17 @@ public class SignupActivity extends Activity {
             @Override
             public void onClick(View v) {
                 checkdate();
+            }
+        });
+        //onClick pentru upload image, face un intent implicit pentru galerie
+        mphotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                        Intent i=new Intent(Intent.ACTION_PICK);
+                        i.setType("image/*");
+                        startActivityForResult(i,1);
+
             }
         });
 
@@ -132,9 +154,8 @@ public class SignupActivity extends Activity {
     //pune ce mai trebuie in database
     void setvalues() {
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         muser=new User(mfirstnameEt.getText().toString().trim(),mlastnameEt.getText().toString().trim(),
-                mbirthdayEt.getText().toString());
+                mbirthdayEt.getText().toString(),photouri);
         mDatabase.child("id").child(user.getUid()).
                 setValue(muser);
     }
@@ -172,7 +193,7 @@ public class SignupActivity extends Activity {
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
-
+    //verifica varsta
     public boolean isoldenough(int cyear, int cmonth, int cday, int year, int month, int day) {
         if (cyear - year > minAge)
             return true;
@@ -181,5 +202,20 @@ public class SignupActivity extends Activity {
         if (cyear - year == minAge && cmonth == month && day <= cday)
             return true;
         else return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //pentru cand vine din galerie
+        if(requestCode==1&&resultCode==RESULT_OK){
+            Uri file=data.getData();
+            mStorageRef.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    photouri = taskSnapshot.getDownloadUrl();
+                }
+            });
+        }
     }
 }
