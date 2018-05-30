@@ -124,7 +124,7 @@ class LobbySports extends Lobby{
 
     @Override
     public void writeToDB(){
-        Toast.makeText(ResultsActivity.class, "didiidid", Toast.LENGTH_LONG).show();
+      //  Toast.makeText(ResultsActivity.class, "didiidid", Toast.LENGTH_LONG).show();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
                 child(Integer.toString(this.getId()));
         ref.setValue(this);
