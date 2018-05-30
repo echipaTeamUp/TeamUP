@@ -41,6 +41,7 @@ public class SignupActivity extends Activity {
     Button msignupBtn;
     Button mphotoBtn;
     Uri photouri;
+    Uri file;
     FirebaseUser user;
     int minAge = 16;
     User muser;
@@ -155,7 +156,15 @@ public class SignupActivity extends Activity {
     void setvalues() {
 
         muser=new User(mfirstnameEt.getText().toString().trim(),mlastnameEt.getText().toString().trim(),
-                mbirthdayEt.getText().toString(),photouri);
+                mbirthdayEt.getText().toString());
+        StorageReference ref=mStorageRef.child(user.getUid());
+        ref.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                photouri = taskSnapshot.getDownloadUrl();
+                mphotoBtn.setText(photouri.toString());
+            }
+        });
         mDatabase.child("id").child(user.getUid()).
                 setValue(muser);
     }
@@ -208,14 +217,9 @@ public class SignupActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //pentru cand vine din galerie
-        if(requestCode==1&&resultCode==RESULT_OK){
-            Uri file=data.getData();
-            mStorageRef.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    photouri = taskSnapshot.getDownloadUrl();
-                }
-            });
+        if(requestCode==1){
+            file=data.getData();
+
         }
     }
 }

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingRight="0dp"
     android:paddingTop="16dp"
     tools:context=".LoginActivity"
     android:background="@drawable/blured"
@@ -64,21 +64,21 @@
 
     <Button
         android:id="@+id/login_signupBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="670dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/sidebtnstyle"
+        android:rotation="-90"
         android:text="@string/signup"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="48dp" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="206dp"
-        android:layout_height="164dp"
+        android:layout_width="266dp"
+        android:layout_height="224dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
