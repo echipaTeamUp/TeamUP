@@ -48,7 +48,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mAuth=FirebaseAuth.getInstance();//wd
+        mAuth=FirebaseAuth.getInstance();
         //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
             Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
