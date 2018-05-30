@@ -1,6 +1,7 @@
 package com.orez.teamup.teamup;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,6 +27,8 @@ public class Lobby {
 
     // used in getNewID function, redundant for the rest of the class
     protected static int _id;
+
+
 
     public Lobby(String name, lobbyAvailability availability, int maxSize){
         this.id = Lobby.getNewID();
@@ -102,6 +105,11 @@ public class Lobby {
         }
     }
 
+    private static void setDBID(int id){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
+        ref.setValue(id);
+    }
+
     // gets a new ID for the lobby from the server
     private static int getNewID(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
@@ -110,16 +118,17 @@ public class Lobby {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 _id = dataSnapshot.getValue(int.class);
+                Log.d("A luat valoarea ",_id+"");
+                Lobby.setDBID(_id + 1);
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
 
-        // when getting a new id it increments by 1 for the next id to be unique
-        ref.setValue(_id + 1);
+        });
         return _id;
     }
 }
