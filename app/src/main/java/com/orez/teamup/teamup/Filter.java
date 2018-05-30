@@ -1,21 +1,29 @@
 package com.orez.teamup.teamup;
 
 
+import java.util.ArrayList;
+
 enum skillGroupSports {
     AMATEUR, EXPERIENCED, PRO, ALL
 }
 
-class FilterSports {
-    protected int minAge;
-    protected int maxAge;
-    protected int maxDistance;
-    protected skillGroupSports skill;
+enum sports{
+    ANY, BASKETBALL, FOOTBALL, TENNIS, RUGBY, HANDBALL, CYCLING, PINGPONG
+}
 
-    public FilterSports(int _minAge, int _maxAge, int _maxDistance, skillGroupSports _sg) {
+class FilterSports {
+    private int minAge;
+    private int maxAge;
+    private int maxDistance;
+    private skillGroupSports skill;
+    private sports sport;
+
+    public FilterSports(int _minAge, int _maxAge, int _maxDistance, skillGroupSports sg, sports sp) {
         this.minAge = _minAge;
         this.maxAge = _maxAge;
         this.maxDistance = _maxDistance;
-        this.skill = _sg;
+        this.skill = sg;
+        this.sport = sp;
     }
 
     public FilterSports() {
@@ -23,6 +31,7 @@ class FilterSports {
         this.maxAge = 100;
         this.maxDistance = 20000;
         this.skill = skillGroupSports.ALL;
+        this.sport = sports.ANY;
     }
 
     public void setAge(int min, int max) {
@@ -46,6 +55,10 @@ class FilterSports {
         this.maxDistance = maxDistance;
     }
 
+    public void setSport(sports sp){
+        this.sport = sp;
+    }
+
     public int getMinAge() {
         return this.minAge;
     }
@@ -61,4 +74,6 @@ class FilterSports {
     public int getMaxDistance() {
         return this.maxDistance;
     }
+
+    public sports getSport() {return this.sport; }
 }

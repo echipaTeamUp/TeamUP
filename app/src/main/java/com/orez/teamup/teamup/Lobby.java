@@ -1,6 +1,8 @@
 package com.orez.teamup.teamup;
 
+import android.content.Context;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,11 +19,12 @@ enum lobbyAvailability{
 
 public class Lobby {
     protected int id;
-    protected ArrayList<String> users;
+    protected ArrayList<String> users = new ArrayList<>();
     protected String name;
     protected lobbyAvailability availability;
     protected int maxSize;
 
+    // used in getNewID function, redundant for the rest of the class
     protected static int _id;
 
     public Lobby(String name, lobbyAvailability availability, int maxSize){
@@ -29,7 +32,6 @@ public class Lobby {
         this.name = name;
         this.availability = availability;
         this.maxSize = maxSize;
-        this.users = new ArrayList<>();
     }
 
     public Lobby(){
@@ -74,26 +76,37 @@ public class Lobby {
         writeToDB();
     }
 
+    // adds a new user to the lobby
     public void addUser(String userID){
+        if (users.size() == maxSize) {
+            // TODO: handle LobbyFullException
+            return;
+        }
         users.add(userID);
         writeToDB();
     }
 
+    // writes this to the DB
     public void writeToDB(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
                 .child(Integer.toString(this.getId()));
         ref.setValue(this);
 
+
         DatabaseReference usersRef = ref.child("users");
+        if (users.size() == 0)
+            usersRef.setValue("EMPTY LOBBY");
+        // TODO: delete lobby on empty
         for (String user : users){
             usersRef.child(users.indexOf(user) + "").setValue(user);
         }
     }
 
+    // gets a new ID for the lobby from the server
     private static int getNewID(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 _id = dataSnapshot.getValue(int.class);
@@ -105,6 +118,7 @@ public class Lobby {
             }
         });
 
+        // when getting a new id it increments by 1 for the next id to be unique
         ref.setValue(_id + 1);
         return _id;
     }
@@ -112,7 +126,7 @@ public class Lobby {
 
 class LobbySports extends Lobby{
 
-    protected ArrayList<FilterSports> filterList;
+    protected FilterSports sportFilter;
 
     LobbySports(String name, lobbyAvailability availability, int maxSize){
         super(name, availability, maxSize);
@@ -122,16 +136,23 @@ class LobbySports extends Lobby{
         super();
     }
 
+    // writes this to the database
     @Override
-    public void writeToDB(){
-      //  Toast.makeText(ResultsActivity.class, "didiidid", Toast.LENGTH_LONG).show();
+    public void writeToDB() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
                 child(Integer.toString(this.getId()));
         ref.setValue(this);
 
         DatabaseReference usersRef = ref.child("users");
-        for (String user : users){
+        if (users.size() == 0)
+            usersRef.setValue("EMPTY LOBBY");
+        for (String user : users) {
             usersRef.child(users.indexOf(user) + "").setValue(user);
         }
+    }
+
+    public void setFilter(FilterSports filter) {
+        this.sportFilter = filter;
+        writeToDB();
     }
 }
