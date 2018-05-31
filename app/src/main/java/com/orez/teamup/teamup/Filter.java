@@ -27,9 +27,9 @@ class FilterSports {
     }
 
     public FilterSports() {
-        this.minAge = 0;
-        this.maxAge = 100;
-        this.maxDistance = 20000;
+        this.minAge = -1;
+        this.maxAge = -1;
+        this.maxDistance = -1;
         this.skill = skillGroupSports.ALL;
         this.sport = sports.ANY;
     }

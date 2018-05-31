@@ -27,7 +27,7 @@ public class Lobby {
     protected int maxSize;
 
     // used in getNewID function, redundant for the rest of the class
-    public static int _id;
+    private static int _id;
 
     public Lobby(String name, lobbyAvailability availability, int maxSize){
         Lobby.getNewID();
@@ -98,20 +98,13 @@ public class Lobby {
                 .child(Integer.toString(this.getId()));
         ref.setValue(this);
 
-
-        DatabaseReference usersRef = ref.child("users");
-        if (users.size() == 0)
-            usersRef.setValue("EMPTY LOBBY");
-        // TODO: delete lobby on empty
-        for (String user : users){
-            usersRef.child(users.indexOf(user) + "").setValue(user);
-        }
+        // TODO: delete empty lobby
     }
 
     private static void setDBID(int newID){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
-        ref.setValue(newID);
-        Lobby._id = newID;
+        ref.setValue(newID + 1);
+        Log.d("XDDDDDDDDDDDDDDDD", ""+_id);
     }
 
     // gets a new ID for the lobby from the server
@@ -136,7 +129,7 @@ public class Lobby {
 
 class LobbySports extends Lobby{
 
-    protected FilterSports sportFilter;
+    protected FilterSports sportsFilter;
 
     LobbySports(String name, lobbyAvailability availability, int maxSize){
         super(name, availability, maxSize);
@@ -153,16 +146,11 @@ class LobbySports extends Lobby{
                 child(Integer.toString(this.getId()));
         ref.setValue(this);
 
-        DatabaseReference usersRef = ref.child("users");
-        if (users.size() == 0)
-            usersRef.setValue("EMPTY LOBBY");
-        for (String user : users) {
-            usersRef.child(users.indexOf(user) + "").setValue(user);
-        }
+        // TODO: delete empty lobby
     }
 
     public void setFilter(FilterSports filter) {
-        this.sportFilter = filter;
+        this.sportsFilter = filter;
         writeToDB();
     }
 
@@ -170,27 +158,8 @@ class LobbySports extends Lobby{
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
         ArrayList <LobbySports> results = new ArrayList<>();
 
-        Query query = ref.orderByChild("availability").equalTo("ANYONE");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    for (DataSnapshot xd : dataSnapshot.getChildren()){
-                        try{
-                            String ls = xd.child("name").getValue(String.class);
-                            Log.d("OBJECT", ls);
-                        } catch (Exception e){
-                            Log.d("ERROR THROWN BY DB", e.getMessage());
-                        }
-                    }
-                }
-            }
+        ref = ref.orderByChild("availability").equalTo("ANYONE").getRef();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         return results;
     }
 }

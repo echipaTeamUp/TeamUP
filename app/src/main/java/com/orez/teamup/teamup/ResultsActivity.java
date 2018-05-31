@@ -12,6 +12,6 @@ public class ResultsActivity extends Activity {
         LobbySports xd = new LobbySports();
         xd.setName("lol");
         xd.addUser("123");
-        LobbySports.getLobbysByFilter(new FilterSports());
+        xd.setFilter(new FilterSports());
     }
 }
