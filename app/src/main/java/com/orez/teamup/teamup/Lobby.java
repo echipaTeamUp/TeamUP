@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 enum lobbyAvailability{
@@ -26,22 +27,24 @@ public class Lobby {
     protected int maxSize;
 
     // used in getNewID function, redundant for the rest of the class
-    protected static int _id;
-
-
+    public static int _id;
 
     public Lobby(String name, lobbyAvailability availability, int maxSize){
-        this.id = Lobby.getNewID();
+        Lobby.getNewID();
+        this.id = _id;
         this.name = name;
         this.availability = availability;
         this.maxSize = maxSize;
+        this.writeToDB();
     }
 
     public Lobby(){
-        this.id = Lobby.getNewID();
+        Lobby.getNewID();
+        this.id = _id;
         this.name = "lobby".concat(Integer.toString(id));
         this.availability = lobbyAvailability.ANYONE;
         this.maxSize = 10;
+        this.writeToDB();
     }
 
     public int getId() {
@@ -105,31 +108,29 @@ public class Lobby {
         }
     }
 
-    private static void setDBID(int id){
+    private static void setDBID(int newID){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
-        ref.setValue(id);
+        ref.setValue(newID);
+        Lobby._id = newID;
     }
 
     // gets a new ID for the lobby from the server
-    private static int getNewID(){
+    private static void getNewID(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 _id = dataSnapshot.getValue(int.class);
-                Log.d("A luat valoarea ",_id+"");
+                Log.d("AICIICICIICICICICICI ",_id+"");
                 Lobby.setDBID(_id + 1);
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
         });
-        return _id;
     }
 }
 
@@ -163,5 +164,33 @@ class LobbySports extends Lobby{
     public void setFilter(FilterSports filter) {
         this.sportFilter = filter;
         writeToDB();
+    }
+
+    public static ArrayList<LobbySports> getLobbysByFilter(FilterSports filter){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
+        ArrayList <LobbySports> results = new ArrayList<>();
+
+        Query query = ref.orderByChild("availability").equalTo("ANYONE");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot xd : dataSnapshot.getChildren()){
+                        try{
+                            String ls = xd.child("name").getValue(String.class);
+                            Log.d("OBJECT", ls);
+                        } catch (Exception e){
+                            Log.d("ERROR THROWN BY DB", e.getMessage());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return results;
     }
 }
