@@ -1,6 +1,6 @@
 package com.orez.teamup.teamup;
 
-
+import android.provider.ContactsContract;
 import android.util.Log;
 import java.util.Random;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -115,5 +116,41 @@ class LobbySports extends Lobby{
     public void setFilter(FilterSports filter) {
         this.sportFilter = filter;
         writeToDB();
+    }
+
+    private static DatabaseReference filterByMinAge(DatabaseReference ref, FilterSports filter){
+        Query query = ref.child("sportFilter").orderByChild("minAge").equalTo(filter.getMinAge());
+        return query.getRef();
+    }
+
+    private static DatabaseReference filterByMaxAge(DatabaseReference ref, FilterSports filter){
+        Query query = ref.child("sportFilter").orderByChild("maxAge").equalTo(filter.getMaxAge());
+        return query.getRef();
+    }
+
+    private static DatabaseReference filterByDistance(DatabaseReference ref, FilterSports filter){
+        Query query = ref.child("sportFilter").orderByChild("maxDistance").equalTo(filter.getMaxDistance());
+        return query.getRef();
+    }
+
+    private static DatabaseReference filterBySkill(DatabaseReference ref, FilterSports filter){
+        Query query = ref.child("sportFilter").orderByChild("skill").equalTo(filter.getSkill().toString());
+        return query.getRef();
+    }
+
+    private static DatabaseReference filterBySports(DatabaseReference ref, FilterSports filter){
+        Query query = ref.child("sportFilter").orderByChild("minAge").equalTo(filter.getSport().toString());
+        return query.getRef();
+    }
+
+    public static ArrayList<LobbySports> getLobbysByFilter(FilterSports filter){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
+        ref = LobbySports.filterByMinAge(ref, filter);
+        ref = LobbySports.filterByMaxAge(ref, filter);
+        ref = LobbySports.filterByDistance(ref, filter);
+        ref = LobbySports.filterBySkill(ref, filter);
+        ref = LobbySports.filterBySports(ref, filter);
+
+        
     }
 }
