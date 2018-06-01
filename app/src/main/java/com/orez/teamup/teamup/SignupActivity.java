@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class SignupActivity extends Activity {
     EditText mbirthdayEt;
     Button msignupBtn;
     Button mphotoBtn;
+    CheckBox checkBox;
     Uri photouri;
     Uri file;
     FirebaseUser user;
@@ -61,6 +63,7 @@ public class SignupActivity extends Activity {
         mfirstnameEt = (EditText) findViewById(R.id.signup_first_nameEt);
         mlastnameEt = (EditText) findViewById(R.id.signup_last_nameEt);
         mbirthdayEt = (EditText) findViewById(R.id.signup_birthdayEt);
+        checkBox=(CheckBox) findViewById(R.id.signup_checkbox);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
