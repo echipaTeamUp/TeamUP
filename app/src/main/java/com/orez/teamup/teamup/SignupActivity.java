@@ -220,6 +220,7 @@ public class SignupActivity extends Activity {
         //pentru cand vine din galerie
         if(requestCode==1){
             file=data.getData();
+            checkBox.setChecked(true);
 
         }
     }
