@@ -64,7 +64,7 @@
 
     <Button
         android:id="@+id/login_signupBtn"
-        android:layout_width="match_costraint"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
