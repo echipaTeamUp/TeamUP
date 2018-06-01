@@ -12,21 +12,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".SportsActivity" />
+        <activity android:name=".MenuActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignupActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SportsActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".FilterActivity" />
-        <activity android:name=".FilterSportsActivity" />
-        <activity android:name=".ResultsActivity" />
-        <activity android:name=".LobbyActivity"></activity>
+        <activity android:name=".FilterSportsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ResultsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LobbyActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

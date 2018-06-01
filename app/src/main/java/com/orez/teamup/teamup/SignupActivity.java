@@ -154,7 +154,6 @@ public class SignupActivity extends Activity {
 
     //pune ce mai trebuie in database
     void setvalues() {
-
         muser=new User(mfirstnameEt.getText().toString().trim(),mlastnameEt.getText().toString().trim(),
                 mbirthdayEt.getText().toString());
         StorageReference ref=mStorageRef.child(user.getUid());
@@ -186,8 +185,7 @@ public class SignupActivity extends Activity {
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
+        //aici face chestiuta de calendar
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
 
