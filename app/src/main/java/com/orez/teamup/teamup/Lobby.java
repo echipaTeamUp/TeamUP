@@ -1,13 +1,8 @@
 package com.orez.teamup.teamup;
 
-import android.content.Context;
-import android.os.CountDownTimer;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.widget.Toast;
 
+import android.util.Log;
 import java.util.ArrayList;
-import java.util.List;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -129,7 +124,9 @@ public class Lobby {
             }
 
         });
+        Log.d("A returnat",_id+"");
         return _id;
+
     }
 }
 
