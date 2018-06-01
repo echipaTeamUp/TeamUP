@@ -143,7 +143,7 @@ class LobbySports extends Lobby{
         return query.getRef();
     }
 
-    public static ArrayList<LobbySports> getLobbysByFilter(FilterSports filter){
+    /*public static ArrayList<LobbySports> getLobbysByFilter(FilterSports filter){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
         ref = LobbySports.filterByMinAge(ref, filter);
         ref = LobbySports.filterByMaxAge(ref, filter);
@@ -163,5 +163,5 @@ class LobbySports extends Lobby{
 
             }
         });
-    }
+    }*/
 }
