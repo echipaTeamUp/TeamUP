@@ -10,7 +10,6 @@ public class ResultsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         LobbySports xd = new LobbySports();
-        xd.setName("lol");
         xd.addUser("123");
         xd.setFilter(new FilterSports());
     }

@@ -2,6 +2,7 @@ package com.orez.teamup.teamup;
 
 
 import android.util.Log;
+import java.util.Random;
 import java.util.ArrayList;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,42 +10,31 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 enum lobbyAvailability{
     ANYONE, FRIENDS, INVITES
 }
 
 public class Lobby {
-    protected int id;
+    protected String id;
     protected ArrayList<String> users = new ArrayList<>();
-    protected String name;
     protected lobbyAvailability availability;
     protected int maxSize;
 
-    // used in getNewID function, redundant for the rest of the class
-    protected static int _id;
-
-
-
     public Lobby(String name, lobbyAvailability availability, int maxSize){
         this.id = Lobby.getNewID();
-        this.name = name;
         this.availability = availability;
         this.maxSize = maxSize;
     }
 
     public Lobby(){
         this.id = Lobby.getNewID();
-        this.name = "lobby".concat(Integer.toString(id));
         this.availability = lobbyAvailability.ANYONE;
         this.maxSize = 10;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public ArrayList<String> getUsers() {
@@ -57,11 +47,6 @@ public class Lobby {
 
     public int getMaxSize() {
         return maxSize;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-        writeToDB();
     }
 
     public void setAvailability(lobbyAvailability availability) {
@@ -87,51 +72,25 @@ public class Lobby {
     // writes this to the DB
     public void writeToDB(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
-                .child(Integer.toString(this.getId()));
+                .child(this.getId());
         ref.setValue(this);
+    }
 
-
-        DatabaseReference usersRef = ref.child("users");
-        if (users.size() == 0)
-            usersRef.setValue("EMPTY LOBBY");
-        // TODO: delete lobby on empty
-        for (String user : users){
-            usersRef.child(users.indexOf(user) + "").setValue(user);
+    private static String getNewID(){
+        // generate random lobby key
+        String key = "";
+        for (int i = 0; i < 20; ++i){
+            Random r = new Random();
+            char rand = (char)(r.nextInt(74) + 48);
+            while (rand == 91 || rand == 93){
+                rand = (char)(r.nextInt(74) + 48);
+            }
+            key += Character.toString(rand);
         }
-    }
 
-    private static void setDBID(int id){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
-        ref.setValue(id);
-    }
-
-    // gets a new ID for the lobby from the server
-    private static int getNewID(){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                _id = dataSnapshot.getValue(int.class);
-                Log.d("A luat valoarea ",_id+"");
-                Lobby.setDBID(_id + 1);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-        Log.d("A returnat",_id+"");
-        return _id;
-
+        return key;
     }
 }
-
-
-
 
 class LobbySports extends Lobby{
 
@@ -149,15 +108,8 @@ class LobbySports extends Lobby{
     @Override
     public void writeToDB() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
-                child(Integer.toString(this.getId()));
+                child(this.getId());
         ref.setValue(this);
-
-        DatabaseReference usersRef = ref.child("users");
-        if (users.size() == 0)
-            usersRef.setValue("EMPTY LOBBY");
-        for (String user : users) {
-            usersRef.child(users.indexOf(user) + "").setValue(user);
-        }
     }
 
     public void setFilter(FilterSports filter) {
