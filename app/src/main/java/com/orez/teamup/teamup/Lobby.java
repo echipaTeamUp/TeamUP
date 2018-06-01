@@ -151,6 +151,17 @@ class LobbySports extends Lobby{
         ref = LobbySports.filterBySkill(ref, filter);
         ref = LobbySports.filterBySports(ref, filter);
 
-        
+        ArrayList<LobbySports> results = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
