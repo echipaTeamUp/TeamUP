@@ -47,4 +47,5 @@ public class User implements Serializable {
         this.Last_name = Last_name;
         this.Birthday = Birthday;
     }
+
 }

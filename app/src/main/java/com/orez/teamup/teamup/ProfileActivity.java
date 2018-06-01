@@ -24,6 +24,9 @@ public class ProfileActivity extends Activity {
     User user;
     Button msignoutBtn;
     ImageView mprofileImage;
+    Uri file;
+    String uid;
+    StorageReference ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +35,39 @@ public class ProfileActivity extends Activity {
         mprofileImage=(ImageView) findViewById(R.id.profile_image);
         user=(User) getIntent().getSerializableExtra("User");
         user_nameTv=(TextView) findViewById(R.id.profile_name);
-        StorageReference ref=FirebaseStorage.getInstance().getReference();
-        String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ref=FirebaseStorage.getInstance().getReference();
+        uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        setimage();
+
+        user_nameTv.setText(user.getFirst_name()+" "+user.getLast_name());
+        msignoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                setResult(Activity.RESULT_OK);
+                finish();
+            }
+        });
+        mprofileImage.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent i=new Intent(Intent.ACTION_PICK);
+            i.setType("image/*");
+            startActivityForResult(i,1);
+        }
+    });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //pentru cand vine din galerie
+        if(requestCode==1){
+            file=data.getData();
+            ref.child(uid).putFile(file);
+            setimage();
+        }
+    }
+    public void setimage(){
         ref.child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -46,16 +80,6 @@ public class ProfileActivity extends Activity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // daca nu exista poza
-            }
-        });
-
-        user_nameTv.setText(user.getFirst_name()+" "+user.getLast_name());
-        msignoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                setResult(Activity.RESULT_OK);
-                finish();
             }
         });
     }
