@@ -1,18 +1,12 @@
 package com.orez.teamup.teamup;
 
-import android.content.Context;
-import android.os.CountDownTimer;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.widget.Toast;
 
+import android.util.Log;
 import java.util.ArrayList;
-import java.util.List;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 enum lobbyAvailability{
@@ -27,24 +21,22 @@ public class Lobby {
     protected int maxSize;
 
     // used in getNewID function, redundant for the rest of the class
-    private static int _id;
+    protected static int _id;
+
+
 
     public Lobby(String name, lobbyAvailability availability, int maxSize){
-        Lobby.getNewID();
-        this.id = _id;
+        this.id = Lobby.getNewID();
         this.name = name;
         this.availability = availability;
         this.maxSize = maxSize;
-        this.writeToDB();
     }
 
     public Lobby(){
-        Lobby.getNewID();
-        this.id = _id;
+        this.id = Lobby.getNewID();
         this.name = "lobby".concat(Integer.toString(id));
         this.availability = lobbyAvailability.ANYONE;
         this.maxSize = 10;
-        this.writeToDB();
     }
 
     public int getId() {
@@ -98,32 +90,43 @@ public class Lobby {
                 .child(Integer.toString(this.getId()));
         ref.setValue(this);
 
-        // TODO: delete empty lobby
+
+        DatabaseReference usersRef = ref.child("users");
+        if (users.size() == 0)
+            usersRef.setValue("EMPTY LOBBY");
+        // TODO: delete lobby on empty
+        for (String user : users){
+            usersRef.child(users.indexOf(user) + "").setValue(user);
+        }
     }
 
-    private static void setDBID(int newID){
+    private static void setDBID(int id){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
-        ref.setValue(newID + 1);
-        Log.d("XDDDDDDDDDDDDDDDD", ""+_id);
+        ref.setValue(id);
     }
 
     // gets a new ID for the lobby from the server
-    private static void getNewID(){
+    private static int getNewID(){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("LobbyID");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 _id = dataSnapshot.getValue(int.class);
-                Log.d("AICIICICIICICICICICI ",_id+"");
+                Log.d("A luat valoarea ",_id+"");
                 Lobby.setDBID(_id + 1);
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
+        Log.d("A returnat",_id+"");
+        return _id;
+
     }
 }
 
@@ -132,7 +135,7 @@ public class Lobby {
 
 class LobbySports extends Lobby{
 
-    protected FilterSports sportsFilter;
+    protected FilterSports sportFilter;
 
     LobbySports(String name, lobbyAvailability availability, int maxSize){
         super(name, availability, maxSize);
@@ -149,20 +152,16 @@ class LobbySports extends Lobby{
                 child(Integer.toString(this.getId()));
         ref.setValue(this);
 
-        // TODO: delete empty lobby
+        DatabaseReference usersRef = ref.child("users");
+        if (users.size() == 0)
+            usersRef.setValue("EMPTY LOBBY");
+        for (String user : users) {
+            usersRef.child(users.indexOf(user) + "").setValue(user);
+        }
     }
 
     public void setFilter(FilterSports filter) {
-        this.sportsFilter = filter;
+        this.sportFilter = filter;
         writeToDB();
-    }
-
-    public static ArrayList<LobbySports> getLobbysByFilter(FilterSports filter){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
-        ArrayList <LobbySports> results = new ArrayList<>();
-
-        ref = ref.orderByChild("availability").equalTo("ANYONE").getRef();
-
-        return results;
     }
 }
