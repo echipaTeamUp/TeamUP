@@ -3,6 +3,7 @@ package com.orez.teamup.teamup;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
@@ -16,22 +17,27 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class SportsActivity extends Activity {
-    private String[] st = {""};
     private ArrayList<String> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sports);
+
+        Resources res = getResources();
+        String[] sports = res.getStringArray(R.array.Sports);
+
         data = new ArrayList<String>();
+
         ListView mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(new MyListAdapter(SportsActivity.this, R.layout.list_item, data));
-        data.add(sports.BASKETBALL.toString());
-        data.add(sports.FOOTBALL.toString());
+
+        data.addAll(Arrays.asList(sports));
     }
 
     // animeaza cand apesi pe back ca sa te intorci in activitatea trecuta
