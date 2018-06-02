@@ -1,6 +1,9 @@
 package com.orez.teamup.teamup;
 
 
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -21,6 +24,8 @@ class FilterSports {
     private int maxDistance;
     private skillGroupSports skill;
     private sports sport;
+
+    private static ArrayList<LobbySports> lastReadLobbys = new ArrayList<>();
 
     public FilterSports(int _minAge, int _maxAge, int _maxDistance, skillGroupSports sg, sports sp) {
         this.minAge = _minAge;
@@ -80,4 +85,22 @@ class FilterSports {
     }
 
     public sports getSport() {return this.sport; }
+
+    public static ArrayList<LobbySports> getLastReadLobbys() {
+        if (lastReadLobbys.size() == 0){
+            Log.d("PANAMERA", "in lastRead nu sunt elemente");
+        }
+        return lastReadLobbys;
+    }
+
+    public static void setLastReadLobbys(DataSnapshot dataSnapshot){
+        lastReadLobbys.clear();
+
+        for (DataSnapshot child : dataSnapshot.getChildren()){
+            lastReadLobbys.add(child.getValue(LobbySports.class));
+        }
+
+        if (lastReadLobbys.size() > 0)
+            Log.d("PANAMERA", "last read nu e gol aici");
+    }
 }
