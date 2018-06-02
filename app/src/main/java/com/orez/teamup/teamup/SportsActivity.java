@@ -2,6 +2,7 @@ package com.orez.teamup.teamup;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
@@ -76,5 +77,10 @@ public class SportsActivity extends Activity {
         Button mEditFilterBtn;
         CheckBox mSportCheckBox;
 
+    }
+
+    public void loadFilterActivity(View view){
+        Intent intent = new Intent(SportsActivity.this, FilterSportsActivity.class);
+        startActivity(intent);
     }
 }

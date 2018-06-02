@@ -32,16 +32,16 @@
             android:layout_below="@+id/sportTv"
             android:layout_marginStart="0dp"
             android:onClick="loadFilterActivity"
-            android:text="succ" />
+            android:text="select filters" />
 
         <CheckBox
             android:id="@+id/sportCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sportTv"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:layout_below="@+id/sportTv"
             android:layout_marginStart="19dp"
-            android:text="CheckBox" />
+            android:text="play" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
