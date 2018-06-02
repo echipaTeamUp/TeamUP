@@ -2,6 +2,7 @@ package com.orez.teamup.teamup;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Debug;
 import android.util.Log;
 
@@ -21,10 +22,18 @@ public class ResultsActivity extends Activity {
         FilterSports filterSports = new FilterSports();
 
         LobbySports.readLobbysByFilters(filterSports);
-        ArrayList<LobbySports> arr = FilterSports.getLastReadLobbys();
+        new CountDownTimer(1000, 0){
+            public void onTick(long millisUntilFinished) {
+            }
 
-        for(LobbySports lb : arr){
-            Log.d("PANAMERA", lb.toString());
-        }
+            public void onFinish() {
+                Log.d("PANAMERA", "s-a dus timeru");
+                ArrayList<LobbySports> arr = FilterSports.getLastReadLobbys();
+                Log.d("PANAMERA", arr.size()+"");
+                for(LobbySports lb : arr){
+                    Log.d("PANAMERA", lb.toString());
+                }
+            }
+        };
     }
 }
