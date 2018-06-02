@@ -30,8 +30,8 @@ public class SportsActivity extends Activity {
         data = new ArrayList<String>();
         ListView mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(new MyListAdapter(SportsActivity.this, R.layout.list_item, data));
-        data.add("gay");
-        data.add("mass suicide");
+        data.add(sports.BASKETBALL.toString());
+        data.add(sports.FOOTBALL.toString());
     }
 
     // animeaza cand apesi pe back ca sa te intorci in activitatea trecuta

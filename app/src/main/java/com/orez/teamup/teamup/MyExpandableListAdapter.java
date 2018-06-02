@@ -30,7 +30,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     @Override
@@ -73,11 +73,11 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childname=(String)getChild(groupPosition,childPosition);
+        //final String childname=(String)getChild(groupPosition,childPosition);
         if(convertView==null)
         {
             LayoutInflater inflater=(LayoutInflater)LayoutInflater.from(context);
-            convertView=inflater.inflate(R.layout.filter_age_item,null);
+            convertView=inflater.inflate(R.layout.filter_age_item, null);
         }
         EditText mMinAgeEt = (EditText) convertView.findViewById(R.id.minAgeEt);
         EditText mMaxAgeEt = (EditText) convertView.findViewById(R.id.maxAgeEt);
