@@ -61,7 +61,7 @@ public class MenuActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //Daca vine din profile
+        //Daca vine din profile, aka daca ai dat sign out
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             setResult(Activity.RESULT_OK);
             finish();

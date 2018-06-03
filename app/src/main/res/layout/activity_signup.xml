@@ -157,14 +157,12 @@
         android:id="@+id/signup_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        android:layout_marginStart="28dp"
-        android:buttonTint="@color/blueButtonText"
-        android:checked="false"
-        android:clickable="false"
+        android:layout_marginStart="16dp"
+        android:buttonTint="@color/translucentBlue"
         android:focusable="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/signup_upload_photo" />
+        android:textColor="@color/blueButtonText"
+        app:layout_constraintStart_toEndOf="@+id/signup_upload_photo"
+        app:layout_constraintBaseline_toBaselineOf="@id/signup_upload_photo"/>
 
 
 </android.support.constraint.ConstraintLayout>
