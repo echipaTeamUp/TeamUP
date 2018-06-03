@@ -4,22 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradientbackground"
     tools:context=".MenuActivity">
 
     <ImageView
         android:id="@+id/menu_profile_image"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:layout_marginEnd="170dp"
-        android:layout_marginStart="169dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
         android:contentDescription="imagine tare"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/sym_def_app_icon"
-        tools:layout_editor_absoluteY="117dp" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <Button
         android:id="@+id/sportsBtn"
@@ -28,8 +27,8 @@
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="92dp"
-        android:background="@drawable/mainbuttonsport"
+        android:layout_marginTop="52dp"
+        android:background="@color/colorAccent"
         android:onClick="loadSportsActivity"
         android:text="Sports"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,10 +39,10 @@
         android:id="@+id/esportsBtn"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginEnd="161dp"
-        android:layout_marginStart="160dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="52dp"
-        android:background="@drawable/mainbuttonsport"
+        android:background="@color/colorAccent"
         android:text="E-sports"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,16 +52,17 @@
         android:id="@+id/workBtn"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginEnd="162dp"
-        android:layout_marginStart="161dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="52dp"
-        android:background=""
+        android:background="@color/colorAccent"
         android:text="Work"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/esportsBtn" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:background="@color/colorPrimaryDark"
@@ -88,10 +88,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:src="?android:attr/fingerprintAuthDrawable"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageButton3"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
@@ -99,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginTop="8dp"
             android:src="@android:drawable/ic_menu_upload"
             app:layout_constraintBottom_toBottomOf="parent"

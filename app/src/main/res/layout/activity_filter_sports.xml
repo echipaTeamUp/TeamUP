@@ -7,12 +7,9 @@
     tools:context=".FilterSportsActivity">
 
     <ExpandableListView
+        android:id="@+id/expandable_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="name"/>
     </ExpandableListView>
 
 </android.support.constraint.ConstraintLayout>

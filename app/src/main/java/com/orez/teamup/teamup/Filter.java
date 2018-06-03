@@ -1,6 +1,9 @@
 package com.orez.teamup.teamup;
 
 
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -21,6 +24,8 @@ class FilterSports {
     private int maxDistance;
     private skillGroupSports skill;
     private sports sport;
+
+    private static ArrayList<LobbySports> lastReadLobbys = new ArrayList<>();
 
     public FilterSports(int _minAge, int _maxAge, int _maxDistance, skillGroupSports sg, sports sp) {
         this.minAge = _minAge;
