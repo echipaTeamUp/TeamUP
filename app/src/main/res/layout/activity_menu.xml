@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradientbackground"
     tools:context=".MenuActivity">
 
     <ImageView
@@ -28,7 +29,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="92dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/mainbuttonsport"
         android:onClick="loadSportsActivity"
         android:text="Sports"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +43,7 @@
         android:layout_marginEnd="161dp"
         android:layout_marginStart="160dp"
         android:layout_marginTop="52dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/mainbuttonsport"
         android:text="E-sports"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +56,7 @@
         android:layout_marginEnd="162dp"
         android:layout_marginStart="161dp"
         android:layout_marginTop="52dp"
-        android:background="@color/colorAccent"
+        android:background=""
         android:text="Work"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,17 +86,25 @@
             android:id="@+id/imageButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
             android:src="?android:attr/fingerprintAuthDrawable"
-            tools:layout_editor_absoluteX="215dp"
-            tools:layout_editor_absoluteY="14dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton3"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/imageButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
             android:src="@android:drawable/ic_menu_upload"
-            tools:layout_editor_absoluteX="297dp"
-            tools:layout_editor_absoluteY="14dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
