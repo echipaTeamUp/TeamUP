@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -221,7 +222,17 @@ public class SignupActivity extends Activity {
         //pentru cand vine din galerie
         if (requestCode == 1) {
             file = data.getData();
-            checkBox.setChecked(true);
+            //timerul e doar ca sa se bifeze casuta in fata userului
+            CountDownTimer count=new CountDownTimer(1500,1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                }
+
+                @Override
+                public void onFinish() {
+                    checkBox.setChecked(true);
+                }
+            }.start();
 
         }
     }
