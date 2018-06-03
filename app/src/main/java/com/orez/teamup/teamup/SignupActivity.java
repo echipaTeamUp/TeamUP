@@ -58,12 +58,12 @@ public class SignupActivity extends Activity {
         memailEt = (EditText) findViewById(R.id.signup_emailEt);
         mpassEt = (EditText) findViewById(R.id.signup_passwordEt);
         msignupBtn = (Button) findViewById(R.id.signupBtn);
-        mphotoBtn=(Button) findViewById(R.id.signup_upload_photo);
+        mphotoBtn = (Button) findViewById(R.id.signup_upload_photo);
         mpassrepeatEt = (EditText) findViewById(R.id.signup_password_repeatEt);
         mfirstnameEt = (EditText) findViewById(R.id.signup_first_nameEt);
         mlastnameEt = (EditText) findViewById(R.id.signup_last_nameEt);
         mbirthdayEt = (EditText) findViewById(R.id.signup_birthdayEt);
-        checkBox=(CheckBox) findViewById(R.id.signup_checkbox);
+        checkBox = (CheckBox) findViewById(R.id.signup_checkbox);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -101,9 +101,9 @@ public class SignupActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                        Intent i=new Intent(Intent.ACTION_PICK);
-                        i.setType("image/*");
-                        startActivityForResult(i,1);
+                Intent i = new Intent(Intent.ACTION_PICK);
+                i.setType("image/*");
+                startActivityForResult(i, 1);
 
             }
         });
@@ -157,9 +157,9 @@ public class SignupActivity extends Activity {
 
     //pune ce mai trebuie in database
     void setvalues() {
-        muser=new User(mfirstnameEt.getText().toString().trim(),mlastnameEt.getText().toString().trim(),
+        muser = new User(mfirstnameEt.getText().toString().trim(), mlastnameEt.getText().toString().trim(),
                 mbirthdayEt.getText().toString());
-        StorageReference ref=mStorageRef.child(user.getUid());
+        StorageReference ref = mStorageRef.child(user.getUid());
         ref.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -203,6 +203,7 @@ public class SignupActivity extends Activity {
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
+
     //verifica varsta
     public boolean isoldenough(int cyear, int cmonth, int cday, int year, int month, int day) {
         if (cyear - year > minAge)
@@ -218,10 +219,16 @@ public class SignupActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //pentru cand vine din galerie
-        if(requestCode==1){
-            file=data.getData();
+        if (requestCode == 1) {
+            file = data.getData();
             checkBox.setChecked(true);
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
 }

@@ -78,6 +78,7 @@ public class LoginActivity extends Activity {
                 public void onClick(View v) {
                     Intent i = new Intent(LoginActivity.this, SignupActivity.class);
                     startActivityForResult(i, 1);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
                 }
             });
 
