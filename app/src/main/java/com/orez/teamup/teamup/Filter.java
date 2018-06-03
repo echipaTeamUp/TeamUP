@@ -85,22 +85,4 @@ class FilterSports {
     }
 
     public sports getSport() {return this.sport; }
-
-    public static ArrayList<LobbySports> getLastReadLobbys() {
-        if (lastReadLobbys.size() == 0){
-            Log.d("PANAMERA", "in lastRead nu sunt elemente");
-        }
-        return lastReadLobbys;
-    }
-
-    public static void setLastReadLobbys(DataSnapshot dataSnapshot){
-        lastReadLobbys.clear();
-
-        for (DataSnapshot child : dataSnapshot.getChildren()){
-            lastReadLobbys.add(child.getValue(LobbySports.class));
-        }
-
-        if (lastReadLobbys.size() > 0)
-            Log.d("PANAMERA", "last read nu e gol aici");
-    }
 }

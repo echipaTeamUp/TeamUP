@@ -1,5 +1,7 @@
 package com.orez.teamup.teamup;
 
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -79,6 +81,7 @@ public class Lobby {
 
     private static String getNewID() {
         // generate random lobby key
+        Log.d("LOLOL", "apelat");
         String key = "";
         for (int i = 0; i < 20; ++i) {
             Random r = new Random();
@@ -101,6 +104,9 @@ class LobbySports extends Lobby {
     protected sports sport;
     protected skillGroupSports skill;
 
+    private static DatabaseReference ref;
+    public static ArrayList<LobbySports> lastReadLobbys = new ArrayList<>();
+
     LobbySports(String name, lobbyAvailability availability, int maxSize, FilterSports filter) {
         super(name, availability, maxSize);
         this.setFilter(filter);
@@ -113,6 +119,7 @@ class LobbySports extends Lobby {
         this.maxDistance = -1;
         this.sport = sports.ANY;
         this.skill = skillGroupSports.ALL;
+        this.writeToDB();
     }
 
     // writes this to the database
@@ -208,8 +215,12 @@ class LobbySports extends Lobby {
         return query.getRef();
     }
 
+    private static void detachListener(ValueEventListener valueEventListener){
+        ref.removeEventListener(valueEventListener);
+    }
+
     public static void readLobbysByFilters(FilterSports filter) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
+        ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
         ref = LobbySports.filterByMinAge(ref, filter);
         ref = LobbySports.filterByMaxAge(ref, filter);
         ref = LobbySports.filterByDistance(ref, filter);
@@ -219,7 +230,8 @@ class LobbySports extends Lobby {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                FilterSports.setLastReadLobbys(dataSnapshot);
+                LobbySports.setLastReadLobbys(dataSnapshot);
+                LobbySports.detachListener(this);
             }
 
             @Override
@@ -227,5 +239,13 @@ class LobbySports extends Lobby {
                 // TODO: HANDLE ERROR
             }
         });
+    }
+
+    public static void setLastReadLobbys(DataSnapshot dataSnapshot){
+        lastReadLobbys.clear();
+        for (DataSnapshot child : dataSnapshot.getChildren()){
+            lastReadLobbys.add(child.getValue(LobbySports.class));
+        }
+        Log.d("PANAMERA", "setLastReadLobbys");
     }
 }
