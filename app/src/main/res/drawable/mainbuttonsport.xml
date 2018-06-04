@@ -3,7 +3,7 @@
 
     android:padding ="40dp"
     android:shape = "rectangle">
-    <solid android:background="#ffffff">
+    <solid android:background="@drawable/basketballcourt">
 
     </solid>
     <corners android:bottomLeftRadius="8dp"

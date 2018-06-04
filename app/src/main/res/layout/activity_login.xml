@@ -94,6 +94,7 @@
             android:background="@drawable/sidebtnstyle"
             android:rotation="270"
             android:text="@string/signup"
+            android:textColor="@color/blueButtonText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
