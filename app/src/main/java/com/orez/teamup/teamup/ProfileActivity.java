@@ -23,7 +23,7 @@ import com.google.firebase.storage.StorageReference;
 public class ProfileActivity extends Activity {
     TextView user_nameTv;
     User user;
-    Button msignoutBtn;
+
     ImageView mprofileImage;
     Uri file;
     String uid;
@@ -33,7 +33,7 @@ public class ProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        msignoutBtn = (Button) findViewById(R.id.sign_outBtn);
+
         mprofileImage = (ImageView) findViewById(R.id.profile_image);
         user = (User) getIntent().getSerializableExtra("User");
         user_nameTv = (TextView) findViewById(R.id.profile_name);
@@ -41,14 +41,7 @@ public class ProfileActivity extends Activity {
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         setimage();
         user_nameTv.setText(user.getFirst_name() + " " + user.getLast_name());
-        msignoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                setResult(Activity.RESULT_OK);
-                finish();
-            }
-        });
+
         mprofileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             //te trimite in galerie sa iti alegi poza
@@ -64,7 +57,7 @@ public class ProfileActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //pentru cand vine din galerie
-        if (requestCode == 1) {
+        if (requestCode == 1 && resultCode==RESULT_OK) {
             file = data.getData();
             ref.child(uid).putFile(file);
             setimage();

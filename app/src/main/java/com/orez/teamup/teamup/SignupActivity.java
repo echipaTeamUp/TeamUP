@@ -42,6 +42,7 @@ public class SignupActivity extends Activity {
     EditText mbirthdayEt;
     Button msignupBtn;
     Button mphotoBtn;
+    Button msigninBtn;
     CheckBox checkBox;
     Uri photouri;
     Uri file;
@@ -60,6 +61,7 @@ public class SignupActivity extends Activity {
         mpassEt = (EditText) findViewById(R.id.signup_passwordEt);
         msignupBtn = (Button) findViewById(R.id.signupBtn);
         mphotoBtn = (Button) findViewById(R.id.signup_upload_photo);
+        msigninBtn=(Button) findViewById(R.id.signup_signinBtn);
         mpassrepeatEt = (EditText) findViewById(R.id.signup_password_repeatEt);
         mfirstnameEt = (EditText) findViewById(R.id.signup_first_nameEt);
         mlastnameEt = (EditText) findViewById(R.id.signup_last_nameEt);
@@ -108,7 +110,13 @@ public class SignupActivity extends Activity {
 
             }
         });
-
+    msigninBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        }
+    });
     }
 
     protected void signup() {
@@ -220,7 +228,7 @@ public class SignupActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //pentru cand vine din galerie
-        if (requestCode == 1) {
+        if (requestCode == 1 && resultCode==RESULT_OK) {
             file = data.getData();
             //timerul e doar ca sa se bifeze casuta in fata userului
             CountDownTimer count=new CountDownTimer(1500,1000) {

@@ -14,11 +14,15 @@ import android.widget.Button;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MenuActivity extends Activity {
 
-    ImageView profile_image;
+    ImageButton mprofileBtn;
+    ImageButton msignoutBtn;
     User user;
     Button mWorkBtn;
 
@@ -29,24 +33,34 @@ public class MenuActivity extends Activity {
 
         Intent i=getIntent();
         user=(User) i.getSerializableExtra("User");
-        profile_image=(ImageView) findViewById(R.id.menu_profile_image);
-        profile_image.setImageResource(R.mipmap.ic_launcher_round);
-
-        //Daca apesi pe imagine, te duce la profil
-        profile_image.setOnClickListener(new View.OnClickListener() {
+        mprofileBtn=(ImageButton) findViewById(R.id.menu_profileBtn);
+        msignoutBtn=(ImageButton) findViewById(R.id.menu_signoutBtn);
+        mWorkBtn = (Button) findViewById(R.id.workBtn);
+        //Daca apesi pe profil, te duce la profil
+        mprofileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MenuActivity.this, ProfileActivity.class);
                 i.putExtra("User", user);
-                startActivityForResult(i, 1);
+                startActivity(i);
             }
         });
 
-        mWorkBtn = (Button) findViewById(R.id.workBtn);
+
         mWorkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MenuActivity.this, ResultsActivity.class);
+                startActivity(i);
+            }
+        });
+        msignoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                setResult(Activity.RESULT_OK);
+                finish();
+                Intent i=new Intent(MenuActivity.this,LoginActivity.class);
                 startActivity(i);
             }
         });
@@ -58,13 +72,4 @@ public class MenuActivity extends Activity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //Daca vine din profile, aka daca ai dat sign out
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            setResult(Activity.RESULT_OK);
-            finish();
-        }
-    }
 }

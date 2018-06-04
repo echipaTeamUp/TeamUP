@@ -87,9 +87,6 @@ public class LoginActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     login();
-                    //am pus urmatoarea linie pentru ca altfel ramane parola acolo daca te loghezi si dai
-                    //sign out in aceeasi sesiune
-                    mPasswordEt.setText("");
                 }
             });
 

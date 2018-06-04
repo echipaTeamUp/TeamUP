@@ -7,20 +7,6 @@
     android:background="@drawable/gradientbackground"
     tools:context=".MenuActivity">
 
-    <ImageView
-        android:id="@+id/menu_profile_image"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
-        android:contentDescription="imagine tare"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
-
     <Button
         android:id="@+id/sportsBtn"
         style="?android:attr/borderlessButtonStyle"
@@ -28,7 +14,7 @@
         android:layout_height="180dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="164dp"
         android:background="@drawable/basketballcourt"
         android:onClick="loadSportsActivity"
         android:text="Sports"
@@ -36,8 +22,7 @@
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menu_profile_image"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <Button
         android:id="@+id/esportsBtn"
@@ -87,7 +72,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/menu_signoutBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -109,11 +94,11 @@
             android:background="@android:color/transparent"
             android:src="@drawable/settingssmallgear"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+            app:layout_constraintEnd_toStartOf="@+id/menu_profileBtn"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/menu_profileBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -122,7 +107,7 @@
             android:background="@android:color/transparent"
             android:src="@drawable/userprofilewhite"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton3"
+            app:layout_constraintEnd_toStartOf="@+id/menu_signoutBtn"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
