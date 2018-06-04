@@ -238,6 +238,8 @@ class LobbySports extends Lobby {
             public void onCancelled(DatabaseError databaseError) {
                 // TODO: HANDLE ERROR
             }
+
+
         });
     }
 
