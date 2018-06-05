@@ -75,17 +75,24 @@ public class Lobby {
     // removes a user from the lobby
     public void removeUser(String userID){
         users.remove(userID);
-        writeToDB();
+        if (users.size() == 0)
+            delete();
+        else
+            writeToDB();
     }
 
-    // writes this to the DB
+    // writes this lobby to the DB
     public void writeToDB() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
                 .child(this.getId());
-        if (this.users.size() == 0)
-            ref.removeValue();
-        else
-            ref.setValue(this);
+        ref.setValue(this);
+    }
+
+    // deletes this lobby from the DB
+    public void delete(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
+                .child(this.getId());
+        ref.removeValue();
     }
 
     private static String getNewID() {
@@ -137,6 +144,13 @@ class LobbySports extends Lobby {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
                 child(this.getId());
         ref.setValue(this);
+    }
+
+    @Override
+    public void delete(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
+                child(this.getId());
+        ref.removeValue();
     }
 
     public int getMaxAge() {
@@ -223,6 +237,8 @@ class LobbySports extends Lobby {
                 for (FilterSports f: filters){
                     arr.addAll(LobbySports.filter(dataSnapshot, f));
                 }
+
+                Log.d("PANAMERA", arr.toString());
 
                 // @CIPRIAN: ADAUGA AICI CALL LA FUNCTIA CARE AFISEAZA LOBBYURILE
             }

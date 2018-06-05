@@ -18,11 +18,5 @@ public class ResultsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-
-        LobbySports xd = new LobbySports();
-        xd.addUser("123");
-
-
-        LobbySports.readLobbysByFilters(new FilterSports());
     }
 }
