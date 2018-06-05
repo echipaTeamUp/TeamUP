@@ -126,7 +126,6 @@ class LobbySports extends Lobby {
         this.maxAge = maxAge;
         this.sport = sport;
         this.skill = skill;
-        this.writeToDB();
     }
 
     LobbySports() {
@@ -135,7 +134,6 @@ class LobbySports extends Lobby {
         this.minAge = -1;
         this.sport = sports.ANY;
         this.skill = skillGroupSports.ALL;
-        this.writeToDB();
     }
 
     // writes this to the database
