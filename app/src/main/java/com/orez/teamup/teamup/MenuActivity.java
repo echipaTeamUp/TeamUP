@@ -35,15 +35,7 @@ public class MenuActivity extends Activity {
                 startActivity(i);
             }
         });
-
-
-        mWorkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MenuActivity.this, ResultsActivity.class);
-                startActivity(i);
-            }
-        });
+        
         msignoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
