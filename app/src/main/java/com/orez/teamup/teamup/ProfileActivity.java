@@ -67,7 +67,7 @@ public class ProfileActivity extends Activity {
         ref.child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                //daca exista poza
+                //daca exista poza-
                 Glide.with(ProfileActivity.this)
                         .load(uri)
                         .into(mprofileImage);

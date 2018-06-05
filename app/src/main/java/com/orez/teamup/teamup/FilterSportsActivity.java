@@ -32,9 +32,13 @@ public class FilterSportsActivity extends Activity {
         headeritems.put(headers.get(0), null);
         headeritems.put(headers.get(1), null);
 
-
-
         mFilterExpList.setAdapter(mExpListAdapter);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
 }

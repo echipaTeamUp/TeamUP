@@ -31,6 +31,8 @@ public class User implements Serializable {
         Birthday = birthday;
     }
 
+    public User(){}
+
     public User(String First_name, String Last_name, String Birthday) {
         this.First_name = First_name;
         this.Last_name = Last_name;

@@ -88,5 +88,6 @@ public class SportsActivity extends Activity {
     public void loadFilterActivity(View view) {
         Intent intent = new Intent(SportsActivity.this, FilterSportsActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }
