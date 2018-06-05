@@ -64,14 +64,12 @@ public class SportsActivity extends Activity {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(layout, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
-                viewHolder.mSportTv = (TextView) convertView.findViewById(R.id.sportTv);
-                viewHolder.mSportTv.setText(getItem(position));
-                viewHolder.mEditFilterBtn = (Button) convertView.findViewById(R.id.editFilterBtn);
                 viewHolder.mSportCheckBox = (CheckBox) convertView.findViewById(R.id.sportCheckBox);
+                viewHolder.mSportCheckBox.setText(getItem(position));
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (ViewHolder) convertView.getTag();
-                mainViewHolder.mSportTv.setText(getItem(position));
+                mainViewHolder.mSportCheckBox.setText(getItem(position));
             }
 
             return convertView;
