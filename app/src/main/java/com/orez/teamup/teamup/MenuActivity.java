@@ -1,12 +1,18 @@
 package com.orez.teamup.teamup;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,11 +37,12 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        Intent i=getIntent();
-        user=(User) i.getSerializableExtra("User");
-        mprofileBtn=(ImageButton) findViewById(R.id.menu_profileBtn);
-        msignoutBtn=(ImageButton) findViewById(R.id.menu_signoutBtn);
+        Intent i = getIntent();
+        user = (User) i.getSerializableExtra("User");
+        mprofileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
+        msignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
         mWorkBtn = (Button) findViewById(R.id.workBtn);
+        checkLocationPermission();
         //Daca apesi pe profil, te duce la profil
         mprofileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +66,7 @@ public class MenuActivity extends Activity {
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 setResult(Activity.RESULT_OK);
-                Intent i=new Intent(MenuActivity.this,LoginActivity.class);
+                Intent i = new Intent(MenuActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
 
@@ -73,4 +80,25 @@ public class MenuActivity extends Activity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
+    public void checkLocationPermission() {
+        //aici verifica daca ai deja permisiunea
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            //Aici zice de ce vrea permisiunea
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.text_location_permission)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //Aici cere efectiv permisiunea
+                            ActivityCompat.requestPermissions(MenuActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    1);
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+    }
 }

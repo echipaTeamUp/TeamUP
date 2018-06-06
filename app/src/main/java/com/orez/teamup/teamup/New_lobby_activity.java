@@ -2,11 +2,9 @@ package com.orez.teamup.teamup;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -19,8 +17,6 @@ import com.google.android.gms.maps.model.LatLng;
 public class New_lobby_activity extends AppCompatActivity implements OnMapReadyCallback{
     MapView mapView;
     GoogleMap map;
-    //public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-
 
 
     @Override
