@@ -24,7 +24,7 @@ public class Lobby {
     protected lobbyAvailability availability;
     protected int maxSize;
 
-    public Lobby(String name, lobbyAvailability availability, int maxSize) {
+    public Lobby(lobbyAvailability availability, int maxSize) {
         this.id = Lobby.getNewID();
         this.availability = availability;
         this.maxSize = maxSize;
@@ -33,7 +33,7 @@ public class Lobby {
     public Lobby() {
         this.id = Lobby.getNewID();
         this.availability = lobbyAvailability.ANYONE;
-        this.maxSize = 10;
+        this.maxSize = -1;
     }
 
     public String getId() {
@@ -72,11 +72,27 @@ public class Lobby {
         writeToDB();
     }
 
-    // writes this to the DB
+    // removes a user from the lobby
+    public void removeUser(String userID){
+        users.remove(userID);
+        if (users.size() == 0)
+            delete();
+        else
+            writeToDB();
+    }
+
+    // writes this lobby to the DB
     public void writeToDB() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
                 .child(this.getId());
         ref.setValue(this);
+    }
+
+    // deletes this lobby from the DB
+    public void delete(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
+                .child(this.getId());
+        ref.removeValue();
     }
 
     private static String getNewID() {
@@ -100,26 +116,24 @@ class LobbySports extends Lobby {
 
     protected int minAge;
     protected int maxAge;
-    protected int maxDistance;
     protected sports sport;
     protected skillGroupSports skill;
 
-    private static DatabaseReference ref;
-    public static ArrayList<LobbySports> lastReadLobbys = new ArrayList<>();
-
-    LobbySports(String name, lobbyAvailability availability, int maxSize, FilterSports filter) {
-        super(name, availability, maxSize);
-        this.setFilter(filter);
+    LobbySports(lobbyAvailability availability, int maxSize, int minAge, int maxAge,
+                sports sport, skillGroupSports skill) {
+        super(availability, maxSize);
+        this.minAge = minAge;
+        this.maxAge = maxAge;
+        this.sport = sport;
+        this.skill = skill;
     }
 
     LobbySports() {
         super();
         this.maxAge = -1;
         this.minAge = -1;
-        this.maxDistance = -1;
         this.sport = sports.ANY;
         this.skill = skillGroupSports.ALL;
-        this.writeToDB();
     }
 
     // writes this to the database
@@ -130,16 +144,19 @@ class LobbySports extends Lobby {
         ref.setValue(this);
     }
 
+    @Override
+    public void delete(){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
+                child(this.getId());
+        ref.removeValue();
+    }
+
     public int getMaxAge() {
         return maxAge;
     }
 
     public int getMinAge() {
         return minAge;
-    }
-
-    public int getMaxDistance() {
-        return maxDistance;
     }
 
     public sports getSport() {
@@ -166,11 +183,6 @@ class LobbySports extends Lobby {
         writeToDB();
     }
 
-    public void setMaxDistance (int maxDistance){
-        this.maxDistance = maxDistance;
-        writeToDB();
-    }
-
     public void setSport (sports sport){
         this.sport = sport;
         writeToDB();
@@ -181,73 +193,58 @@ class LobbySports extends Lobby {
         writeToDB();
     }
 
-    public void setFilter(FilterSports filter){
-        this.maxAge = filter.getMaxAge();
-        this.minAge = filter.getMinAge();
-        this.maxDistance = filter.getMaxDistance();
-        this.sport = filter.getSport();
-        this.skill = filter.getSkill();
-        writeToDB();
+    private static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter){
+
+        ArrayList<LobbySports> arr = new ArrayList<>();
+
+        // convert snapshot to arraylist
+        for (DataSnapshot ds: dataSnapshot.getChildren()){
+            LobbySports curr = ds.getValue(LobbySports.class);
+
+            // age filter
+            if (curr.getMaxAge() < filter.getAge() || curr.getMinAge() > filter.getAge())
+                continue;
+
+            // sport filter
+            if (curr.getSport() != filter.getSport())
+                continue;
+
+            // skill filter
+            if (curr.getSkill() != filter.getSkill())
+                continue;
+
+            // TODO: distance filter
+
+            arr.add(curr);
+
+        }
+
+        return arr;
     }
 
-    private static DatabaseReference filterByMinAge(DatabaseReference ref, FilterSports filter) {
-        Query query = ref.orderByChild("minAge").equalTo(filter.getMinAge());
-        return query.getRef();
-    }
-
-    private static DatabaseReference filterByMaxAge(DatabaseReference ref, FilterSports filter) {
-        Query query = ref.orderByChild("maxAge").equalTo(filter.getMaxAge());
-        return query.getRef();
-    }
-
-    private static DatabaseReference filterByDistance(DatabaseReference ref, FilterSports filter) {
-        Query query = ref.orderByChild("maxDistance").equalTo(filter.getMaxDistance());
-        return query.getRef();
-    }
-
-    private static DatabaseReference filterBySkill(DatabaseReference ref, FilterSports filter) {
-        Query query = ref.orderByChild("skill").equalTo(filter.getSkill().toString());
-        return query.getRef();
-    }
-
-    private static DatabaseReference filterBySports(DatabaseReference ref, FilterSports filter) {
-        Query query = ref.orderByChild("sport").equalTo(filter.getSport().toString());
-        return query.getRef();
-    }
-
-    private static void detachListener(ValueEventListener valueEventListener){
-        ref.removeEventListener(valueEventListener);
-    }
-
-    public static void readLobbysByFilters(FilterSports filter) {
-        ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
-        ref = LobbySports.filterByMinAge(ref, filter);
-        ref = LobbySports.filterByMaxAge(ref, filter);
-        ref = LobbySports.filterByDistance(ref, filter);
-        ref = LobbySports.filterBySkill(ref, filter);
-        ref = LobbySports.filterBySports(ref, filter);
-
+    /*
+    * primeste o lista de filtre (un filtru pt fiecare sport)
+    * pentru fiecare filtru appendeaza la arr o lista de lobbyuri gasita pt filtrul respectiv
+    */
+    public static void readLobbysByFilters(final ArrayList<FilterSports> filters) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                LobbySports.setLastReadLobbys(dataSnapshot);
-                LobbySports.detachListener(this);
+                ArrayList<LobbySports> arr = new ArrayList<>();
+                for (FilterSports f: filters){
+                    arr.addAll(LobbySports.filter(dataSnapshot, f));
+                }
+
+                Log.d("PANAMERA", arr.toString());
+
+                // @CIPRIAN: ADAUGA AICI CALL LA FUNCTIA CARE AFISEAZA LOBBYURILE
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // TODO: HANDLE ERROR
             }
-
-
         });
-    }
-
-    public static void setLastReadLobbys(DataSnapshot dataSnapshot){
-        lastReadLobbys.clear();
-        for (DataSnapshot child : dataSnapshot.getChildren()){
-            lastReadLobbys.add(child.getValue(LobbySports.class));
-        }
-        Log.d("PANAMERA", "setLastReadLobbys");
     }
 }

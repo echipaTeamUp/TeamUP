@@ -7,42 +7,17 @@
     android:background="@drawable/gradientbackground"
     tools:context=".SportsActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="112dp"
-        tools:layout_editor_absoluteY="212dp"
-        android:descendantFocusability="beforeDescendants">
+    <CheckBox
+        android:id="@+id/sportCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:maxLength="25"
+        android:text="sport"
+        android:textSize="50sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/sportTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLength="25"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="dicc"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/editFilterBtn"
-            style="@android:style/Widget.Material.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/sportTv"
-            android:layout_marginStart="0dp"
-            android:onClick="loadFilterActivity"
-            android:text="select filters" />
-
-        <CheckBox
-            android:id="@+id/sportCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_below="@+id/sportTv"
-            android:layout_marginStart="19dp"
-            android:text="play" />
-    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

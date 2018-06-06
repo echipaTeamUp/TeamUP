@@ -14,13 +14,12 @@ import java.util.List;
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> headers;
-    private HashMap<String,List<String>> headeritems;
+    private HashMap<String, List<String>> headeritems;
 
-    public MyExpandableListAdapter(Context context,List<String> listheaders,HashMap<String,List<String>> headerchilds)
-    {
-        this.context=context;
-        this.headers=listheaders;
-        this.headeritems=headerchilds;
+    public MyExpandableListAdapter(Context context, List<String> listheaders, HashMap<String, List<String>> headerchilds) {
+        this.context = context;
+        this.headers = listheaders;
+        this.headeritems = headerchilds;
     }
 
     @Override
@@ -60,13 +59,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String headername=(String)getGroup(groupPosition);
-        if(convertView==null)
-        {
-            LayoutInflater inflater=LayoutInflater.from(context);
-            convertView=inflater.inflate(R.layout.filter_exp_list_view_group_header,null);
+        String headername = (String) getGroup(groupPosition);
+        if (convertView == null) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            convertView = inflater.inflate(R.layout.filter_exp_list_view_group_header, null);
         }
-        TextView header=(TextView)convertView.findViewById(R.id.expHeaderTv);
+        TextView header = (TextView) convertView.findViewById(R.id.expHeaderTv);
         header.setText(headername);
         return convertView;
     }
@@ -74,10 +72,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         //final String childname=(String)getChild(groupPosition,childPosition);
-        if(convertView==null)
-        {
-            LayoutInflater inflater=(LayoutInflater)LayoutInflater.from(context);
-            convertView=inflater.inflate(R.layout.filter_age_item, null);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) LayoutInflater.from(context);
+            convertView = inflater.inflate(R.layout.filter_age_item, null);
         }
         EditText mMinAgeEt = (EditText) convertView.findViewById(R.id.minAgeEt);
         EditText mMaxAgeEt = (EditText) convertView.findViewById(R.id.maxAgeEt);
