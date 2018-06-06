@@ -59,9 +59,10 @@ public class MenuActivity extends Activity {
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 setResult(Activity.RESULT_OK);
-                finish();
                 Intent i=new Intent(MenuActivity.this,LoginActivity.class);
                 startActivity(i);
+                finish();
+
             }
         });
     }
