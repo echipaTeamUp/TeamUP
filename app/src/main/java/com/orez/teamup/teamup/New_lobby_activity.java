@@ -4,6 +4,9 @@ package com.orez.teamup.teamup;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -17,6 +20,8 @@ import com.google.android.gms.maps.model.LatLng;
 public class New_lobby_activity extends AppCompatActivity implements OnMapReadyCallback{
     MapView mapView;
     GoogleMap map;
+    EditText mnumber_playersEt;
+    Spinner mspors_spinner;
 
 
     @Override
@@ -26,6 +31,13 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        mnumber_playersEt=(EditText) findViewById(R.id.number_playersET);
+        mspors_spinner=(Spinner) findViewById(R.id.sport_spinner);
+        //adapter pentru spinner
+        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this,R.array.Sports,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mspors_spinner.setAdapter(adapter);
     }
 
     @Override

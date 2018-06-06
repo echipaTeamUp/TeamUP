@@ -51,4 +51,14 @@
         android:layout_marginStart="16dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/sportTV"
         app:layout_constraintStart_toEndOf="@+id/sportTV" />
+
+    <Button
+        android:id="@+id/new_lobbyBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="130dp"
+        android:layout_marginEnd="162dp"
+        android:text="@string/create_new_lobby"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.orez.teamup.teamup;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 public class User implements Serializable {
     private String First_name = "nu a mers:(";
@@ -37,5 +38,18 @@ public class User implements Serializable {
         this.First_name = First_name;
         this.Last_name = Last_name;
         this.Birthday = Birthday;
+    }
+    public int getAge(){
+        String[] items=this.Birthday.split("-");
+        int day=Integer.parseInt(items[0]);
+        int month=Integer.parseInt(items[1]);
+        int year=Integer.parseInt(items[2]);
+        Calendar user_birthday = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+        user_birthday.set(year,month-1,day);
+        int age = today.get(Calendar.YEAR) - user_birthday.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) < user_birthday.get(Calendar.DAY_OF_YEAR))
+            age--;
+        return age;
     }
 }

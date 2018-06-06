@@ -22,6 +22,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -39,6 +40,7 @@ public class MenuActivity extends Activity {
 
         Intent i = getIntent();
         user = (User) i.getSerializableExtra("User");
+        Toast.makeText(MenuActivity.this,user.getAge()+" "+user.getBirthday(),Toast.LENGTH_LONG).show();
         mprofileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         msignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
         mWorkBtn = (Button) findViewById(R.id.workBtn);
