@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class SportsActivity extends Activity {
     private ArrayList<String> data;
+    FloatingActionButton mfab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +35,19 @@ public class SportsActivity extends Activity {
         String[] sports = res.getStringArray(R.array.Sports);
 
         data = new ArrayList<String>();
+        mfab=(FloatingActionButton) findViewById(R.id.floatingactionbutton_create);
 
         ListView mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(new MyListAdapter(SportsActivity.this, R.layout.list_item, data));
 
         data.addAll(Arrays.asList(sports));
+        mfab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(SportsActivity.this,New_lobby_activity.class);
+                startActivity(i);
+            }
+        });
     }
 
     // animeaza cand apesi pe back ca sa te intorci in activitatea trecuta
