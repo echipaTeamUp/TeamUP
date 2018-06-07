@@ -25,6 +25,7 @@ import java.util.List;
 public class SportsActivity extends Activity {
     private ArrayList<String> data;
     FloatingActionButton mfab;
+    FloatingActionButton mSendFab;
     User user;
 
     @Override
@@ -34,19 +35,34 @@ public class SportsActivity extends Activity {
 
         Resources res = getResources();
         String[] sports = res.getStringArray(R.array.Sports);
-        user=(User) getIntent().getSerializableExtra("User");
+        user = (User) getIntent().getSerializableExtra("User");
         data = new ArrayList<String>();
-        mfab=(FloatingActionButton) findViewById(R.id.floatingactionbutton_create);
+        mfab = (FloatingActionButton) findViewById(R.id.floatingactionbutton_create);
+        mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
 
         ListView mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(new MyListAdapter(SportsActivity.this, R.layout.list_item, data));
-
         data.addAll(Arrays.asList(sports));
+
         mfab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(SportsActivity.this,New_lobby_activity.class);
-                i.putExtra("User",user);
+                Intent i = new Intent(SportsActivity.this, New_lobby_activity.class);
+                i.putExtra("User", user);
+                startActivity(i);
+            }
+        });
+
+        mSendFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SportsActivity.this, ResultsActivity.class);
+                i.putExtra("User", user);
+                ArrayList<LobbySports> arr = new ArrayList<>();
+                LobbySports xd = new LobbySports();
+                xd.addUser("123");
+                arr.add(xd);
+                i.putExtra("Results", arr);
                 startActivity(i);
             }
         });

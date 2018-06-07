@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,7 +17,7 @@ enum lobbyAvailability {
     ANYONE, FRIENDS, INVITES
 }
 
-public class Lobby {
+public class Lobby implements Serializable {
     protected String id="null";
     protected ArrayList<String> users = new ArrayList<>();
     protected lobbyAvailability availability;
@@ -40,6 +41,10 @@ public class Lobby {
 
     public ArrayList<String> getUsers() {
         return users;
+    }
+
+    public int getSize(){
+        return users.size();
     }
 
     public lobbyAvailability getAvailability() {
