@@ -4,7 +4,9 @@ package com.orez.teamup.teamup;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,7 +24,8 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
     GoogleMap map;
     EditText mnumber_playersEt;
     Spinner mspors_spinner;
-
+    Button mnewLobbyBtn;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +36,24 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
         mapView.getMapAsync(this);
         mnumber_playersEt=(EditText) findViewById(R.id.number_playersET);
         mspors_spinner=(Spinner) findViewById(R.id.sport_spinner);
+        mnewLobbyBtn=(Button) findViewById(R.id.new_lobbyBtn);
+        user=(User) getIntent().getSerializableExtra("User");
         //adapter pentru spinner
-        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this,R.array.Sports,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mspors_spinner.setAdapter(adapter);
+        mspors_spinner.setAdapter(new ArrayAdapter<sports>(this,android.R.layout.simple_list_item_1,sports.values()));
+        mnewLobbyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int maxlobbysize=Integer.parseInt(mnumber_playersEt.getText().toString());
+                if(maxlobbysize>1) {
+                    {
+                        LobbySports mlobby = new LobbySports(lobbyAvailability.ANYONE, maxlobbysize, user.getAge() - 3,
+                                user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(), skillGroupSports.ALL);
+                        mlobby.setSkill(skillGroupSports.ALL);
+                        mlobby.writeToDB();
+                    }
+                }
+            }
+        });
     }
 
     @Override

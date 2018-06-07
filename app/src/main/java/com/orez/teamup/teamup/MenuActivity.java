@@ -40,7 +40,6 @@ public class MenuActivity extends Activity {
 
         Intent i = getIntent();
         user = (User) i.getSerializableExtra("User");
-        Toast.makeText(MenuActivity.this,user.getAge()+" "+user.getBirthday(),Toast.LENGTH_LONG).show();
         mprofileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         msignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
         mWorkBtn = (Button) findViewById(R.id.workBtn);
@@ -78,6 +77,7 @@ public class MenuActivity extends Activity {
 
     public void loadSportsActivity(View view) {
         Intent i = new Intent(MenuActivity.this, SportsActivity.class);
+        i.putExtra("User",user);
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }

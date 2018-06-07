@@ -25,6 +25,7 @@ import java.util.List;
 public class SportsActivity extends Activity {
     private ArrayList<String> data;
     FloatingActionButton mfab;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class SportsActivity extends Activity {
 
         Resources res = getResources();
         String[] sports = res.getStringArray(R.array.Sports);
-
+        user=(User) getIntent().getSerializableExtra("User");
         data = new ArrayList<String>();
         mfab=(FloatingActionButton) findViewById(R.id.floatingactionbutton_create);
 
@@ -45,6 +46,7 @@ public class SportsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(SportsActivity.this,New_lobby_activity.class);
+                i.putExtra("User",user);
                 startActivity(i);
             }
         });

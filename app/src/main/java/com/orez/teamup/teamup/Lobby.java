@@ -17,7 +17,7 @@ enum lobbyAvailability {
 }
 
 public class Lobby {
-    protected String id;
+    protected String id="null";
     protected ArrayList<String> users = new ArrayList<>();
     protected lobbyAvailability availability;
     protected int maxSize;
