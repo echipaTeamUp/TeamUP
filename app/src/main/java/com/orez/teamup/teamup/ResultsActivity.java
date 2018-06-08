@@ -37,9 +37,6 @@ public class ResultsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        LobbySports xd = new LobbySports();
-        xd.addUser("123");
-
         User user = (User) getIntent().getSerializableExtra("User");
         ArrayList<LobbySports> arr = (ArrayList<LobbySports>) getIntent().getSerializableExtra("lobbys");
 
