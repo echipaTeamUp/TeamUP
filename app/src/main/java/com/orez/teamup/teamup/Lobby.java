@@ -121,7 +121,7 @@ class LobbySports extends Lobby {
     protected int maxAge;
     protected sports sport;
     protected skillGroupSports skill;
-    protected String location_name;
+    protected String locationName;
     protected LatLng latLng;
 
     LobbySports(lobbyAvailability availability, int maxSize, int minAge, int maxAge,
