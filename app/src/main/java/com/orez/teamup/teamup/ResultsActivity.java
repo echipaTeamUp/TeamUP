@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class ResultsActivity extends Activity {
 
     ListView mListView;
+    TextView resultsTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,14 @@ public class ResultsActivity extends Activity {
         ArrayList<LobbySports> arr = (ArrayList<LobbySports>) getIntent().getSerializableExtra("Results");
         mListView = (ListView) findViewById(R.id.resultsLV);
         mListView.setAdapter(new MyListAdapter(ResultsActivity.this, R.layout.results_list_item, arr));
+
+        resultsTV = (TextView) findViewById(R.id.resultsTitleTV);
+        if (arr.size() == 0)
+            resultsTV.setText("No results match the searching criteria");
+        else if (arr.size() == 1)
+            resultsTV.setText("one result found:");
+        else
+            resultsTV.setText(arr.size() + "results found:");
     }
 
     public class ViewHolder {
@@ -64,11 +73,11 @@ public class ResultsActivity extends Activity {
                 convertView = inflater.inflate(layout, parent, false);
                 ResultsActivity.ViewHolder viewHolder = new ResultsActivity.ViewHolder();
 
-                viewHolder.mSportTv = (TextView) findViewById(R.id.resultsSportTV);
-                //viewHolder.mSportTv.setText(getItem(position).getSport().toString());
-                viewHolder.mJoinBtn = (Button) findViewById(R.id.joinLobbyBtn);
-                viewHolder.mPlayersTv = (TextView) findViewById(R.id.resultsPlayersTV);
-                //viewHolder.mPlayersTv.setText(Integer.toString(getItem(position).getSize()));
+                viewHolder.mSportTv = (TextView) convertView.findViewById(R.id.resultsSportTV);
+                viewHolder.mSportTv.setText("Sport: " + getItem(position).getSport().toString());
+                viewHolder.mJoinBtn = (Button) convertView.findViewById(R.id.joinLobbyBtn);
+                viewHolder.mPlayersTv = (TextView) convertView.findViewById(R.id.resultsPlayersTV);
+                viewHolder.mPlayersTv.setText("no. players: " + getItem(position).getSize() + "/" + getItem(position).getMaxSize());
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (ResultsActivity.ViewHolder) convertView.getTag();
