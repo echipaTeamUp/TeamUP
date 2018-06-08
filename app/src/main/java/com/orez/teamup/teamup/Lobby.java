@@ -172,6 +172,18 @@ class LobbySports extends Lobby {
         return skill;
     }
 
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
     public void setMinAge(int minAge){
         this.minAge = minAge;
         writeToDB();
@@ -196,6 +208,10 @@ class LobbySports extends Lobby {
     public void setSkill (skillGroupSports skill){
         this.skill = skill;
         writeToDB();
+    }
+
+    public void setLatLng(LatLng latLng){
+        this.latLng = latLng;
     }
 
     private static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter){
