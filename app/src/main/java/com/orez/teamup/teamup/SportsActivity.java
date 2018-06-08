@@ -17,6 +17,12 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +30,7 @@ import java.util.List;
 
 public class SportsActivity extends Activity {
     private ArrayList<String> data;
+    private ArrayList<LobbySports> arr = new ArrayList<>();
     FloatingActionButton mfab;
     FloatingActionButton mSendFab;
     User user;
@@ -56,12 +63,29 @@ public class SportsActivity extends Activity {
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SportsActivity.this, ResultsActivity.class);
-                i.putExtra("User", user);
-                ArrayList<FilterSports> arr = new ArrayList<>();
-                arr.add(new FilterSports());
-                i.putExtra("filters", arr);
-                startActivity(i);
+
+                ArrayList<FilterSports> fuckyou = new ArrayList<>();
+                fuckyou.add(new FilterSports());
+                final ArrayList<FilterSports> filters = fuckyou;
+
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (FilterSports f: filters){
+                            arr.addAll(LobbySports.filter(dataSnapshot, f));
+                        }
+                        Intent i = new Intent(SportsActivity.this, ResultsActivity.class);
+                        i.putExtra("User", user);
+                        i.putExtra("lobbys", arr);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // TODO: HANDLE ERROR
+                    }
+                });
             }
         });
     }

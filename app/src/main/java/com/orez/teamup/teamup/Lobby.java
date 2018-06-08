@@ -214,7 +214,7 @@ class LobbySports extends Lobby {
         this.latLng = latLng;
     }
 
-    private static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter){
+    public static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter){
 
         ArrayList<LobbySports> arr = new ArrayList<>();
 
@@ -237,35 +237,8 @@ class LobbySports extends Lobby {
             // TODO: distance filter
 
             arr.add(curr);
-
         }
 
         return arr;
-    }
-
-    /*
-    * primeste o lista de filtre (un filtru pt fiecare sport)
-    * pentru fiecare filtru appendeaza la arr o lista de lobbyuri gasita pt filtrul respectiv
-    */
-    public static void readLobbysByFilters(final ArrayList<FilterSports> filters) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
-        ValueEventListener event = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<LobbySports> arr = new ArrayList<>();
-                for (FilterSports f: filters){
-                    arr.addAll(LobbySports.filter(dataSnapshot, f));
-                }
-                Log.d("PANAMERA", arr.toString());
-                ResultsActivity.setData(arr);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // TODO: HANDLE ERROR
-            }
-        };
-        ref.addListenerForSingleValueEvent(event);
-        ref.removeEventListener(event);
     }
 }
