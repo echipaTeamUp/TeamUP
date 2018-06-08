@@ -26,6 +26,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
     Spinner mspors_spinner;
     Button mnewLobbyBtn;
     User user;
+    String latlong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                 Place place = PlacePicker.getPlace(data, this);
                 String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                latlong=place.getLatLng().toString();
             }
         }
     }

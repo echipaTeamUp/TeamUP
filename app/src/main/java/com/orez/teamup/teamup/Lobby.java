@@ -3,6 +3,7 @@ package com.orez.teamup.teamup;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -120,6 +121,8 @@ class LobbySports extends Lobby {
     protected int maxAge;
     protected sports sport;
     protected skillGroupSports skill;
+    protected String location_name;
+    protected LatLng latLng;
 
     LobbySports(lobbyAvailability availability, int maxSize, int minAge, int maxAge,
                 sports sport, skillGroupSports skill) {
