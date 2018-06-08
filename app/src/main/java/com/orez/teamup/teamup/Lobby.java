@@ -230,23 +230,23 @@ class LobbySports extends Lobby {
     */
     public static void readLobbysByFilters(final ArrayList<FilterSports> filters) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ValueEventListener event = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<LobbySports> arr = new ArrayList<>();
                 for (FilterSports f: filters){
                     arr.addAll(LobbySports.filter(dataSnapshot, f));
                 }
-
                 Log.d("PANAMERA", arr.toString());
-
-                // @CIPRIAN: ADAUGA AICI CALL LA FUNCTIA CARE AFISEAZA LOBBYURILE
+                ResultsActivity.setData(arr);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // TODO: HANDLE ERROR
             }
-        });
+        };
+        ref.addListenerForSingleValueEvent(event);
+        ref.removeEventListener(event);
     }
 }

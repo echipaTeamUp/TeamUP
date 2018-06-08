@@ -58,11 +58,9 @@ public class SportsActivity extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(SportsActivity.this, ResultsActivity.class);
                 i.putExtra("User", user);
-                ArrayList<LobbySports> arr = new ArrayList<>();
-                LobbySports xd = new LobbySports();
-                xd.addUser("123");
-                arr.add(xd);
-                i.putExtra("Results", arr);
+                ArrayList<FilterSports> arr = new ArrayList<>();
+                arr.add(new FilterSports());
+                i.putExtra("filters", arr);
                 startActivity(i);
             }
         });

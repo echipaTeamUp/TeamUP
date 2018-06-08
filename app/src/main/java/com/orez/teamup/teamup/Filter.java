@@ -1,6 +1,8 @@
 package com.orez.teamup.teamup;
 
 
+import java.io.Serializable;
+
 enum skillGroupSports {
     AMATEUR, EXPERIENCED, PRO, ALL
 }
@@ -9,7 +11,7 @@ enum sports {
     ANY, BASKETBALL, FOOTBALL, TENNIS, RUGBY, HANDBALL, CYCLING, PINGPONG
 }
 
-class FilterSports {
+class FilterSports implements Serializable {
     private int age;
     private int maxDistance;
     private skillGroupSports skill;

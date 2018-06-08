@@ -27,8 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ResultsActivity extends Activity {
 
-    ListView mListView;
-    TextView resultsTV;
+    private static ArrayList<LobbySports> arr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +35,25 @@ public class ResultsActivity extends Activity {
         setContentView(R.layout.activity_results);
 
         User user = (User) getIntent().getSerializableExtra("User");
-        ArrayList<LobbySports> arr = (ArrayList<LobbySports>) getIntent().getSerializableExtra("Results");
-        mListView = (ListView) findViewById(R.id.resultsLV);
+        ArrayList<FilterSports> filters = (ArrayList<FilterSports>) getIntent().getSerializableExtra("filters");
+
+        LobbySports.readLobbysByFilters(filters);
+        ListView mListView = (ListView) findViewById(R.id.resultsLV);
         mListView.setAdapter(new MyListAdapter(ResultsActivity.this, R.layout.results_list_item, arr));
 
-        resultsTV = (TextView) findViewById(R.id.resultsTitleTV);
+        /*
+        TextView resultsTV = (TextView) findViewById(R.id.resultsTitleTV);
         if (arr.size() == 0)
             resultsTV.setText("No results match the searching criteria");
         else if (arr.size() == 1)
             resultsTV.setText("one result found:");
         else
             resultsTV.setText(arr.size() + "results found:");
+        */
+    }
+
+    public static void setData(ArrayList<LobbySports> array){
+        arr = array;
     }
 
     public class ViewHolder {
