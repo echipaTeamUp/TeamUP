@@ -10,8 +10,10 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,11 +33,20 @@ public class LoginActivity extends Activity {
     Button mSignupBtn;
     private FirebaseAuth mAuth;
     User user;
+    ImageView gif;
+    ImageView logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mAuth = FirebaseAuth.getInstance();
+        gif=(ImageView) findViewById(R.id.gif);
+        mEmailEt = (EditText) findViewById(R.id.login_usernameEt);
+        mPasswordEt = (EditText) findViewById(R.id.login_passwordEt);
+        mLoginBtn = (Button) findViewById(R.id.loginBtn);
+        mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
+        logo=(ImageView) findViewById(R.id.imageView);
         mAuth = FirebaseAuth.getInstance();
         //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
@@ -43,15 +54,14 @@ public class LoginActivity extends Activity {
 
         //daca esti deja logat te duce direct in menu activity
         if (mAuth.getCurrentUser() != null) {
+            startgif();
             retrieve_user();
         }
         //daca nu esti logat
         else {
-            mEmailEt = (EditText) findViewById(R.id.login_usernameEt);
-            mPasswordEt = (EditText) findViewById(R.id.login_passwordEt);
-            mLoginBtn = (Button) findViewById(R.id.loginBtn);
-            mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
-            mAuth = FirebaseAuth.getInstance();
+
+
+
             //OnClick care duce la activitatea de signup
             mSignupBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,6 +81,8 @@ public class LoginActivity extends Activity {
             });
 
         }
+
+
     }
 
     //practic incearca logarea
@@ -84,6 +96,7 @@ public class LoginActivity extends Activity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // A mers
+                                startgif();
                                 retrieve_user();
 
                             } else {
@@ -145,6 +158,16 @@ public class LoginActivity extends Activity {
         });
 
     }
-
+    void startgif(){
+        gif.setVisibility(View.VISIBLE);
+        Glide.with(LoginActivity.this)
+                .load(R.drawable.teamuppending2)
+                .into(gif);
+        mEmailEt.setVisibility(View.INVISIBLE);
+        mPasswordEt.setVisibility(View.INVISIBLE);
+        logo.setVisibility(View.INVISIBLE);
+        mSignupBtn.setVisibility(View.INVISIBLE);
+        mLoginBtn.setVisibility(View.INVISIBLE);
+    }
 
 }

@@ -74,6 +74,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="40dp"
         android:layout_height="0dp"
@@ -102,5 +104,13 @@
 
     </android.support.constraint.ConstraintLayout>
 
-
+    <ImageView
+        android:id="@+id/gif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/teamuppending2"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
