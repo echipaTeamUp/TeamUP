@@ -90,7 +90,7 @@ public class ResultsActivity extends Activity {
                 viewHolder.mPlayersTv.setText("no. players: " + getItem(position).getSize() + "/" + getItem(position).getMaxSize());
 
                 viewHolder.mLocationTv = (TextView) convertView.findViewById(R.id.locationTV);
-                viewHolder.mLocationTv.setText("Location: " + getItem(position).getLocationName);
+                viewHolder.mLocationTv.setText("Location: " + getItem(position).getLocationName());
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (ResultsActivity.ViewHolder) convertView.getTag();
