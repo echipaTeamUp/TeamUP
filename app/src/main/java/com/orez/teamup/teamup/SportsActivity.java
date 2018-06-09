@@ -68,6 +68,8 @@ public class SportsActivity extends Activity {
                 fuckyou.add(new FilterSports());
                 final ArrayList<FilterSports> filters = fuckyou;
 
+                // TODO: in loc de filtrele astea trebuie luate sporturile din listview si atasate la niste filtre
+
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
