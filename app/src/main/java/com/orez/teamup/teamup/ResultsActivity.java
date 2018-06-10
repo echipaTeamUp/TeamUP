@@ -18,8 +18,11 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -29,17 +32,14 @@ import java.util.concurrent.TimeUnit;
 
 public class ResultsActivity extends Activity {
 
-    private static ArrayList<LobbySports> arr = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
         User user = (User) getIntent().getSerializableExtra("User");
-        ArrayList<FilterSports> filters = (ArrayList<FilterSports>) getIntent().getSerializableExtra("filters");
+        ArrayList<LobbySports> arr = (ArrayList<LobbySports>) getIntent().getSerializableExtra("lobbys");
 
-        LobbySports.readLobbysByFilters(filters);
         ListView mListView = (ListView) findViewById(R.id.resultsLV);
         mListView.setAdapter(new MyListAdapter(ResultsActivity.this, R.layout.results_list_item, arr));
 
@@ -49,11 +49,7 @@ public class ResultsActivity extends Activity {
         else if (arr.size() == 1)
             resultsTV.setText("one result found:");
         else
-            resultsTV.setText(arr.size() + "results found:");
-    }
-
-    public static void setData(ArrayList<LobbySports> array){
-        arr = array;
+            resultsTV.setText(arr.size() + " results found:");
     }
 
     public class ViewHolder {
