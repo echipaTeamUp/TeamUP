@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -35,6 +36,7 @@ public class LoginActivity extends Activity {
     User user;
     ImageView gif;
     ImageView logo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,15 +161,23 @@ public class LoginActivity extends Activity {
 
     }
     void startgif(){
-        gif.setVisibility(View.VISIBLE);
+        GlideDrawableImageViewTarget glideTarget = new GlideDrawableImageViewTarget(gif);
+
         Glide.with(LoginActivity.this)
-                .load(R.drawable.teamuppending2)
-                .into(gif);
+                .load(R.raw.teamuppending2)
+                .into(glideTarget);
+        gif.setVisibility(View.VISIBLE);
         mEmailEt.setVisibility(View.INVISIBLE);
+        mEmailEt.setEnabled(false);
         mPasswordEt.setVisibility(View.INVISIBLE);
+        mPasswordEt.setEnabled(false);
         logo.setVisibility(View.INVISIBLE);
+        logo.setEnabled(false);
         mSignupBtn.setVisibility(View.INVISIBLE);
+        mSignupBtn.setEnabled(false);
         mLoginBtn.setVisibility(View.INVISIBLE);
+        mLoginBtn.setEnabled(false);
     }
+
 
 }
