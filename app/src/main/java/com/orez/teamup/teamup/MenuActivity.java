@@ -31,7 +31,7 @@ public class MenuActivity extends Activity {
     ImageButton mprofileBtn;
     ImageButton msignoutBtn;
     User user;
-    Button mWorkBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class MenuActivity extends Activity {
         user = (User) i.getSerializableExtra("User");
         mprofileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         msignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
-        mWorkBtn = (Button) findViewById(R.id.workBtn);
+
         checkLocationPermission();
         //Daca apesi pe profil, te duce la profil
         mprofileBtn.setOnClickListener(new View.OnClickListener() {
@@ -55,13 +55,7 @@ public class MenuActivity extends Activity {
         });
 
 
-        mWorkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MenuActivity.this, ResultsActivity.class);
-                startActivity(i);
-            }
-        });
+
         msignoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
