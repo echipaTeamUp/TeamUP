@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 public class MenuActivity extends Activity {
 
@@ -39,6 +40,7 @@ public class MenuActivity extends Activity {
         setContentView(R.layout.activity_menu);
 
         Intent i = getIntent();
+
         user = (User) i.getSerializableExtra("User");
         mprofileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         msignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);

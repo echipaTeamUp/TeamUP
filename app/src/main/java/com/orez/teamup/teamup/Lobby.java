@@ -125,12 +125,13 @@ class LobbySports extends Lobby {
     protected LatLng latLng;
 
     LobbySports(lobbyAvailability availability, int maxSize, int minAge, int maxAge,
-                sports sport, skillGroupSports skill) {
+                sports sport, skillGroupSports skill, LatLng latLng) {
         super(availability, maxSize);
         this.minAge = minAge;
         this.maxAge = maxAge;
         this.sport = sport;
         this.skill = skill;
+        this.latLng=latLng;
     }
 
     LobbySports() {

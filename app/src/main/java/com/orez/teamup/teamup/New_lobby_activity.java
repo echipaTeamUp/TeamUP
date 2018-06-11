@@ -58,7 +58,8 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                 if (maxlobbysize > 1) {
                     {
                         LobbySports mlobby = new LobbySports(lobbyAvailability.ANYONE, maxlobbysize, user.getAge() - 3,
-                                user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(), skillGroupSports.ALL);
+                                user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(),
+                                skillGroupSports.ALL,latlong);
                         mlobby.setSkill(skillGroupSports.ALL);
                         mlobby.writeToDB();
                         Toast.makeText(New_lobby_activity.this, "Lobby created", Toast.LENGTH_SHORT).show();
