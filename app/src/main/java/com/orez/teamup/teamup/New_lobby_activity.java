@@ -25,6 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class New_lobby_activity extends AppCompatActivity implements OnMapReadyCallback {
     MapView mapView;
@@ -59,9 +60,10 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                     {
                         LobbySports mlobby = new LobbySports(lobbyAvailability.ANYONE, maxlobbysize, user.getAge() - 3,
                                 user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(),
-                                skillGroupSports.ALL,latlong);
+                                skillGroupSports.ALL,latlong, FirebaseAuth.getInstance().getUid());
                         mlobby.setSkill(skillGroupSports.ALL);
                         mlobby.writeToDB();
+
                         Toast.makeText(New_lobby_activity.this, "Lobby created", Toast.LENGTH_SHORT).show();
                         finish();
                     }

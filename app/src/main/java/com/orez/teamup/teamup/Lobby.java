@@ -123,15 +123,17 @@ class LobbySports extends Lobby {
     protected skillGroupSports skill;
     protected String locationName;
     protected LatLng latLng;
+    protected String adminId;
 
     LobbySports(lobbyAvailability availability, int maxSize, int minAge, int maxAge,
-                sports sport, skillGroupSports skill, LatLng latLng) {
+                sports sport, skillGroupSports skill, LatLng latLng,String adminId) {
         super(availability, maxSize);
         this.minAge = minAge;
         this.maxAge = maxAge;
         this.sport = sport;
         this.skill = skill;
         this.latLng=latLng;
+        this.adminId=adminId;
     }
 
     LobbySports() {
@@ -140,6 +142,7 @@ class LobbySports extends Lobby {
         this.minAge = -1;
         this.sport = sports.ANY;
         this.skill = skillGroupSports.ALL;
+        this.adminId="da";
     }
 
     // writes this to the database
