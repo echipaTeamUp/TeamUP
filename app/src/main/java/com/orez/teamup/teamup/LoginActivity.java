@@ -142,7 +142,7 @@ public class LoginActivity extends Activity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference myRef = database.child("id").child(uid);
         user = new User();
-        database.child("SportsLobby").removeValue();
+        //database.child("SportsLobby").removeValue();
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

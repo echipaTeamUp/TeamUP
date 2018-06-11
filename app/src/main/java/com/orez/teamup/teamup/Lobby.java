@@ -122,17 +122,20 @@ class LobbySports extends Lobby {
     protected sports sport;
     protected skillGroupSports skill;
     protected String locationName;
-    protected LatLng latLng;
+    protected double latitude;
+    protected double longitude;
     protected String adminId;
 
     LobbySports(lobbyAvailability availability, int maxSize, int minAge, int maxAge,
-                sports sport, skillGroupSports skill, LatLng latLng,String adminId) {
+                sports sport, skillGroupSports skill, double longitude,double latitude,String adminId,
+                String locationName) {
         super(availability, maxSize);
         this.minAge = minAge;
         this.maxAge = maxAge;
         this.sport = sport;
         this.skill = skill;
-        this.latLng=latLng;
+        this.longitude=longitude;
+        this.latitude=latitude;
         this.adminId=adminId;
     }
 
@@ -143,6 +146,8 @@ class LobbySports extends Lobby {
         this.sport = sports.ANY;
         this.skill = skillGroupSports.ALL;
         this.adminId="da";
+        this.longitude=-1;
+        this.latitude=-1;
     }
 
     // writes this to the database
@@ -151,6 +156,7 @@ class LobbySports extends Lobby {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
                 child(this.getId());
         ref.setValue(this);
+        Log.v("log","a intrat in writetodb");
     }
 
     @Override
@@ -180,9 +186,6 @@ class LobbySports extends Lobby {
         return locationName;
     }
 
-    public LatLng getLatLng() {
-        return latLng;
-    }
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
@@ -214,9 +217,6 @@ class LobbySports extends Lobby {
         writeToDB();
     }
 
-    public void setLatLng(LatLng latLng){
-        this.latLng = latLng;
-    }
 
     public static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter){
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,13 +69,8 @@ public class SportsActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                ArrayList<FilterSports> fuckyou = new ArrayList<>();
-                FilterSports mFilterSport = new FilterSports();
-                mFilterSport.setSport((sports) mSelectSportSpinner.getSelectedItem());
-                mFilterSport.setAge(user.getAge());
-                fuckyou.add(mFilterSport);
-
-                final ArrayList<FilterSports> filters = fuckyou;
+                final FilterSports mFilterSport = new FilterSports(user.getAge(),
+                        20,skillGroupSports.ALL,(sports) mSelectSportSpinner.getSelectedItem());
 
                 // TODO: in loc de filtrele astea trebuie luate sporturile din listview si atasate la niste filtre
 
@@ -82,9 +78,10 @@ public class SportsActivity extends Activity {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (FilterSports f: filters){
-                            arr.addAll(LobbySports.filter(dataSnapshot, f));
-                        }
+                        Log.v("log","intra in addAll");
+                            arr.addAll(LobbySports.filter(dataSnapshot, mFilterSport));
+                        Log.v("log","a facut addAll");
+
                         Intent i = new Intent(SportsActivity.this, ResultsActivity.class);
                         i.putExtra("User", user);
                         i.putExtra("lobbys", arr);

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -60,8 +61,10 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                     {
                         LobbySports mlobby = new LobbySports(lobbyAvailability.ANYONE, maxlobbysize, user.getAge() - 3,
                                 user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(),
-                                skillGroupSports.ALL,latlong, FirebaseAuth.getInstance().getUid());
+                                skillGroupSports.ALL,latlong.longitude,latlong.latitude, FirebaseAuth.getInstance().getUid(),
+                                mplaceTV.getText().toString());
                         mlobby.setSkill(skillGroupSports.ALL);
+                        Log.v("log","apeleaza writetodb din new_lobby_activity");
                         mlobby.writeToDB();
 
                         Toast.makeText(New_lobby_activity.this, "Lobby created", Toast.LENGTH_SHORT).show();
