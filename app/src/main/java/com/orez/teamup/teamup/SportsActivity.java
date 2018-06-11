@@ -15,7 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -40,16 +43,17 @@ public class SportsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sports);
 
-        Resources res = getResources();
-        String[] sports = res.getStringArray(R.array.Sports);
+//        Resources res = getResources();
+//        String[] sports = res.getStringArray(R.array.Sports);
         user = (User) getIntent().getSerializableExtra("User");
         data = new ArrayList<String>();
         mfab = (FloatingActionButton) findViewById(R.id.floatingactionbutton_create);
         mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
 
-        ListView mListView = (ListView) findViewById(R.id.listView);
-        mListView.setAdapter(new MyListAdapter(SportsActivity.this, R.layout.list_item, data));
-        data.addAll(Arrays.asList(sports));
+        data.addAll(Collections.singleton(com.orez.teamup.teamup.sports.values().toString()));
+
+        final Spinner mSelectSportSpinner = (Spinner) findViewById(R.id.select_filter_spinner);
+        mSelectSportSpinner.setAdapter(new ArrayAdapter<sports>(this, android.R.layout.simple_list_item_1, sports.values()));
 
         mfab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +69,11 @@ public class SportsActivity extends Activity {
             public void onClick(View v) {
 
                 ArrayList<FilterSports> fuckyou = new ArrayList<>();
-                fuckyou.add(new FilterSports());
+                FilterSports mFilterSport = new FilterSports();
+                mFilterSport.setSport((sports) mSelectSportSpinner.getSelectedItem());
+                mFilterSport.setAge(user.getAge());
+                fuckyou.add(mFilterSport);
+
                 final ArrayList<FilterSports> filters = fuckyou;
 
                 // TODO: in loc de filtrele astea trebuie luate sporturile din listview si atasate la niste filtre
@@ -97,42 +105,6 @@ public class SportsActivity extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-    }
-
-    private class MyListAdapter extends ArrayAdapter<String> {
-        private int layout;
-
-        public MyListAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
-            super(context, resource, objects);
-            layout = resource;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            ViewHolder mainViewHolder = null;
-
-            if (convertView == null) {
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(layout, parent, false);
-                ViewHolder viewHolder = new ViewHolder();
-                viewHolder.mSportCheckBox = (CheckBox) convertView.findViewById(R.id.sportCheckBox);
-                viewHolder.mSportCheckBox.setText(getItem(position));
-                convertView.setTag(viewHolder);
-            } else {
-                mainViewHolder = (ViewHolder) convertView.getTag();
-                mainViewHolder.mSportCheckBox.setText(getItem(position));
-            }
-
-            return convertView;
-        }
-    }
-
-    public class ViewHolder {
-        TextView mSportTv;
-        Button mEditFilterBtn;
-        CheckBox mSportCheckBox;
-
     }
 
     public void loadFilterActivity(View view) {
