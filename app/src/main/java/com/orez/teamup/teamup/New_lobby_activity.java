@@ -65,7 +65,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 if (checkallfields()) {
                     int maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());
-                    LobbySports mlobby = new LobbySports(lobbyAvailability.ANYONE, maxlobbysize, user.getAge() - 3,
+                    LobbySports mlobby = new LobbySports(Lobby.getNewID(), lobbyAvailability.ANYONE, maxlobbysize, user.getAge() - 3,
                             user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(),
                             skillGroupSports.ALL, latlong.longitude, latlong.latitude, FirebaseAuth.getInstance().getUid(),
                             mplaceTV.getText().toString(), mtimeTV.getText().toString());

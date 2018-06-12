@@ -78,9 +78,9 @@ public class SportsActivity extends Activity {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.v("log","intra in addAll");
+                        Log.v("BUGS","intra in addAll");
                             arr.addAll(LobbySports.filter(dataSnapshot, mFilterSport));
-                        Log.v("log","a facut addAll");
+                        Log.v("BUGS","a facut addAll");
 
                         Intent i = new Intent(SportsActivity.this, ResultsActivity.class);
                         i.putExtra("User", user);

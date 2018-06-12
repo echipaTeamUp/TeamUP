@@ -47,7 +47,7 @@ public class ResultsActivity extends Activity {
         if (arr.size() == 0)
             resultsTV.setText("No results match the searching criteria");
         else if (arr.size() == 1)
-            resultsTV.setText("one result found:");
+            resultsTV.setText("One result found:");
         else
             resultsTV.setText(arr.size() + " results found:");
     }

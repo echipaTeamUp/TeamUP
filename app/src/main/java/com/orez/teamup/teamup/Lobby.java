@@ -3,12 +3,9 @@ package com.orez.teamup.teamup;
 
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,23 +16,25 @@ enum lobbyAvailability {
 }
 
 public class Lobby implements Serializable {
-    protected String id="null";
+    protected String id = "null";
     protected ArrayList<String> users = new ArrayList<>();
     protected lobbyAvailability availability;
     protected int maxSize;
     protected String hour;
 
-    public Lobby(lobbyAvailability availability, int maxSize) {
-        this.id = Lobby.getNewID();
+    public Lobby(String id, lobbyAvailability availability, int maxSize) {
+        this.id = id;
         this.availability = availability;
         this.maxSize = maxSize;
     }
 
-    public Lobby() {
-        this.id = Lobby.getNewID();
+    public Lobby(String id) {
+        this.id = id;
         this.availability = lobbyAvailability.ANYONE;
         this.maxSize = -1;
     }
+
+    public Lobby(){}
 
     public String getId() {
         return id;
@@ -45,7 +44,7 @@ public class Lobby implements Serializable {
         return users;
     }
 
-    public int getSize(){
+    public int getSize() {
         return users.size();
     }
 
@@ -78,7 +77,7 @@ public class Lobby implements Serializable {
     }
 
     // removes a user from the lobby
-    public void removeUser(String userID){
+    public void removeUser(String userID) {
         users.remove(userID);
         if (users.size() == 0)
             delete();
@@ -86,23 +85,21 @@ public class Lobby implements Serializable {
             writeToDB();
     }
 
-    // writes this lobby to the DB
-    public void writeToDB() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
-                .child(this.getId());
-        ref.setValue(this);
-    }
-
     // deletes this lobby from the DB
-    public void delete(){
+    public void delete() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Lobby")
                 .child(this.getId());
         ref.removeValue();
     }
 
-    private static String getNewID() {
+    public static String getNewID() {
         // generate random lobby key
-        Log.d("LOLOL", "apelat");
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        for (StackTraceElement s:stackTraceElements){
+            Log.d("STACKTRACE", s.toString());
+        }
+
+        Log.v("BUGS", "a dat req de new id");
         String key = "";
         for (int i = 0; i < 20; ++i) {
             Random r = new Random();
@@ -114,6 +111,8 @@ public class Lobby implements Serializable {
         }
         return key;
     }
+
+    public void writeToDB(){}
 }
 
 class LobbySports extends Lobby {
@@ -127,31 +126,35 @@ class LobbySports extends Lobby {
     protected double longitude;
     protected String adminId;
 
-    LobbySports(lobbyAvailability availability, int maxSize, int minAge, int maxAge,
-                sports sport, skillGroupSports skill, double longitude,double latitude,String adminId,
-                String locationName,String hour) {
-        super(availability, maxSize);
+    LobbySports(String id, lobbyAvailability availability, int maxSize, int minAge, int maxAge,
+                sports sport, skillGroupSports skill, double longitude, double latitude, String adminId,
+                String locationName, String hour) {
+        super(id, availability, maxSize);
         this.minAge = minAge;
         this.maxAge = maxAge;
         this.sport = sport;
         this.skill = skill;
-        this.longitude=longitude;
-        this.latitude=latitude;
-        this.adminId=adminId;
-        this.hour=hour;
+        this.locationName = locationName;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.adminId = adminId;
+        this.addUser(adminId);
+        this.hour = hour;
     }
 
-    LobbySports() {
-        super();
+    LobbySports(String id) {
+        super(id);
         this.maxAge = -1;
         this.minAge = -1;
         this.sport = sports.ANY;
         this.skill = skillGroupSports.ALL;
-        this.adminId="da";
-        this.longitude=-1;
-        this.latitude=-1;
-        this.hour="-1";
+        this.adminId = "da";
+        this.longitude = -1;
+        this.latitude = -1;
+        this.hour = "-1";
     }
+
+    LobbySports(){}
 
     // writes this to the database
     @Override
@@ -159,11 +162,10 @@ class LobbySports extends Lobby {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
                 child(this.getId());
         ref.setValue(this);
-        Log.v("log","a intrat in writetodb");
     }
 
     @Override
-    public void delete(){
+    public void delete() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
                 child(this.getId());
         ref.removeValue();
@@ -189,44 +191,42 @@ class LobbySports extends Lobby {
         return locationName;
     }
 
-
     public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
 
-    public void setMinAge(int minAge){
+    public void setMinAge(int minAge) {
         this.minAge = minAge;
         writeToDB();
     }
 
-    public void setMaxAge(int maxAge){
+    public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
         writeToDB();
     }
 
-    public void setAge(int minAge, int maxAge){
+    public void setAge(int minAge, int maxAge) {
         this.minAge = minAge;
         this.maxAge = maxAge;
         writeToDB();
     }
 
-    public void setSport (sports sport){
+    public void setSport(sports sport) {
         this.sport = sport;
         writeToDB();
     }
 
-    public void setSkill (skillGroupSports skill){
+    public void setSkill(skillGroupSports skill) {
         this.skill = skill;
         writeToDB();
     }
 
-
-    public static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter){
+    public static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter) {
 
         ArrayList<LobbySports> arr = new ArrayList<>();
 
         // convert snapshot to arraylist
-        for (DataSnapshot ds: dataSnapshot.getChildren()){
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
             LobbySports curr = ds.getValue(LobbySports.class);
 
             // age filter
