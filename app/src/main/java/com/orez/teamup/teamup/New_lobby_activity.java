@@ -194,7 +194,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
             return true;
         else return false;
     }
-    public boolean checkalklfields(){
+    public boolean checkallfields(){
         int maxlobbysize;
         try{
          maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());}
