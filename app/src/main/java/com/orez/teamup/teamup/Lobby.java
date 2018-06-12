@@ -16,7 +16,7 @@ enum lobbyAvailability {
 }
 
 public class Lobby implements Serializable {
-    protected String id = "null";
+    protected String id;
     protected ArrayList<String> users = new ArrayList<>();
     protected lobbyAvailability availability;
     protected int maxSize;
@@ -34,7 +34,8 @@ public class Lobby implements Serializable {
         this.maxSize = -1;
     }
 
-    public Lobby(){}
+    public Lobby() {
+    }
 
     public String getId() {
         return id;
@@ -56,6 +57,10 @@ public class Lobby implements Serializable {
         return maxSize;
     }
 
+    public String getHour() {
+        return hour;
+    }
+
     public void setAvailability(lobbyAvailability availability) {
         this.availability = availability;
         writeToDB();
@@ -63,6 +68,16 @@ public class Lobby implements Serializable {
 
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
+        writeToDB();
+    }
+
+    public void setId(String id) {
+        this.id = id;
+        writeToDB();
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
         writeToDB();
     }
 
@@ -94,12 +109,6 @@ public class Lobby implements Serializable {
 
     public static String getNewID() {
         // generate random lobby key
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        for (StackTraceElement s:stackTraceElements){
-            Log.d("STACKTRACE", s.toString());
-        }
-
-        Log.v("BUGS", "a dat req de new id");
         String key = "";
         for (int i = 0; i < 20; ++i) {
             Random r = new Random();
@@ -112,7 +121,8 @@ public class Lobby implements Serializable {
         return key;
     }
 
-    public void writeToDB(){}
+    public void writeToDB() {
+    }
 }
 
 class LobbySports extends Lobby {
@@ -154,13 +164,18 @@ class LobbySports extends Lobby {
         this.hour = "-1";
     }
 
-    LobbySports(){}
+    LobbySports() {
+    }
 
     // writes this to the database
     @Override
     public void writeToDB() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
                 child(this.getId());
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        for (StackTraceElement s : stackTraceElements) {
+            Log.d("BUGS", s.toString());
+        }
         ref.setValue(this);
     }
 
@@ -191,8 +206,21 @@ class LobbySports extends Lobby {
         return locationName;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getAdminId() {
+        return adminId;
+    }
+
     public void setLocationName(String locationName) {
         this.locationName = locationName;
+        writeToDB();
     }
 
     public void setMinAge(int minAge) {
@@ -221,13 +249,29 @@ class LobbySports extends Lobby {
         writeToDB();
     }
 
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+        writeToDB();
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+        writeToDB();
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
+        writeToDB();
+    }
+
     public static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter) {
 
         ArrayList<LobbySports> arr = new ArrayList<>();
 
-        // convert snapshot to arraylist
+        Log.d("BUGS", "aici incepe sa filtreze");
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             LobbySports curr = ds.getValue(LobbySports.class);
+            Log.d("BUGS", curr.getId());
 
             // age filter
             if (curr.getMaxAge() < filter.getAge() || curr.getMinAge() > filter.getAge())
