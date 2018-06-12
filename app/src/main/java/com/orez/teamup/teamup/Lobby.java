@@ -63,22 +63,18 @@ public class Lobby implements Serializable {
 
     public void setAvailability(lobbyAvailability availability) {
         this.availability = availability;
-        writeToDB();
     }
 
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
-        writeToDB();
     }
 
     public void setId(String id) {
         this.id = id;
-        writeToDB();
     }
 
     public void setHour(String hour) {
         this.hour = hour;
-        writeToDB();
     }
 
     // adds a new user to the lobby
@@ -220,48 +216,39 @@ class LobbySports extends Lobby {
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
-        writeToDB();
     }
 
     public void setMinAge(int minAge) {
         this.minAge = minAge;
-        writeToDB();
     }
 
     public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
-        writeToDB();
     }
 
     public void setAge(int minAge, int maxAge) {
         this.minAge = minAge;
         this.maxAge = maxAge;
-        writeToDB();
     }
 
     public void setSport(sports sport) {
         this.sport = sport;
-        writeToDB();
     }
 
     public void setSkill(skillGroupSports skill) {
         this.skill = skill;
-        writeToDB();
     }
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
-        writeToDB();
     }
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
-        writeToDB();
     }
 
     public void setAdminId(String adminId) {
         this.adminId = adminId;
-        writeToDB();
     }
 
     public static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter) {
