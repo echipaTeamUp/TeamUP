@@ -31,6 +31,7 @@ public class LobbyActivity extends AppCompatActivity {
     Lobby lobby;
     ListView mListView;
     ArrayList<ChatMessage> data = new ArrayList<>();
+    EditText mInputMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +39,17 @@ public class LobbyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lobby);
 
         user = (User) getIntent().getSerializableExtra("User");
-        lobby = (Lobby) getIntent().getSerializableExtra("Lobby");
-
+        lobby = (LobbySports) getIntent().getSerializableExtra("Lobby");
+        
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
 
         mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText mInputMsg = (EditText) findViewById(R.id.messageEt);
-
+                mInputMsg = (EditText) findViewById(R.id.messageEt);
                 ref.push().setValue(new ChatMessage(mInputMsg.getText().toString(),
                                 user.getFirst_name()));
-
                 mInputMsg.setText("");
             }
         });
