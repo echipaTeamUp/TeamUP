@@ -33,7 +33,7 @@ public class LobbyActivity extends AppCompatActivity {
         user = (User) getIntent().getSerializableExtra("User");
         lobby = (Lobby) getIntent().getSerializableExtra("Lobby");
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
 
         mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
         mSendFab.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +83,8 @@ public class LobbyActivity extends AppCompatActivity {
                 viewHolder.mUserTv = (TextView) findViewById(R.id.chatUserTv);
 
             }
+
+            return convertView;
         }
     }
 }
