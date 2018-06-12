@@ -23,6 +23,7 @@ public class Lobby implements Serializable {
     protected ArrayList<String> users = new ArrayList<>();
     protected lobbyAvailability availability;
     protected int maxSize;
+    protected String hour;
 
     public Lobby(lobbyAvailability availability, int maxSize) {
         this.id = Lobby.getNewID();
@@ -128,7 +129,7 @@ class LobbySports extends Lobby {
 
     LobbySports(lobbyAvailability availability, int maxSize, int minAge, int maxAge,
                 sports sport, skillGroupSports skill, double longitude,double latitude,String adminId,
-                String locationName) {
+                String locationName,String hour) {
         super(availability, maxSize);
         this.minAge = minAge;
         this.maxAge = maxAge;
@@ -137,6 +138,7 @@ class LobbySports extends Lobby {
         this.longitude=longitude;
         this.latitude=latitude;
         this.adminId=adminId;
+        this.hour=hour;
     }
 
     LobbySports() {
@@ -148,6 +150,7 @@ class LobbySports extends Lobby {
         this.adminId="da";
         this.longitude=-1;
         this.latitude=-1;
+        this.hour="-1";
     }
 
     // writes this to the database
