@@ -16,14 +16,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LobbyActivity extends AppCompatActivity {
     FloatingActionButton mSendFab;
     User user;
     Lobby lobby;
     ListView mListView;
+    ArrayList<ChatMessage> data = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,21 @@ public class LobbyActivity extends AppCompatActivity {
 
         mListView = (ListView) findViewById(R.id.messageListView);
 
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                data.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    data.add(ds.getValue(ChatMessage.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public class ViewHolder{
@@ -58,10 +80,10 @@ public class LobbyActivity extends AppCompatActivity {
         TextView mTimeTv;
     }
 
-    private class MyListAdapter extends ArrayAdapter<String>{
+    private class MyListAdapter extends ArrayAdapter<ChatMessage>{
         private int layout;
 
-        public MyListAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
+        public MyListAdapter(@NonNull Context context, int resource, @NonNull List<ChatMessage> objects) {
             super(context, resource, objects);
             layout = resource;
         }
@@ -77,11 +99,11 @@ public class LobbyActivity extends AppCompatActivity {
                 LobbyActivity.ViewHolder viewHolder = new LobbyActivity.ViewHolder();
 
                 viewHolder.mMessageTv = (TextView) findViewById(R.id.chatMessageTv);
-                //aici m-am blocat
-                //viewHolder.mMessageTv.setText();
+                viewHolder.mMessageTv.setText(getItem(position).getMessageText());
                 viewHolder.mTimeTv = (TextView) findViewById(R.id.chatTimeTv);
+                viewHolder.mTimeTv.setText(getItem(position).getMessageTime());
                 viewHolder.mUserTv = (TextView) findViewById(R.id.chatUserTv);
-
+                viewHolder.mUserTv.setText(getItem(position).getMessageUser());
             }
 
             return convertView;
