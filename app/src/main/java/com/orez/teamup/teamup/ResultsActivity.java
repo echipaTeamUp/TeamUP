@@ -78,20 +78,21 @@ public class ResultsActivity extends Activity {
                 ResultsActivity.ViewHolder viewHolder = new ResultsActivity.ViewHolder();
 
                 viewHolder.mSportTv = (TextView) convertView.findViewById(R.id.resultsSportTV);
-                viewHolder.mSportTv.setText("Sport: " + getItem(position).getSport().toString());
+                viewHolder.mSportTv.setText(getItem(position).getSport().toString());
 
                 viewHolder.mJoinBtn = (Button) convertView.findViewById(R.id.joinLobbyBtn);
 
                 viewHolder.mPlayersTv = (TextView) convertView.findViewById(R.id.resultsPlayersTV);
-                viewHolder.mPlayersTv.setText("no. players: " + getItem(position).getSize() + "/" + getItem(position).getMaxSize());
+                viewHolder.mPlayersTv.setText(getItem(position).getSize() + "/" + getItem(position).getMaxSize());
 
                 viewHolder.mLocationTv = (TextView) convertView.findViewById(R.id.locationTV);
-                viewHolder.mLocationTv.setText("Location: " + getItem(position).getLocationName());
+                viewHolder.mLocationTv.setText(getItem(position).getLocationName());
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (ResultsActivity.ViewHolder) convertView.getTag();
                 mainViewHolder.mSportTv.setText(getItem(position).getSport().toString());
-                mainViewHolder.mPlayersTv.setText(Integer.toString(getItem(position).users.size()));
+                mainViewHolder.mPlayersTv.setText(getItem(position).getSize() + "/" + getItem(position).getMaxSize());
+                mainViewHolder.mLocationTv.setText(getItem(position).getLocationName());
             }
 
             return convertView;
