@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -48,9 +50,11 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
-                ref.push().setValue(new ChatMessage(mInputMsg.getText().toString(),
-                                user.getFirst_name()));
-                mInputMsg.setText("");
+                String message = mInputMsg.getText().toString();
+                if (message != "") {
+                    ref.push().setValue(new ChatMessage(message, user.getFirst_name()));
+                    mInputMsg.setText("");
+                }
             }
         });
 
@@ -63,6 +67,7 @@ public class LobbyActivity extends AppCompatActivity {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     data.add(ds.getValue(ChatMessage.class));
                 }
+                mListView.setAdapter(new LobbyActivity.MyListAdapter(LobbyActivity.this, R.layout.chat_message_item, data));
             }
 
             @Override
@@ -97,11 +102,11 @@ public class LobbyActivity extends AppCompatActivity {
                 convertView = inflater.inflate(layout, parent, false);
                 LobbyActivity.ViewHolder viewHolder = new LobbyActivity.ViewHolder();
 
-                viewHolder.mMessageTv = (TextView) findViewById(R.id.chatMessageTv);
+                viewHolder.mMessageTv = (TextView) convertView.findViewById(R.id.chatMessageTv);
                 viewHolder.mMessageTv.setText(getItem(position).getMessageText());
-                viewHolder.mTimeTv = (TextView) findViewById(R.id.chatTimeTv);
+                viewHolder.mTimeTv = (TextView) convertView.findViewById(R.id.chatTimeTv);
                 viewHolder.mTimeTv.setText(getItem(position).getMessageTime());
-                viewHolder.mUserTv = (TextView) findViewById(R.id.chatUserTv);
+                viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.chatUserTv);
                 viewHolder.mUserTv.setText(getItem(position).getMessageUser());
             }
 
