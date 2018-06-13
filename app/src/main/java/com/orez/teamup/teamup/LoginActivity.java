@@ -42,6 +42,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         mAuth = FirebaseAuth.getInstance();
         gif=(ImageView) findViewById(R.id.gif);
         mEmailEt = (EditText) findViewById(R.id.login_usernameEt);
@@ -141,7 +142,7 @@ public class LoginActivity extends Activity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference myRef = database.child("id").child(uid);
         user = new User();
-
+        //database.child("SportsLobby").removeValue();
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

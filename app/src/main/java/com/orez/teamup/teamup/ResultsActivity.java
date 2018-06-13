@@ -2,6 +2,7 @@ package com.orez.teamup.teamup;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Debug;
@@ -31,13 +32,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ResultsActivity extends Activity {
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        User user = (User) getIntent().getSerializableExtra("User");
+        user = (User) getIntent().getSerializableExtra("User");
         ArrayList<LobbySports> arr = (ArrayList<LobbySports>) getIntent().getSerializableExtra("lobbys");
 
         ListView mListView = (ListView) findViewById(R.id.resultsLV);
@@ -47,7 +49,7 @@ public class ResultsActivity extends Activity {
         if (arr.size() == 0)
             resultsTV.setText("No results match the searching criteria");
         else if (arr.size() == 1)
-            resultsTV.setText("one result found:");
+            resultsTV.setText("One result found:");
         else
             resultsTV.setText(arr.size() + " results found:");
     }
@@ -69,7 +71,7 @@ public class ResultsActivity extends Activity {
 
         @NonNull
         @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             ResultsActivity.ViewHolder mainViewHolder = null;
 
             if (convertView == null) {
@@ -78,20 +80,33 @@ public class ResultsActivity extends Activity {
                 ResultsActivity.ViewHolder viewHolder = new ResultsActivity.ViewHolder();
 
                 viewHolder.mSportTv = (TextView) convertView.findViewById(R.id.resultsSportTV);
-                viewHolder.mSportTv.setText("Sport: " + getItem(position).getSport().toString());
+                viewHolder.mSportTv.setText(getItem(position).getSport().toString());
 
                 viewHolder.mJoinBtn = (Button) convertView.findViewById(R.id.joinLobbyBtn);
 
                 viewHolder.mPlayersTv = (TextView) convertView.findViewById(R.id.resultsPlayersTV);
-                viewHolder.mPlayersTv.setText("no. players: " + getItem(position).getSize() + "/" + getItem(position).getMaxSize());
+                viewHolder.mPlayersTv.setText(getItem(position).getSize() + "/" + getItem(position).getMaxSize());
 
                 viewHolder.mLocationTv = (TextView) convertView.findViewById(R.id.locationTV);
-                viewHolder.mLocationTv.setText("Location: " + getItem(position).getLocationName());
+                viewHolder.mLocationTv.setText(getItem(position).getLocationName());
+
+                viewHolder.mJoinBtn = (Button) convertView.findViewById(R.id.joinLobbyBtn);
+                viewHolder.mJoinBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(ResultsActivity.this, LobbyActivity.class);
+                        intent.putExtra("User", user);
+                        intent.putExtra("Lobby", getItem(position));
+                        startActivity(intent);
+
+                    }
+                });
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (ResultsActivity.ViewHolder) convertView.getTag();
                 mainViewHolder.mSportTv.setText(getItem(position).getSport().toString());
-                mainViewHolder.mPlayersTv.setText(Integer.toString(getItem(position).users.size()));
+                mainViewHolder.mPlayersTv.setText(getItem(position).getSize() + "/" + getItem(position).getMaxSize());
+                mainViewHolder.mLocationTv.setText(getItem(position).getLocationName());
             }
 
             return convertView;

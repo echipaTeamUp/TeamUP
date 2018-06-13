@@ -52,7 +52,7 @@
         <Button
             android:id="@+id/joinLobbyBtn"
             style="@android:style/Widget.Material.Button.Borderless"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"

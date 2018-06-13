@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -40,16 +44,17 @@ public class SportsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sports);
 
-        Resources res = getResources();
-        String[] sports = res.getStringArray(R.array.Sports);
+//        Resources res = getResources();
+//        String[] sports = res.getStringArray(R.array.Sports);
         user = (User) getIntent().getSerializableExtra("User");
         data = new ArrayList<String>();
         mfab = (FloatingActionButton) findViewById(R.id.floatingactionbutton_create);
         mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
 
-        ListView mListView = (ListView) findViewById(R.id.listView);
-        mListView.setAdapter(new MyListAdapter(SportsActivity.this, R.layout.list_item, data));
-        data.addAll(Arrays.asList(sports));
+        data.addAll(Collections.singleton(com.orez.teamup.teamup.sports.values().toString()));
+
+        final Spinner mSelectSportSpinner = (Spinner) findViewById(R.id.select_filter_spinner);
+        mSelectSportSpinner.setAdapter(new ArrayAdapter<sports>(this, android.R.layout.simple_list_item_1, sports.values()));
 
         mfab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,9 +69,8 @@ public class SportsActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                ArrayList<FilterSports> fuckyou = new ArrayList<>();
-                fuckyou.add(new FilterSports());
-                final ArrayList<FilterSports> filters = fuckyou;
+                final FilterSports mFilterSport = new FilterSports(user.getAge(),
+                        20,skillGroupSports.ALL,(sports) mSelectSportSpinner.getSelectedItem());
 
                 // TODO: in loc de filtrele astea trebuie luate sporturile din listview si atasate la niste filtre
 
@@ -74,9 +78,9 @@ public class SportsActivity extends Activity {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (FilterSports f: filters){
-                            arr.addAll(LobbySports.filter(dataSnapshot, f));
-                        }
+                        arr.clear();
+                        arr.addAll(LobbySports.filter(dataSnapshot, mFilterSport));
+
                         Intent i = new Intent(SportsActivity.this, ResultsActivity.class);
                         i.putExtra("User", user);
                         i.putExtra("lobbys", arr);
@@ -97,47 +101,5 @@ public class SportsActivity extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-    }
-
-    private class MyListAdapter extends ArrayAdapter<String> {
-        private int layout;
-
-        public MyListAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
-            super(context, resource, objects);
-            layout = resource;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            ViewHolder mainViewHolder = null;
-
-            if (convertView == null) {
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(layout, parent, false);
-                ViewHolder viewHolder = new ViewHolder();
-                viewHolder.mSportCheckBox = (CheckBox) convertView.findViewById(R.id.sportCheckBox);
-                viewHolder.mSportCheckBox.setText(getItem(position));
-                convertView.setTag(viewHolder);
-            } else {
-                mainViewHolder = (ViewHolder) convertView.getTag();
-                mainViewHolder.mSportCheckBox.setText(getItem(position));
-            }
-
-            return convertView;
-        }
-    }
-
-    public class ViewHolder {
-        TextView mSportTv;
-        Button mEditFilterBtn;
-        CheckBox mSportCheckBox;
-
-    }
-
-    public void loadFilterActivity(View view) {
-        Intent intent = new Intent(SportsActivity.this, FilterSportsActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }

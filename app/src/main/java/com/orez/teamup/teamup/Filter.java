@@ -26,7 +26,7 @@ class FilterSports implements Serializable {
 
     public FilterSports() {
         this.age = -1;
-        this.maxDistance = -1;
+        this.maxDistance = 20;
         this.skill = skillGroupSports.ALL;
         this.sport = sports.ANY;
     }
