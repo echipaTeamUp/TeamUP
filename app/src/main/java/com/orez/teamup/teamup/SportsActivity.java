@@ -78,9 +78,7 @@ public class SportsActivity extends Activity {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.v("log","intra in addAll");
-                            arr.addAll(LobbySports.filter(dataSnapshot, mFilterSport));
-                        Log.v("log","a facut addAll");
+                        arr.addAll(LobbySports.filter(dataSnapshot, mFilterSport));
 
                         Intent i = new Intent(SportsActivity.this, ResultsActivity.class);
                         i.putExtra("User", user);
@@ -102,11 +100,5 @@ public class SportsActivity extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-    }
-
-    public void loadFilterActivity(View view) {
-        Intent intent = new Intent(SportsActivity.this, FilterSportsActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 }

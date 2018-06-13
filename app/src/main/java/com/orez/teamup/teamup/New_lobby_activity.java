@@ -5,9 +5,9 @@ import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -54,8 +55,8 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
         mnumber_playersEt = (EditText) findViewById(R.id.number_playersET);
         mspors_spinner = (Spinner) findViewById(R.id.sport_spinner);
         mnewLobbyBtn = (Button) findViewById(R.id.new_lobbyBtn);
-        mplaceTV=(TextView) findViewById(R.id.placeTV);
-        mtimeTV=(TextView) findViewById(R.id.timeTV);
+        mplaceTV = (TextView) findViewById(R.id.placeTV);
+        mtimeTV = (TextView) findViewById(R.id.timeTV);
         user = (User) getIntent().getSerializableExtra("User");
         //adapter pentru spinner
         mspors_spinner.setAdapter(new ArrayAdapter<sports>(this, android.R.layout.simple_list_item_1, sports.values()));
@@ -64,16 +65,16 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 if (checkallfields()) {
                     int maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());
-                        LobbySports mlobby = new LobbySports(lobbyAvailability.ANYONE, maxlobbysize, user.getAge() - 3,
-                                user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(),
-                                skillGroupSports.ALL,latlong.longitude,latlong.latitude, FirebaseAuth.getInstance().getUid(),
-                                mplaceTV.getText().toString(),mtimeTV.getText().toString());
-                        mlobby.setSkill(skillGroupSports.ALL);
-                        Log.v("log","apeleaza writetodb din new_lobby_activity");
-                        mlobby.writeToDB();
+                    LobbySports mlobby = new LobbySports(Lobby.getNewID(), lobbyAvailability.ANYONE, maxlobbysize, user.getAge() - 3,
+                            user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(),
+                            skillGroupSports.ALL, latlong.longitude, latlong.latitude, FirebaseAuth.getInstance().getUid(),
+                            mplaceTV.getText().toString(), mtimeTV.getText().toString());
+                    mlobby.setSkill(skillGroupSports.ALL);
+                    Log.v("log", "apeleaza writetodb din new_lobby_activity");
+                    mlobby.writeToDB();
 
-                        makeToast("Lobby created");
-                        finish();
+                    makeToast("Lobby created");
+                    finish();
                 }
             }
         });
@@ -88,9 +89,9 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                 mTimePicker = new TimePickerDialog(New_lobby_activity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        if(checktime(selectedHour,selectedMinute,mcurrentTime.get(Calendar.HOUR_OF_DAY),
+                        if (checktime(selectedHour, selectedMinute, mcurrentTime.get(Calendar.HOUR_OF_DAY),
                                 mcurrentTime.get(Calendar.MINUTE)))
-                        mtimeTV.setText("Hour: "+selectedHour + ":" + selectedMinute);
+                            mtimeTV.setText("Hour: " + selectedHour + ":" + selectedMinute);
                         else
                             makeToast("Time should be in at least an hour from now");
                     }
@@ -105,8 +106,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
-        {
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng arg0) {
 
@@ -136,7 +136,6 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
     }
 
 
-
     @Override
     public void onResume() {
         mapView.onResume();
@@ -161,62 +160,67 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //cand se intoarce din placepicker
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
-                mplaceTV.setText("Location: "+place.getName());
+                mplaceTV.setText("Location: " + place.getName());
                 //astea sunt coordonatele care vor fi incarcate in FireBase
-                latlong=place.getLatLng();
+                latlong = place.getLatLng();
                 //daca pusese alt marker inainte, il sterge pe ala
-                if(marker!=null)
+                if (marker != null)
                     marker.remove();
-                marker= map.addMarker(new MarkerOptions()
+                marker = map.addMarker(new MarkerOptions()
                         .position(latlong)
                         .title("Lobby location"));
                 zoomcamera(latlong);
             }
         }
     }
+
     //duce camera unde vrei
-    protected void zoomcamera(LatLng latLng){
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+    protected void zoomcamera(LatLng latLng) {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         map.animateCamera(CameraUpdateFactory.zoomIn());
         map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
+
     //verifica sa fie ora in cel putin o ora de la ora curenta
-    public boolean checktime(int hour,int minute,int chour,int cminute){
-        if(hour-chour>1)
+    public boolean checktime(int hour, int minute, int chour, int cminute) {
+        if (hour - chour > 1)
             return true;
-        if(hour-chour==1 && minute>=cminute)
+        if (hour - chour == 1 && minute >= cminute)
             return true;
         else return false;
     }
-    public boolean checkallfields(){
+
+    public boolean checkallfields() {
         int maxlobbysize;
-        try{
-         maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());}
-        catch (Exception e){
+        try {
+            maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());
+        } catch (Exception e) {
             makeToast("Max lobby size is not a valid format");
             return false;
         }
-        if(maxlobbysize<2){
+        if (maxlobbysize < 2) {
             makeToast("The max lobby size shoud be at least 2");
             return false;
         }
-        if(marker==null){
+        if (marker == null) {
             makeToast("Please select a location");
             return false;
         }
-        if(mtimeTV.getText().toString().equals("Tap here to select an hour")){
+        if (mtimeTV.getText().toString().equals("Tap here to select an hour")) {
             makeToast("Please select an hour");
             return false;
         }
         return true;
     }
-    public void makeToast(String string){
-        Toast.makeText(New_lobby_activity.this,string,Toast.LENGTH_SHORT).show();
+
+    public void makeToast(String string) {
+        Toast.makeText(New_lobby_activity.this, string, Toast.LENGTH_SHORT).show();
     }
 }
