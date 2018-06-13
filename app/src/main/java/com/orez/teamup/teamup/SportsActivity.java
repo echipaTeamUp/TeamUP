@@ -78,6 +78,7 @@ public class SportsActivity extends Activity {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        arr.clear();
                         arr.addAll(LobbySports.filter(dataSnapshot, mFilterSport));
 
                         Intent i = new Intent(SportsActivity.this, ResultsActivity.class);
