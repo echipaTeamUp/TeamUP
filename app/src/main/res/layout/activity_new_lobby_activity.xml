@@ -69,6 +69,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="43dp"
         android:textSize="24sp"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sportTV"
         tools:text="@string/select_a_location" />
