@@ -33,7 +33,7 @@ import java.util.List;
 public class LobbyActivity extends AppCompatActivity {
     FloatingActionButton mSendFab;
     User user;
-    Lobby lobby;
+    LobbySports lobby;
     ListView mListView;
     ArrayList<ChatMessage> data = new ArrayList<>();
     EditText mInputMsg;
@@ -82,11 +82,14 @@ public class LobbyActivity extends AppCompatActivity {
 
             }
         });
+        //arata locatia in Google Maps
         view_on_mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
+                double longitude=lobby.getLongitude();
+                double latitude=lobby.getLatitude();
+                Toast.makeText(LobbyActivity.this,latitude+"",Toast.LENGTH_SHORT).show();
+                Uri gmmIntentUri = Uri.parse("geo:"+latitude+","+longitude+"?q="+latitude+","+longitude+"(Lobby+location)");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 if (mapIntent.resolveActivity(getPackageManager()) != null) {
