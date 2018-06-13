@@ -1,6 +1,7 @@
 package com.orez.teamup.teamup;
 
 
+import android.location.Location;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -272,7 +273,13 @@ class LobbySports extends Lobby {
             if (curr.getSkill() != filter.getSkill())
                 continue;
 
-            // TODO: distance filter
+            // distance filter
+            Location mfilterLocation=new Location("filter");
+            mfilterLocation.setLatitude(filter.getLatitude());mfilterLocation.setLongitude(filter.getLongitude());
+            Location mlobbyLocation=new Location("lobby");
+            mlobbyLocation.setLongitude(curr.getLongitude());mlobbyLocation.setLatitude(curr.getLatitude());
+            if(mfilterLocation.distanceTo(mlobbyLocation)/1000>20)
+                continue;
 
             arr.add(curr);
         }

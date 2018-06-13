@@ -16,12 +16,16 @@ class FilterSports implements Serializable {
     private int maxDistance;
     private skillGroupSports skill;
     private sports sport;
+    private double latitude;
+    private double longitude;
 
-    public FilterSports(int age, int maxDistance, skillGroupSports sg, sports sp) {
+    public FilterSports(int age, int maxDistance, skillGroupSports sg, sports sp,double longitude,double latitude) {
         this.age = age;
         this.maxDistance = maxDistance;
         this.skill = sg;
         this.sport = sp;
+        this.longitude=longitude;
+        this.latitude=latitude;
     }
 
     public FilterSports() {
@@ -29,6 +33,7 @@ class FilterSports implements Serializable {
         this.maxDistance = 20;
         this.skill = skillGroupSports.ALL;
         this.sport = sports.ANY;
+
     }
 
     public void setAge(int age) {
@@ -61,5 +66,13 @@ class FilterSports implements Serializable {
 
     public sports getSport() {
         return this.sport;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }

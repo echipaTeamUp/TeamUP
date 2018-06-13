@@ -1,6 +1,8 @@
 package com.orez.teamup.teamup;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -34,6 +37,8 @@ public class LobbyActivity extends AppCompatActivity {
     ListView mListView;
     ArrayList<ChatMessage> data = new ArrayList<>();
     EditText mInputMsg;
+    Button get_directionsBtn;
+    Button view_on_mapBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,8 @@ public class LobbyActivity extends AppCompatActivity {
 
         user = (User) getIntent().getSerializableExtra("User");
         lobby = (LobbySports) getIntent().getSerializableExtra("Lobby");
+        get_directionsBtn=(Button) findViewById(R.id.get_directionsBtn);
+        view_on_mapBtn=(Button) findViewById(R.id.view_on_mapBtn);
         
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
 
@@ -73,6 +80,18 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+        view_on_mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
             }
         });
 
