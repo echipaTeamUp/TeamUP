@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradientbackground"
-    tools:context=".LobbyActivity">
+    tools:context=".LobbyActivity"
+    android:windowSoftInputMode="adjustPan">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/sendMessageFab"
