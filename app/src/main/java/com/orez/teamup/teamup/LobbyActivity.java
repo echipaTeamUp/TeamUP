@@ -47,7 +47,7 @@ public class LobbyActivity extends AppCompatActivity {
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mInputMsg = (EditText) findViewById(R.id.messageEt);
+                mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
                 ref.push().setValue(new ChatMessage(mInputMsg.getText().toString(),
                                 user.getFirst_name()));
                 mInputMsg.setText("");
