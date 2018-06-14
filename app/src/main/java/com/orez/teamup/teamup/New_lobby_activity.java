@@ -73,8 +73,11 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                     Log.v("log", "apeleaza writetodb din new_lobby_activity");
                     mlobby.writeToDB();
 
+                    Intent i = new Intent(New_lobby_activity.this, LobbyActivity.class);
+                    i.putExtra("Lobby", mlobby);
+                    i.putExtra("User", user);
                     makeToast("Lobby created");
-                    finish();
+                    startActivity(i);
                 }
             }
         });

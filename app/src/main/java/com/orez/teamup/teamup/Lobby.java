@@ -1,6 +1,7 @@
 package com.orez.teamup.teamup;
 
 
+import android.location.Location;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -83,6 +84,12 @@ public class Lobby implements Serializable {
             // TODO: handle LobbyFullException
             return;
         }
+
+        for (String user : users){
+            if (user.equals(userID))
+                return;
+        }
+
         users.add(userID);
         writeToDB();
     }
@@ -177,9 +184,10 @@ class LobbySports extends Lobby {
 
     @Override
     public void delete() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
-                child(this.getId());
-        ref.removeValue();
+        // delete chat
+        FirebaseDatabase.getInstance().getReference().child("Chat").child(this.getId()).removeValue();
+        // delete lobby
+        FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(this.getId()).removeValue();
     }
 
     public int getMaxAge() {
@@ -272,7 +280,19 @@ class LobbySports extends Lobby {
             if (curr.getSkill() != filter.getSkill())
                 continue;
 
-            // TODO: distance filter
+            // lobby full filter
+            if (curr.getSize() == curr.getMaxSize())
+                continue;
+
+            // distance filter
+            Location mfilterLocation = new Location("filter");
+            mfilterLocation.setLatitude(filter.getLatitude());
+            mfilterLocation.setLongitude(filter.getLongitude());
+            Location mlobbyLocation = new Location("lobby");
+            mlobbyLocation.setLongitude(curr.getLongitude());
+            mlobbyLocation.setLatitude(curr.getLatitude());
+            if (mfilterLocation.distanceTo(mlobbyLocation) / 1000 > 20)
+                continue;
 
             arr.add(curr);
         }

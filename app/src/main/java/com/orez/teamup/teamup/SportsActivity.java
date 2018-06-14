@@ -1,13 +1,19 @@
 package com.orez.teamup.teamup;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,9 +74,38 @@ public class SportsActivity extends Activity {
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                 LocationListener mLocationListener=new LocationListener() {
+                     @Override
+                     public void onLocationChanged(Location location) {
+
+                     }
+
+                     @Override
+                     public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                     }
+
+                     @Override
+                     public void onProviderEnabled(String provider) {
+
+                     }
+
+                     @Override
+                     public void onProviderDisabled(String provider) {
+
+                     }
+                 };
+                LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+                if (ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
+                        300, mLocationListener);
 
                 final FilterSports mFilterSport = new FilterSports(user.getAge(),
-                        20,skillGroupSports.ALL,(sports) mSelectSportSpinner.getSelectedItem());
+                        20,skillGroupSports.ALL,(sports) mSelectSportSpinner.getSelectedItem(),mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).
+                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude());
 
                 // TODO: in loc de filtrele astea trebuie luate sporturile din listview si atasate la niste filtre
 

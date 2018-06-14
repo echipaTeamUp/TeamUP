@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradientbackground"
-    tools:context=".LobbyActivity">
+    tools:context=".LobbyActivity"
+    android:windowSoftInputMode="adjustPan">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/sendMessageFab"
@@ -35,7 +36,7 @@
     <ListView
         android:id="@+id/messageListView"
         android:layout_width="match_parent"
-        android:layout_height="589dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -43,6 +44,24 @@
         app:layout_constraintBottom_toTopOf="@+id/sendMessageEt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/get_directionsBtn" />
+
+    <Button
+        android:id="@+id/view_on_mapBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/view_on_map"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/get_directionsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/get_directions"
+        app:layout_constraintStart_toEndOf="@+id/view_on_mapBtn"
+        tools:layout_editor_absoluteY="0dp" />
 
 </android.support.constraint.ConstraintLayout>

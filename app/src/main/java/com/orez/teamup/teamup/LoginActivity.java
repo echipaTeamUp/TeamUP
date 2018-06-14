@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +37,8 @@ public class LoginActivity extends Activity {
     User user;
     ImageView gif;
     ImageView logo;
-
+    Button mresend_verificationBtn;
+    Button mreset_passwordBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class LoginActivity extends Activity {
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
         logo=(ImageView) findViewById(R.id.imageView);
+        mresend_verificationBtn =(Button) findViewById(R.id.resend_verificationBtn);
+        mreset_passwordBtn =(Button) findViewById(R.id.reset_passwordBtn);
         mAuth = FirebaseAuth.getInstance();
         //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
@@ -84,7 +88,12 @@ public class LoginActivity extends Activity {
             });
 
         }
-
+    mreset_passwordBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            resetpassword();
+        }
+    });
 
     }
 
@@ -99,8 +108,16 @@ public class LoginActivity extends Activity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // A mers
+                                FirebaseAuth mAuth=FirebaseAuth.getInstance();
+                                FirebaseUser user=mAuth.getCurrentUser();
+                                if(user.isEmailVerified()){
                                 startgif();
-                                retrieve_user();
+                                retrieve_user();}
+                                else{
+                                    Toast.makeText(LoginActivity.this,"Please verify your email" +
+                                            " adress before you sign in",Toast.LENGTH_LONG).show();
+                                    makeresendvisible();
+                                }
 
                             } else {
                                 // Nu a mers
@@ -178,7 +195,49 @@ public class LoginActivity extends Activity {
         mSignupBtn.setEnabled(false);
         mLoginBtn.setVisibility(View.INVISIBLE);
         mLoginBtn.setEnabled(false);
+        mreset_passwordBtn.setVisibility(View.INVISIBLE);
+        mresend_verificationBtn.setVisibility(View.GONE);
     }
 
+    void makeresendvisible(){
+        mresend_verificationBtn.setVisibility(View.VISIBLE);
+        Toast.makeText(LoginActivity.this, "Signup succeded",
+                Toast.LENGTH_SHORT).show();
+        final FirebaseUser fuser=mAuth.getCurrentUser();
+        fuser.sendEmailVerification()
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this,
+                                    "Verification email sent to " + fuser.getEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this,
+                                    "Failed to send verification email.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+    void resetpassword(){
+        String email=mEmailEt.getText().toString().trim();
+        if(!isEmailValid(email))
+            Toast.makeText(LoginActivity.this,"Please enter your email",Toast.LENGTH_SHORT).show();
+        else{
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this,"Password reset email sent",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });}
+    }
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 
 }
