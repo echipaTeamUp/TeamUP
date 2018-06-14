@@ -84,6 +84,12 @@ public class Lobby implements Serializable {
             // TODO: handle LobbyFullException
             return;
         }
+
+        for (String user : users){
+            if (user.equals(userID))
+                return;
+        }
+
         users.add(userID);
         writeToDB();
     }
@@ -273,12 +279,18 @@ class LobbySports extends Lobby {
             if (curr.getSkill() != filter.getSkill())
                 continue;
 
+            // lobby full filter
+            if (curr.getSize() == curr.getMaxSize())
+                continue;
+
             // distance filter
-            Location mfilterLocation=new Location("filter");
-            mfilterLocation.setLatitude(filter.getLatitude());mfilterLocation.setLongitude(filter.getLongitude());
-            Location mlobbyLocation=new Location("lobby");
-            mlobbyLocation.setLongitude(curr.getLongitude());mlobbyLocation.setLatitude(curr.getLatitude());
-            if(mfilterLocation.distanceTo(mlobbyLocation)/1000>20)
+            Location mfilterLocation = new Location("filter");
+            mfilterLocation.setLatitude(filter.getLatitude());
+            mfilterLocation.setLongitude(filter.getLongitude());
+            Location mlobbyLocation = new Location("lobby");
+            mlobbyLocation.setLongitude(curr.getLongitude());
+            mlobbyLocation.setLatitude(curr.getLatitude());
+            if (mfilterLocation.distanceTo(mlobbyLocation) / 1000 > 20)
                 continue;
 
             arr.add(curr);
