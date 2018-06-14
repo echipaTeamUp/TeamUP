@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -72,8 +73,11 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                     Log.v("log", "apeleaza writetodb din new_lobby_activity");
                     mlobby.writeToDB();
 
+                    Intent i = new Intent(New_lobby_activity.this, LobbyActivity.class);
+                    i.putExtra("Lobby", mlobby);
+                    i.putExtra("User", user);
                     makeToast("Lobby created");
-                    finish();
+                    startActivity(i);
                 }
             }
         });
