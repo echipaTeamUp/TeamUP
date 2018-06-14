@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class LobbyActivity extends AppCompatActivity {
@@ -57,7 +60,7 @@ public class LobbyActivity extends AppCompatActivity {
                 mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
                 String message = mInputMsg.getText().toString();
                 if (!message.equals("")) {
-                    ref.push().setValue(new ChatMessage(message, user.getFirst_name()));
+                    ref.child(Long.toString(System.currentTimeMillis() / 1000L)).setValue(new ChatMessage(message, user.getFirst_name()));
                     mInputMsg.setText("");
                 }
             }
@@ -72,6 +75,7 @@ public class LobbyActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     data.add(ds.getValue(ChatMessage.class));
                 }
+                
                 mListView.setAdapter(new LobbyActivity.MyListAdapter(LobbyActivity.this, R.layout.chat_message_item, data));
             }
 

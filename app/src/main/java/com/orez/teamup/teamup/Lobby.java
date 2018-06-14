@@ -184,9 +184,10 @@ class LobbySports extends Lobby {
 
     @Override
     public void delete() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
-                child(this.getId());
-        ref.removeValue();
+        // delete chat
+        FirebaseDatabase.getInstance().getReference().child("Chat").child(this.getId()).removeValue();
+        // delete lobby
+        FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(this.getId()).removeValue();
     }
 
     public int getMaxAge() {
