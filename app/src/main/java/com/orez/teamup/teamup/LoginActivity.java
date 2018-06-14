@@ -37,7 +37,8 @@ public class LoginActivity extends Activity {
     User user;
     ImageView gif;
     ImageView logo;
-    Button resend_verificationBtn;
+    Button mresend_verificationBtn;
+    Button mreset_passwordBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,8 @@ public class LoginActivity extends Activity {
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
         logo=(ImageView) findViewById(R.id.imageView);
-        resend_verificationBtn=(Button) findViewById(R.id.resend_verificationBtn);
+        mresend_verificationBtn =(Button) findViewById(R.id.resend_verificationBtn);
+        mreset_passwordBtn =(Button) findViewById(R.id.reset_passwordBtn);
         mAuth = FirebaseAuth.getInstance();
         //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
@@ -86,7 +88,12 @@ public class LoginActivity extends Activity {
             });
 
         }
-
+    mreset_passwordBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            resetpassword();
+        }
+    });
 
     }
 
@@ -188,10 +195,12 @@ public class LoginActivity extends Activity {
         mSignupBtn.setEnabled(false);
         mLoginBtn.setVisibility(View.INVISIBLE);
         mLoginBtn.setEnabled(false);
+        mreset_passwordBtn.setVisibility(View.INVISIBLE);
+        mresend_verificationBtn.setVisibility(View.GONE);
     }
 
     void makeresendvisible(){
-        resend_verificationBtn.setVisibility(View.VISIBLE);
+        mresend_verificationBtn.setVisibility(View.VISIBLE);
         Toast.makeText(LoginActivity.this, "Signup succeded",
                 Toast.LENGTH_SHORT).show();
         final FirebaseUser fuser=mAuth.getCurrentUser();
@@ -211,6 +220,24 @@ public class LoginActivity extends Activity {
                         }
                     }
                 });
+    }
+    void resetpassword(){
+        String email=mEmailEt.getText().toString().trim();
+        if(!isEmailValid(email))
+            Toast.makeText(LoginActivity.this,"Please enter your email",Toast.LENGTH_SHORT).show();
+        else{
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this,"Password reset email sent",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });}
+    }
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
 }
