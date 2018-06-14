@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +37,7 @@ public class LoginActivity extends Activity {
     User user;
     ImageView gif;
     ImageView logo;
-
+    Button resend_verificationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class LoginActivity extends Activity {
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
         logo=(ImageView) findViewById(R.id.imageView);
+        resend_verificationBtn=(Button) findViewById(R.id.resend_verificationBtn);
         mAuth = FirebaseAuth.getInstance();
         //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
@@ -99,8 +101,16 @@ public class LoginActivity extends Activity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // A mers
+                                FirebaseAuth mAuth=FirebaseAuth.getInstance();
+                                FirebaseUser user=mAuth.getCurrentUser();
+                                if(user.isEmailVerified()){
                                 startgif();
-                                retrieve_user();
+                                retrieve_user();}
+                                else{
+                                    Toast.makeText(LoginActivity.this,"Please verify your email" +
+                                            " adress before you sign in",Toast.LENGTH_LONG).show();
+                                    makeresendvisible();
+                                }
 
                             } else {
                                 // Nu a mers
@@ -180,5 +190,27 @@ public class LoginActivity extends Activity {
         mLoginBtn.setEnabled(false);
     }
 
+    void makeresendvisible(){
+        resend_verificationBtn.setVisibility(View.VISIBLE);
+        Toast.makeText(LoginActivity.this, "Signup succeded",
+                Toast.LENGTH_SHORT).show();
+        final FirebaseUser fuser=mAuth.getCurrentUser();
+        fuser.sendEmailVerification()
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this,
+                                    "Verification email sent to " + fuser.getEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this,
+                                    "Failed to send verification email.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
 }

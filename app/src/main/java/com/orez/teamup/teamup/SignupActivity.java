@@ -128,6 +128,22 @@ public class SignupActivity extends Activity {
                             user = mAuth.getCurrentUser();
                             Toast.makeText(SignupActivity.this, "Signup succeded",
                                     Toast.LENGTH_SHORT).show();
+                            user.sendEmailVerification()
+                                    .addOnCompleteListener(SignupActivity.this, new OnCompleteListener() {
+                                        @Override
+                                        public void onComplete(@NonNull Task task) {
+
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(SignupActivity.this,
+                                                        "Verification email sent to " + user.getEmail(),
+                                                        Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(SignupActivity.this,
+                                                        "Failed to send verification email.",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                             setvalues();
                             returntologin();
                         } else {
