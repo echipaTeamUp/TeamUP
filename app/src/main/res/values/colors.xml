@@ -2,10 +2,13 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#27AAE1</color>
-    <color name="colorAccent">#ff4081</color>
+    <color name="colorAccent">#e8d8a0</color>
+    <color name="translucentOrange">#8Ae8d8a0</color>
     <color name="translucentBlue">#8A27AAE1</color>
     <color name="translucentWhite">#8affffff</color>
     <color name="blueButtonText">#c5c5c5</color>
+    <color name="white">#ffffff</color>
+    <color name="grey">#e1e9ed</color>
     <color name="editText_Text">#707070</color>
     <color name="transparent">#00000000</color>
 </resources>

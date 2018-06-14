@@ -56,9 +56,10 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:background="@drawable/profiletextview"
             android:layout_weight="1"
             android:text="Join Lobby"
-            android:textColor="@android:color/holo_red_dark"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
