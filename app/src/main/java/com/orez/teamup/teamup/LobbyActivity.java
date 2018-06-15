@@ -181,12 +181,15 @@ public class LobbyActivity extends AppCompatActivity {
             return convertView;
         }
     }
-
+    LocationManager mLocationManager;
+    LocationListener mLocationListener;
     void initialize_uber() {
-        LocationListener mLocationListener = new LocationListener() {
+        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-
+                mLocationManager.removeUpdates(mLocationListener);
+                mLocationManager = null;
             }
 
             @Override
@@ -204,7 +207,6 @@ public class LobbyActivity extends AppCompatActivity {
 
             }
         };
-        LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -246,5 +248,5 @@ public class LobbyActivity extends AppCompatActivity {
             }
         };
         requestBtn.setCallback(callback);
-    }
+        }
 }
