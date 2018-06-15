@@ -52,6 +52,7 @@ public class MenuActivity extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(MenuActivity.this, ProfileActivity.class);
                 i.putExtra("User", user);
+                i.putExtra("Req_code",1);
                 startActivity(i);
             }
         });
