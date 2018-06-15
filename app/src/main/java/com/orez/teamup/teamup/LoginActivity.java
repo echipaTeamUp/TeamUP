@@ -152,7 +152,7 @@ public class LoginActivity extends Activity {
         }
     }
 
-    //pune datele in obiectul user si trece in meniu
+    //pune datele in obiectul
     public void retrieve_user() {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -163,7 +163,9 @@ public class LoginActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child("id").child(uid).getValue(User.class);
+                //Verifica daca esti intr-un lobby
                 String LobbyID = dataSnapshot.child("id").child(uid).child("Lobby").getValue(String.class);
+                //Daca da, te duce in lobby
                 if (LobbyID != null){
                     Intent i = new Intent(LoginActivity.this, LobbyActivity.class);
                     i.putExtra("User", user);
@@ -171,6 +173,7 @@ public class LoginActivity extends Activity {
                     startActivity(i);
                     finish();
                 } else {
+                    //daca nu, te duce in meniu
                     Intent i = new Intent(LoginActivity.this, MenuActivity.class);
                     i.putExtra("User", user);
                     startActivity(i);
