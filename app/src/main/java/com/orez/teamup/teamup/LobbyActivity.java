@@ -60,7 +60,8 @@ public class LobbyActivity extends AppCompatActivity {
                 mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
                 String message = mInputMsg.getText().toString();
                 if (!message.equals("")) {
-                    ref.child(Long.toString(System.currentTimeMillis() / 1000L)).setValue(new ChatMessage(message, user.getFirst_name()));
+                    long xd = System.currentTimeMillis() / 1000L;
+                    ref.child(Long.toString(xd)).setValue(new ChatMessage(message, user.getFirst_name(), xd));
                     mInputMsg.setText("");
                 }
             }
@@ -84,6 +85,7 @@ public class LobbyActivity extends AppCompatActivity {
 
             }
         });
+
         //arata locatia in Google Maps
         view_on_mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,9 +131,9 @@ public class LobbyActivity extends AppCompatActivity {
                 viewHolder.mMessageTv = (TextView) convertView.findViewById(R.id.chatMessageTv);
                 viewHolder.mMessageTv.setText(getItem(position).getMessageText());
                 viewHolder.mTimeTv = (TextView) convertView.findViewById(R.id.chatTimeTv);
-                viewHolder.mTimeTv.setText(getItem(position).getMessageTime());
+                viewHolder.mTimeTv.setText(getItem(position).getTime());
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.chatUserTv);
-                viewHolder.mUserTv.setText(getItem(position).getMessageUser());
+                viewHolder.mUserTv.setText(getItem(position).getMessageUser()+":");
             }
 
             return convertView;
