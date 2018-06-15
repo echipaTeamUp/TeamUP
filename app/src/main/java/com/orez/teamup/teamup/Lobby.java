@@ -22,6 +22,7 @@ public class Lobby implements Serializable {
     protected lobbyAvailability availability;
     protected int maxSize;
     protected String hour;
+    protected String adminId;
 
     public Lobby(String id, lobbyAvailability availability, int maxSize) {
         this.id = id;
@@ -85,6 +86,7 @@ public class Lobby implements Serializable {
             return;
         }
 
+        // check if the user is already in the lobby
         for (String user : users){
             if (user.equals(userID))
                 return;
@@ -137,7 +139,6 @@ class LobbySports extends Lobby {
     protected String locationName;
     protected double latitude;
     protected double longitude;
-    protected String adminId;
 
     LobbySports(String id, lobbyAvailability availability, int maxSize, int minAge, int maxAge,
                 sports sport, skillGroupSports skill, double longitude, double latitude, String adminId,
