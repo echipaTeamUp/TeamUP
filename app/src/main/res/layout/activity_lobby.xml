@@ -27,7 +27,8 @@
             app:layout_constraintBottom_toTopOf="@+id/sendMessageEt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/get_directionsBtn">
+            app:layout_constraintTop_toBottomOf="@+id/get_directionsBtn"
+            >
 
 
         </ListView>
