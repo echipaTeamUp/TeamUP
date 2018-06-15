@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -159,14 +160,16 @@ public class LoginActivity extends Activity {
         DatabaseReference myRef = database;
         user = new User();
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v("log","onDataChange din retrieve_user din loginActivity");
                 user = dataSnapshot.child("id").child(uid).getValue(User.class);
                 //Verifica daca esti intr-un lobby
                 String LobbyID = dataSnapshot.child("id").child(uid).child("Lobby").getValue(String.class);
                 //Daca da, te duce in lobby
                 if (LobbyID != null){
+                    Log.v("log","Trimis la lobby din retrieve_user");
                     Intent i = new Intent(LoginActivity.this, LobbyActivity.class);
                     i.putExtra("User", user);
                     i.putExtra("Lobby", dataSnapshot.child("SportsLobby").child(LobbyID).getValue(LobbySports.class));
@@ -174,6 +177,7 @@ public class LoginActivity extends Activity {
                     finish();
                 } else {
                     //daca nu, te duce in meniu
+                    Log.v("log","trimis in meniu din onDataChange");
                     Intent i = new Intent(LoginActivity.this, MenuActivity.class);
                     i.putExtra("User", user);
                     startActivity(i);

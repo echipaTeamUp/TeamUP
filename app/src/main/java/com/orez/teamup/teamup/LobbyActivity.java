@@ -83,7 +83,8 @@ public class LobbyActivity extends AppCompatActivity {
                 String message = mInputMsg.getText().toString();
                 if (!message.equals("")) {
                     long xd = System.currentTimeMillis() / 1000L;
-                    ref.child(Long.toString(xd)).setValue(new ChatMessage(message, user.getFirst_name(), xd));
+                    ChatMessage chatMessage=new ChatMessage(message, user.getFirst_name(), xd);
+                    ref.child(Long.toString(xd)).setValue(chatMessage);
                     mInputMsg.setText("");
                 }
             }

@@ -51,4 +51,5 @@ public class ChatMessage {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         return sdf.format(date);
     }
+
 }
