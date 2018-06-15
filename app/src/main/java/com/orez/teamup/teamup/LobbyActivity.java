@@ -175,7 +175,6 @@ public class LobbyActivity extends AppCompatActivity {
                 viewHolder.mTimeTv = (TextView) convertView.findViewById(R.id.chatTimeTv);
                 viewHolder.mTimeTv.setText(getItem(position).getTime());
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.chatUserTv);
-<<<<<<< HEAD
                 viewHolder.mUserTv.setText(getItem(position).getMessageUser()+":");
                 convertView.setTag(viewHolder);
             } else{
@@ -183,9 +182,7 @@ public class LobbyActivity extends AppCompatActivity {
                 mainViewHolder.mMessageTv.setText(getItem(position).getMessageText());
                 mainViewHolder.mTimeTv.setText(getItem(position).getTime());
                 mainViewHolder.mUserTv.setText(getItem(position).getMessageUser()+":");
-=======
-                viewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
->>>>>>> 6c1a7cd0a1e986c54821c75e7846ade4743c11cc
+                mainViewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
             }
 
             return convertView;
