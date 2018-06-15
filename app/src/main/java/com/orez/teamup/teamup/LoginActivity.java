@@ -152,22 +152,30 @@ public class LoginActivity extends Activity {
         }
     }
 
-
     //pune datele in obiectul user si trece in meniu
     public void retrieve_user() {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference myRef = database.child("id").child(uid);
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference myRef = database;
         user = new User();
-        //database.child("SportsLobby").removeValue();
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                Intent i = new Intent(LoginActivity.this, MenuActivity.class);
-                i.putExtra("User", user);
-                startActivity(i);
-                finish();
+                user = dataSnapshot.child("id").child(uid).getValue(User.class);
+                String LobbyID = dataSnapshot.child("id").child(uid).child("Lobby").getValue(String.class);
+                if (LobbyID != null){
+                    Intent i = new Intent(LoginActivity.this, LobbyActivity.class);
+                    i.putExtra("User", user);
+                    i.putExtra("Lobby", dataSnapshot.child("SportsLobby").child(LobbyID).getValue(LobbySports.class));
+                    startActivity(i);
+                    finish();
+                } else {
+                    Intent i = new Intent(LoginActivity.this, MenuActivity.class);
+                    i.putExtra("User", user);
+                    startActivity(i);
+                    finish();
+                }
             }
 
             @Override
@@ -178,6 +186,7 @@ public class LoginActivity extends Activity {
         });
 
     }
+
     void startgif(){
         GlideDrawableImageViewTarget glideTarget = new GlideDrawableImageViewTarget(gif);
 
@@ -221,6 +230,7 @@ public class LoginActivity extends Activity {
                     }
                 });
     }
+
     void resetpassword(){
         String email=mEmailEt.getText().toString().trim();
         if(!isEmailValid(email))
@@ -236,6 +246,7 @@ public class LoginActivity extends Activity {
                     }
                 });}
     }
+
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }

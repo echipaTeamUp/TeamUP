@@ -93,12 +93,14 @@ public class Lobby implements Serializable {
         }
 
         users.add(userID);
+        FirebaseDatabase.getInstance().getReference().child("id").child(userID).child("Lobby").setValue(this.id);
         writeToDB();
     }
 
     // removes a user from the lobby
     public void removeUser(String userID) {
         users.remove(userID);
+        FirebaseDatabase.getInstance().getReference().child("id").child(userID).child("Lobby").setValue(null);
         if (users.size() == 0)
             delete();
         else
