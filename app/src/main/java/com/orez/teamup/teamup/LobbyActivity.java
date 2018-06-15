@@ -157,6 +157,12 @@ public class LobbyActivity extends AppCompatActivity {
                 viewHolder.mTimeTv.setText(getItem(position).getTime());
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.chatUserTv);
                 viewHolder.mUserTv.setText(getItem(position).getMessageUser()+":");
+                convertView.setTag(viewHolder);
+            } else{
+                mainViewHolder = (LobbyActivity.ViewHolder) convertView.getTag();
+                mainViewHolder.mMessageTv.setText(getItem(position).getMessageText());
+                mainViewHolder.mTimeTv.setText(getItem(position).getTime());
+                mainViewHolder.mUserTv.setText(getItem(position).getMessageUser()+":");
             }
 
             return convertView;
