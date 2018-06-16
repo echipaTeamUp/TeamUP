@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 enum lobbyAvailability {
-    ANYONE, FRIENDS, INVITES
+    VISIBLE, INVISIBLE
 }
 
 public class Lobby implements Serializable {
@@ -24,15 +24,15 @@ public class Lobby implements Serializable {
     protected String hour;
     protected String adminId;
 
-    public Lobby(String id, lobbyAvailability availability, int maxSize) {
+    public Lobby(String id, int maxSize) {
         this.id = id;
-        this.availability = availability;
+        this.availability = lobbyAvailability.VISIBLE;
         this.maxSize = maxSize;
     }
 
     public Lobby(String id) {
         this.id = id;
-        this.availability = lobbyAvailability.ANYONE;
+        this.availability = lobbyAvailability.VISIBLE;
         this.maxSize = -1;
     }
 
@@ -94,6 +94,8 @@ public class Lobby implements Serializable {
 
         users.add(userID);
         FirebaseDatabase.getInstance().getReference().child("id").child(userID).child("Lobby").setValue(this.id);
+        if(this.getSize()==this.getMaxSize())
+            this.setAvailability(lobbyAvailability.INVISIBLE);
         writeToDB();
     }
 
@@ -101,6 +103,8 @@ public class Lobby implements Serializable {
     public void removeUser(String userID) {
         users.remove(userID);
         FirebaseDatabase.getInstance().getReference().child("id").child(userID).child("Lobby").setValue(null);
+        if(this.getAvailability()==lobbyAvailability.INVISIBLE)
+            this.setAvailability(lobbyAvailability.VISIBLE);
         if (users.size() == 0)
             delete();
         else
@@ -142,10 +146,10 @@ class LobbySports extends Lobby {
     protected double latitude;
     protected double longitude;
 
-    LobbySports(String id, lobbyAvailability availability, int maxSize, int minAge, int maxAge,
+    LobbySports(String id, int maxSize, int minAge, int maxAge,
                 sports sport, skillGroupSports skill, double longitude, double latitude, String adminId,
                 String locationName, String hour) {
-        super(id, availability, maxSize);
+        super(id, maxSize);
         this.minAge = minAge;
         this.maxAge = maxAge;
         this.sport = sport;
@@ -271,6 +275,9 @@ class LobbySports extends Lobby {
             LobbySports curr = ds.getValue(LobbySports.class);
             Log.d("BUGS", curr.getId());
 
+            //availibility filter
+            if(curr.getAvailability()==lobbyAvailability.INVISIBLE)
+                continue;
             // age filter
             if (curr.getMaxAge() < filter.getAge() || curr.getMinAge() > filter.getAge())
                 continue;
