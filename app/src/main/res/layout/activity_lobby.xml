@@ -8,26 +8,16 @@
     android:windowSoftInputMode="adjustPan"
     tools:context=".LobbyActivity">
 
-    <ImageButton
-        android:id="@+id/optionsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:contentDescription="@string/options"
-        android:onClick="showPopup"
-        android:src="@drawable/ic_menu_dots"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/sendMessageEt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
         android:ems="10"
         android:hint="@string/message"
         android:inputType="textMultiLine"
@@ -42,23 +32,22 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/sendMessageEt"
         android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="125dp"
-        app:layout_constraintBottom_toTopOf="@+id/sendMessageEt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginEnd="16dp"
+        android:src="@android:drawable/ic_menu_send"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.uber.sdk.android.rides.RideRequestButton
         android:id="@+id/rideRequestBtn"
-        android:layout_width="310dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_below="@+id/view_on_mapBtn"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="125dp" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -93,6 +82,23 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
+            android:id="@+id/optionsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:contentDescription="@string/options"
+            android:onClick="showPopup"
+            android:src="@drawable/ic_menu_dots"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/menu_profileBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
             android:id="@+id/menu_profileBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,10 +115,16 @@
 
     <ListView
         android:id="@+id/messageListView"
-        android:layout_width="395dp"
-        android:layout_height="175dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/sendMessageEt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rideRequestBtn"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintVertical_bias="0.504" />
 
 </android.support.constraint.ConstraintLayout>
