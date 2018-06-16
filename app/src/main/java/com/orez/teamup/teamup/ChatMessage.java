@@ -1,16 +1,20 @@
 package com.orez.teamup.teamup;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class ChatMessage {
     private String messageText;
     private String messageUser;
-    private String messageTime;
+    private long messageTime;
 
     public ChatMessage(String _messageText, String _messageUser){
         this.messageText = _messageText;
         this.messageUser = _messageUser;
     }
 
-    public ChatMessage(String _messageText, String _messageUser, String _messageTime){
+    public ChatMessage(String _messageText, String _messageUser, long _messageTime){
         this.messageText = _messageText;
         this.messageUser = _messageUser;
         this.messageTime = _messageTime;
@@ -26,7 +30,7 @@ public class ChatMessage {
         this.messageUser = messageUser;
     }
 
-    public void setMessageTime(String messageTime) {
+    public void setMessageTime(long messageTime) {
         this.messageTime = messageTime;
     }
 
@@ -38,7 +42,14 @@ public class ChatMessage {
         return messageUser;
     }
 
-    public String getMessageTime() {
+    public long getMessageTime() {
         return messageTime;
     }
+
+    public String getTime(){
+        Date date = new Date(messageTime*1000L);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        return sdf.format(date);
+    }
+
 }

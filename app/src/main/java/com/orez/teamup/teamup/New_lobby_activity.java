@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -44,7 +46,10 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
     TextView mplaceTV;
     TextView mtimeTV;
     Marker marker;
-
+    RadioButton today_Rbtn;
+    RadioButton tomorrow_Rbtn;
+    RadioGroup radioGroup;
+    int Lmonth,Lday,Lhour,Lminute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,18 +62,26 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
         mnewLobbyBtn = (Button) findViewById(R.id.new_lobbyBtn);
         mplaceTV = (TextView) findViewById(R.id.placeTV);
         mtimeTV = (TextView) findViewById(R.id.timeTV);
+        today_Rbtn=(RadioButton) findViewById(R.id.today_RBtn);
+        tomorrow_Rbtn=(RadioButton) findViewById(R.id.tomorrow_RBtn);
+        radioGroup=(RadioGroup) findViewById(R.id.radioGroup);
         user = (User) getIntent().getSerializableExtra("User");
         //adapter pentru spinner
         mspors_spinner.setAdapter(new ArrayAdapter<sports>(this, android.R.layout.simple_list_item_1, sports.values()));
+        //onclick creare lobby
         mnewLobbyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkallfields()) {
+                    Calendar calendar=Calendar.getInstance();
+                    if(tomorrow_Rbtn.isChecked())
+                        calendar.add(Calendar.DAY_OF_YEAR,1);
+                    Lmonth=calendar.get(Calendar.MONTH);Lday=calendar.get(Calendar.DAY_OF_MONTH);
                     int maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());
-                    LobbySports mlobby = new LobbySports(Lobby.getNewID(), lobbyAvailability.ANYONE, maxlobbysize, user.getAge() - 3,
+                    LobbySports mlobby = new LobbySports(Lobby.getNewID(), maxlobbysize, user.getAge() - 3,
                             user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(),
                             skillGroupSports.ALL, latlong.longitude, latlong.latitude, FirebaseAuth.getInstance().getUid(),
-                            mplaceTV.getText().toString(), mtimeTV.getText().toString());
+                            mplaceTV.getText().toString(),Lmonth,Lday,Lhour,Lminute);
                     mlobby.setSkill(skillGroupSports.ALL);
                     Log.v("log", "apeleaza writetodb din new_lobby_activity");
                     mlobby.writeToDB();
@@ -87,20 +100,31 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 final Calendar mcurrentTime = Calendar.getInstance();
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+                final int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(New_lobby_activity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        //Daca ora e buna
                         if (checktime(selectedHour, selectedMinute, mcurrentTime.get(Calendar.HOUR_OF_DAY),
-                                mcurrentTime.get(Calendar.MINUTE)))
+                                mcurrentTime.get(Calendar.MINUTE))) {
                             mtimeTV.setText("Hour: " + selectedHour + ":" + selectedMinute);
+                            Lhour=selectedHour;Lminute=selectedMinute;
+                        }
                         else
                             makeToast("Time should be in at least an hour from now");
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
+            }
+        });
+        //Daca schimba data, reseteaza ora
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mtimeTV.setText(R.string.select_an_hour);
+
             }
         });
     }
@@ -125,13 +149,6 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
             }
         });
         if (ActivityCompat.checkSelfPermission(New_lobby_activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(New_lobby_activity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         map.setMyLocationEnabled(true);
@@ -193,6 +210,10 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
 
     //verifica sa fie ora in cel putin o ora de la ora curenta
     public boolean checktime(int hour, int minute, int chour, int cminute) {
+        if(tomorrow_Rbtn.isChecked()&& chour<23)
+            return true;
+        if(tomorrow_Rbtn.isChecked() && chour==23 && hour==0 && minute<cminute)
+            return false;
         if (hour - chour > 1)
             return true;
         if (hour - chour == 1 && minute >= cminute)
@@ -216,7 +237,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
             makeToast("Please select a location");
             return false;
         }
-        if (mtimeTV.getText().toString().equals("Tap here to select an hour")) {
+        if (mtimeTV.getText().toString().equals(R.string.select_an_hour)) {
             makeToast("Please select an hour");
             return false;
         }

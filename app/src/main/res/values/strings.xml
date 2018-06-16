@@ -26,4 +26,6 @@
     <string name="resend_verification">Resend verification</string>
     <string name="reset_password">Reset password</string>
     <string name="change_profile">Change profile</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 </resources>

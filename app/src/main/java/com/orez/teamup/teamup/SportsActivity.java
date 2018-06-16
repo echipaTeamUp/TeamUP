@@ -120,6 +120,7 @@ public class SportsActivity extends Activity {
                         i.putExtra("User", user);
                         i.putExtra("lobbys", arr);
                         startActivity(i);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
                     }
 
                     @Override

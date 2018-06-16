@@ -1,6 +1,7 @@
 package com.orez.teamup.teamup;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,6 +56,12 @@ public class ResultsActivity extends Activity {
             resultsTV.setText(arr.size() + " results found:");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+    }
+
     public class ViewHolder {
         TextView mSportTv;
         TextView mPlayersTv;
@@ -101,7 +108,8 @@ public class ResultsActivity extends Activity {
                         mlobby.addUser(FirebaseAuth.getInstance().getUid());
                         intent.putExtra("Lobby", mlobby);
                         startActivity(intent);
-
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                        finish();
                     }
                 });
                 convertView.setTag(viewHolder);
