@@ -135,8 +135,11 @@ public class LobbyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         lobby.removeUser(FirebaseAuth.getInstance().getUid());
-                        finish();
+                        Intent i = new Intent(LobbyActivity.this, SportsActivity.class);
+                        i.putExtra("User", user);
+                        startActivity(i);
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                        finish();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
