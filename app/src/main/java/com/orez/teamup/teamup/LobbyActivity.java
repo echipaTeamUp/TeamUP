@@ -17,12 +17,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,20 +109,20 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
         //arata locatia in Google Maps
-        view_on_mapBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double longitude = lobby.getLongitude();
-                double latitude = lobby.getLatitude();
-                Toast.makeText(LobbyActivity.this, latitude + "", Toast.LENGTH_SHORT).show();
-                Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + latitude + "," + longitude + "(Lobby+location)");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
-                }
-            }
-        });
+//        view_on_mapBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                double longitude = lobby.getLongitude();
+//                double latitude = lobby.getLatitude();
+//                Toast.makeText(LobbyActivity.this, latitude + "", Toast.LENGTH_SHORT).show();
+//                Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + latitude + "," + longitude + "(Lobby+location)");
+//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                mapIntent.setPackage("com.google.android.apps.maps");
+//                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(mapIntent);
+//                }
+//            }
+//        });
 
     }
 
@@ -254,5 +257,31 @@ public class LobbyActivity extends AppCompatActivity {
             }
         };
         requestBtn.setCallback(callback);
+    }
+
+    public void showPopup(View v){
+        PopupMenu mPopup = new PopupMenu(this, v);
+        MenuInflater inflater = mPopup.getMenuInflater();
+        inflater.inflate(R.menu.actions, mPopup.getMenu());
+        mPopup.show();
+
+        mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                //arata locatia in Gmaps
+                if(item.getTitle().toString().equals("View on map")) {
+                    double longitude = lobby.getLongitude();
+                    double latitude = lobby.getLatitude();
+                    Toast.makeText(LobbyActivity.this, latitude + "", Toast.LENGTH_SHORT).show();
+                    Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + latitude + "," + longitude + "(Lobby+location)");
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(mapIntent);
+                    }
+                }
+                return true;
+            }
+        });
     }
 }

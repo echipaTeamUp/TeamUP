@@ -28,4 +28,5 @@
     <string name="change_profile">Change profile</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="options">Options</string>
 </resources>
