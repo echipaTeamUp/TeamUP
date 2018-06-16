@@ -65,7 +65,6 @@ public class LobbyActivity extends AppCompatActivity {
 
         user = (User) getIntent().getSerializableExtra("User");
         lobby = (LobbySports) getIntent().getSerializableExtra("Lobby");
-        get_directionsBtn = (Button) findViewById(R.id.get_directionsBtn);
         view_on_mapBtn = (Button) findViewById(R.id.view_on_mapBtn);
         requestBtn = (RideRequestButton) findViewById(R.id.rideRequestBtn);
 
