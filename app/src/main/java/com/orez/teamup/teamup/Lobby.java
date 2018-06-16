@@ -12,27 +12,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-enum lobbyAvailability {
-    VISIBLE, INVISIBLE
-}
-
 public class Lobby implements Serializable {
     protected String id;
     protected ArrayList<String> users = new ArrayList<>();
-    protected lobbyAvailability availability;
     protected int maxSize;
     protected String hour;
     protected String adminId;
 
     public Lobby(String id, int maxSize) {
         this.id = id;
-        this.availability = lobbyAvailability.VISIBLE;
         this.maxSize = maxSize;
     }
 
     public Lobby(String id) {
         this.id = id;
-        this.availability = lobbyAvailability.VISIBLE;
         this.maxSize = -1;
     }
 
@@ -51,20 +44,12 @@ public class Lobby implements Serializable {
         return users.size();
     }
 
-    public lobbyAvailability getAvailability() {
-        return availability;
-    }
-
     public int getMaxSize() {
         return maxSize;
     }
 
     public String getHour() {
         return hour;
-    }
-
-    public void setAvailability(lobbyAvailability availability) {
-        this.availability = availability;
     }
 
     public void setMaxSize(int maxSize) {
@@ -94,8 +79,6 @@ public class Lobby implements Serializable {
 
         users.add(userID);
         FirebaseDatabase.getInstance().getReference().child("id").child(userID).child("Lobby").setValue(this.id);
-        if(this.getSize()==this.getMaxSize())
-            this.setAvailability(lobbyAvailability.INVISIBLE);
         writeToDB();
     }
 
@@ -103,8 +86,6 @@ public class Lobby implements Serializable {
     public void removeUser(String userID) {
         users.remove(userID);
         FirebaseDatabase.getInstance().getReference().child("id").child(userID).child("Lobby").setValue(null);
-        if(this.getAvailability()==lobbyAvailability.INVISIBLE)
-            this.setAvailability(lobbyAvailability.VISIBLE);
         if (users.size() == 0)
             delete();
         else
@@ -274,10 +255,7 @@ class LobbySports extends Lobby {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             LobbySports curr = ds.getValue(LobbySports.class);
             Log.d("BUGS", curr.getId());
-
-            //availibility filter
-            if(curr.getAvailability()==lobbyAvailability.INVISIBLE)
-                continue;
+            
             // age filter
             if (curr.getMaxAge() < filter.getAge() || curr.getMinAge() > filter.getAge())
                 continue;
