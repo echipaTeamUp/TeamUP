@@ -59,6 +59,7 @@ public class LobbyActivity extends AppCompatActivity {
     Button view_on_mapBtn;
     RideRequestButton requestBtn;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

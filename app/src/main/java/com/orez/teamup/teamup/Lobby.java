@@ -10,6 +10,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 enum lobbyAvailability {
@@ -21,7 +23,6 @@ public class Lobby implements Serializable {
     protected ArrayList<String> users = new ArrayList<>();
     protected lobbyAvailability availability;
     protected int maxSize;
-    protected String hour;
     protected String adminId;
 
     public Lobby(String id, int maxSize) {
@@ -59,9 +60,6 @@ public class Lobby implements Serializable {
         return maxSize;
     }
 
-    public String getHour() {
-        return hour;
-    }
 
     public void setAvailability(lobbyAvailability availability) {
         this.availability = availability;
@@ -75,9 +73,6 @@ public class Lobby implements Serializable {
         this.id = id;
     }
 
-    public void setHour(String hour) {
-        this.hour = hour;
-    }
 
     // adds a new user to the lobby
     public void addUser(String userID) {
@@ -103,8 +98,6 @@ public class Lobby implements Serializable {
     public void removeUser(String userID) {
         users.remove(userID);
         FirebaseDatabase.getInstance().getReference().child("id").child(userID).child("Lobby").setValue(null);
-        if(this.getAvailability()==lobbyAvailability.INVISIBLE)
-            this.setAvailability(lobbyAvailability.VISIBLE);
         if (users.size() == 0)
             delete();
         else
@@ -145,10 +138,11 @@ class LobbySports extends Lobby {
     protected String locationName;
     protected double latitude;
     protected double longitude;
+    protected int month,day,hour,minute;
 
     LobbySports(String id, int maxSize, int minAge, int maxAge,
                 sports sport, skillGroupSports skill, double longitude, double latitude, String adminId,
-                String locationName, String hour) {
+                String locationName, int month,int day,int hour,int minute) {
         super(id, maxSize);
         this.minAge = minAge;
         this.maxAge = maxAge;
@@ -159,7 +153,11 @@ class LobbySports extends Lobby {
         this.latitude = latitude;
         this.adminId = adminId;
         this.addUser(adminId);
-        this.hour = hour;
+        this.month=month;
+        this.day=day;
+        this.hour=hour;
+        this.minute=minute;
+
     }
 
     LobbySports(String id) {
@@ -171,7 +169,6 @@ class LobbySports extends Lobby {
         this.adminId = "da";
         this.longitude = -1;
         this.latitude = -1;
-        this.hour = "-1";
     }
 
     LobbySports() {
@@ -266,6 +263,22 @@ class LobbySports extends Lobby {
         this.adminId = adminId;
     }
 
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
     public static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter) {
 
         ArrayList<LobbySports> arr = new ArrayList<>();
@@ -304,9 +317,23 @@ class LobbySports extends Lobby {
             if (mfilterLocation.distanceTo(mlobbyLocation) / 1000 > 20)
                 continue;
 
+            // time filter
+            Date currentDate=Calendar.getInstance().getTime();
+            int cmonth=currentDate.getMonth(),cday=currentDate.getDay(),chour=currentDate.getHours(),cminute=currentDate.getMinutes();
+            if(!verifydate(cmonth,cday,chour,cminute,curr.getMonth(),curr.getDay(),curr.getHour(),curr.getMinute(),20))
+                continue;
             arr.add(curr);
         }
 
         return arr;
+    }
+    static boolean verifydate(int cmonth,int cday,int chour,int cminute,int month,int day,int hour,int minute,int interval){
+        if(hour<chour && day==cday)
+            return false;
+        if(hour==chour && day==cday && minute-cminute<interval)
+            return false;
+        if(chour==23 && hour==0 && minute-cminute<interval)
+            return false;
+        return true;
     }
 }

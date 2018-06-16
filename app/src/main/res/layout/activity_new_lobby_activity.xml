@@ -25,7 +25,7 @@
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
                 android:layout_width="0dp"
-                android:layout_height="400dp"
+                android:layout_height="325dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
@@ -123,18 +123,15 @@
 
             <TextView
                 android:id="@+id/placeTV"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="363dp"
+                android:layout_height="33dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/editstyletext"
                 android:text="@string/select_a_location"
                 android:textSize="24sp"
                 android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6"
+                app:layout_constraintBottom_toBottomOf="@+id/mapView"
+                tools:layout_editor_absoluteX="24dp"
                 tools:text="@string/select_a_location" />
 
             <TextView
@@ -143,11 +140,12 @@
                 android:layout_height="45dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="184dp"
                 android:background="@drawable/editstyletext"
                 android:text="@string/select_an_hour"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/placeTV" />
 
@@ -213,6 +211,32 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </android.support.constraint.ConstraintLayout>
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="218dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="74dp"
+                android:layout_marginTop="24dp"
+                android:checkedButton="@+id/today_RBtn"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+                <RadioButton
+                    android:id="@+id/today_RBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/today" />
+
+                <RadioButton
+                    android:id="@+id/tomorrow_RBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tomorrow" />
+            </RadioGroup>
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
