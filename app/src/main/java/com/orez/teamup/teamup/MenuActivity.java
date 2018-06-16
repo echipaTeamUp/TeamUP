@@ -127,6 +127,7 @@ public class MenuActivity extends Activity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)) {
+
         }// TODO:facem ceva sa blocam aplicatia daca nu avem permisiune de locatie
     }
 }
