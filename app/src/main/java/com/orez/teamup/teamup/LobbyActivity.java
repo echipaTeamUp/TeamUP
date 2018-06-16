@@ -16,11 +16,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,12 +38,9 @@ import com.uber.sdk.android.rides.RideRequestButton;
 import com.uber.sdk.android.rides.RideRequestButtonCallback;
 import com.uber.sdk.rides.client.ServerTokenSession;
 import com.uber.sdk.rides.client.SessionConfiguration;
-import com.uber.sdk.rides.client.UberRidesApi;
 import com.uber.sdk.rides.client.error.ApiError;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class LobbyActivity extends AppCompatActivity {
@@ -84,7 +79,7 @@ public class LobbyActivity extends AppCompatActivity {
                 String message = mInputMsg.getText().toString();
                 if (!message.equals("")) {
                     long xd = System.currentTimeMillis() / 1000L;
-                    ChatMessage chatMessage=new ChatMessage(message, user.getFirst_name(), xd);
+                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name(), xd);
                     ref.child(Long.toString(xd)).setValue(chatMessage);
                     mInputMsg.setText("");
                 }
@@ -136,11 +131,8 @@ public class LobbyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         lobby.removeUser(FirebaseAuth.getInstance().getUid());
-                        Intent i = new Intent(LobbyActivity.this, SportsActivity.class);
-                        i.putExtra("User", user);
-                        startActivity(i);
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                         finish();
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -180,21 +172,23 @@ public class LobbyActivity extends AppCompatActivity {
                 viewHolder.mTimeTv = (TextView) convertView.findViewById(R.id.chatTimeTv);
                 viewHolder.mTimeTv.setText(getItem(position).getTime());
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.chatUserTv);
-                viewHolder.mUserTv.setText(getItem(position).getMessageUser()+":");
+                viewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
                 convertView.setTag(viewHolder);
-            } else{
+            } else {
                 mainViewHolder = (LobbyActivity.ViewHolder) convertView.getTag();
                 mainViewHolder.mMessageTv.setText(getItem(position).getMessageText());
                 mainViewHolder.mTimeTv.setText(getItem(position).getTime());
-                mainViewHolder.mUserTv.setText(getItem(position).getMessageUser()+":");
+                mainViewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
                 mainViewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
             }
 
             return convertView;
         }
     }
+
     LocationManager mLocationManager;
     LocationListener mLocationListener;
+
     void initialize_uber() {
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         mLocationListener = new LocationListener() {
@@ -232,9 +226,9 @@ public class LobbyActivity extends AppCompatActivity {
                 .build();
         UberSdk.initialize(config);
         RideParameters rideParams = new RideParameters.Builder()
-                               .setDropoffLocation(
-                        lobby.getLatitude(),lobby.getLongitude(), "Lobby location", lobby.getLocationName())
-                                .setPickupLocation(mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),
+                .setDropoffLocation(
+                        lobby.getLatitude(), lobby.getLongitude(), "Lobby location", lobby.getLocationName())
+                .setPickupLocation(mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),
                         mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude(),
                         "Your location", "")
                 .build();
@@ -260,5 +254,5 @@ public class LobbyActivity extends AppCompatActivity {
             }
         };
         requestBtn.setCallback(callback);
-        }
+    }
 }

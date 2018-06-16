@@ -47,14 +47,14 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        gif=(ImageView) findViewById(R.id.gif);
+        gif = (ImageView) findViewById(R.id.gif);
         mEmailEt = (EditText) findViewById(R.id.login_usernameEt);
         mPasswordEt = (EditText) findViewById(R.id.login_passwordEt);
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (Button) findViewById(R.id.login_signupBtn);
-        logo=(ImageView) findViewById(R.id.imageView);
-        mresend_verificationBtn =(Button) findViewById(R.id.resend_verificationBtn);
-        mreset_passwordBtn =(Button) findViewById(R.id.reset_passwordBtn);
+        logo = (ImageView) findViewById(R.id.imageView);
+        mresend_verificationBtn = (Button) findViewById(R.id.resend_verificationBtn);
+        mreset_passwordBtn = (Button) findViewById(R.id.reset_passwordBtn);
         mAuth = FirebaseAuth.getInstance();
         //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
@@ -67,7 +67,6 @@ public class LoginActivity extends Activity {
         }
         //daca nu esti logat
         else {
-
 
 
             //OnClick care duce la activitatea de signup
@@ -89,12 +88,12 @@ public class LoginActivity extends Activity {
             });
 
         }
-    mreset_passwordBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            resetpassword();
-        }
-    });
+        mreset_passwordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetpassword();
+            }
+        });
 
     }
 
@@ -109,14 +108,14 @@ public class LoginActivity extends Activity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // A mers
-                                FirebaseAuth mAuth=FirebaseAuth.getInstance();
-                                FirebaseUser user=mAuth.getCurrentUser();
-                                if(user.isEmailVerified()){
-                                startgif();
-                                retrieve_user();}
-                                else{
-                                    Toast.makeText(LoginActivity.this,"Please verify your email" +
-                                            " adress before you sign in",Toast.LENGTH_LONG).show();
+                                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user.isEmailVerified()) {
+                                    startgif();
+                                    retrieve_user();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Please verify your email" +
+                                            " adress before you sign in", Toast.LENGTH_LONG).show();
                                     makeresendvisible();
                                 }
 
@@ -163,26 +162,15 @@ public class LoginActivity extends Activity {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.v("log","onDataChange din retrieve_user din loginActivity");
+                Log.v("log", "onDataChange din retrieve_user din loginActivity");
                 user = dataSnapshot.child("id").child(uid).getValue(User.class);
-                //Verifica daca esti intr-un lobby
                 String LobbyID = dataSnapshot.child("id").child(uid).child("Lobby").getValue(String.class);
-                //Daca da, te duce in lobby
-                if (LobbyID != null){
-                    Log.v("log","Trimis la lobby din retrieve_user");
-                    Intent i = new Intent(LoginActivity.this, LobbyActivity.class);
-                    i.putExtra("User", user);
-                    i.putExtra("Lobby", dataSnapshot.child("SportsLobby").child(LobbyID).getValue(LobbySports.class));
-                    startActivity(i);
-                    finish();
-                } else {
-                    //daca nu, te duce in meniu
-                    Log.v("log","trimis in meniu din onDataChange");
-                    Intent i = new Intent(LoginActivity.this, MenuActivity.class);
-                    i.putExtra("User", user);
-                    startActivity(i);
-                    finish();
-                }
+                //daca nu, te duce in meniu
+                Log.v("log", "trimis in meniu din onDataChange");
+                Intent i = new Intent(LoginActivity.this, MenuActivity.class);
+                i.putExtra("User", user);
+                startActivity(i);
+                finish();
             }
 
             @Override
@@ -194,7 +182,7 @@ public class LoginActivity extends Activity {
 
     }
 
-    void startgif(){
+    void startgif() {
         GlideDrawableImageViewTarget glideTarget = new GlideDrawableImageViewTarget(gif);
 
         Glide.with(LoginActivity.this)
@@ -215,11 +203,11 @@ public class LoginActivity extends Activity {
         mresend_verificationBtn.setVisibility(View.GONE);
     }
 
-    void makeresendvisible(){
+    void makeresendvisible() {
         mresend_verificationBtn.setVisibility(View.VISIBLE);
         Toast.makeText(LoginActivity.this, "Signup succeded",
                 Toast.LENGTH_SHORT).show();
-        final FirebaseUser fuser=mAuth.getCurrentUser();
+        final FirebaseUser fuser = mAuth.getCurrentUser();
         fuser.sendEmailVerification()
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
                     @Override
@@ -238,20 +226,21 @@ public class LoginActivity extends Activity {
                 });
     }
 
-    void resetpassword(){
-        String email=mEmailEt.getText().toString().trim();
-        if(!isEmailValid(email))
-            Toast.makeText(LoginActivity.this,"Please enter your email",Toast.LENGTH_SHORT).show();
-        else{
-        mAuth.sendPasswordResetEmail(email)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this,"Password reset email sent",Toast.LENGTH_SHORT).show();
+    void resetpassword() {
+        String email = mEmailEt.getText().toString().trim();
+        if (!isEmailValid(email))
+            Toast.makeText(LoginActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
+        else {
+            mAuth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Password reset email sent", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });}
+                    });
+        }
     }
 
     boolean isEmailValid(CharSequence email) {

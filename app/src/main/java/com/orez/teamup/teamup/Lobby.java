@@ -14,26 +14,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-enum lobbyAvailability {
-    VISIBLE, INVISIBLE
-}
-
 public class Lobby implements Serializable {
     protected String id;
     protected ArrayList<String> users = new ArrayList<>();
-    protected lobbyAvailability availability;
     protected int maxSize;
     protected String adminId;
 
     public Lobby(String id, int maxSize) {
         this.id = id;
-        this.availability = lobbyAvailability.VISIBLE;
         this.maxSize = maxSize;
     }
 
     public Lobby(String id) {
         this.id = id;
-        this.availability = lobbyAvailability.VISIBLE;
         this.maxSize = -1;
     }
 
@@ -52,18 +45,10 @@ public class Lobby implements Serializable {
         return users.size();
     }
 
-    public lobbyAvailability getAvailability() {
-        return availability;
-    }
-
     public int getMaxSize() {
         return maxSize;
     }
 
-
-    public void setAvailability(lobbyAvailability availability) {
-        this.availability = availability;
-    }
 
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
@@ -89,8 +74,6 @@ public class Lobby implements Serializable {
 
         users.add(userID);
         FirebaseDatabase.getInstance().getReference().child("id").child(userID).child("Lobby").setValue(this.id);
-        if(this.getSize()==this.getMaxSize())
-            this.setAvailability(lobbyAvailability.INVISIBLE);
         writeToDB();
     }
 
@@ -287,10 +270,7 @@ class LobbySports extends Lobby {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             LobbySports curr = ds.getValue(LobbySports.class);
             Log.d("BUGS", curr.getId());
-
-            //availibility filter
-            if(curr.getAvailability()==lobbyAvailability.INVISIBLE)
-                continue;
+            
             // age filter
             if (curr.getMaxAge() < filter.getAge() || curr.getMinAge() > filter.getAge())
                 continue;
