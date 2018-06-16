@@ -43,21 +43,25 @@
         android:layout_alignTop="@+id/sendMessageEt"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="125dp"
+        app:layout_constraintBottom_toTopOf="@+id/sendMessageEt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/view_on_mapBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorAccent"
         android:text="@string/view_on_map"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/messageListView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10" />
 
     <Button
         android:id="@+id/get_directionsBtn"
@@ -89,21 +93,70 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/sendMessageEt"
+        android:text="@string/get_directions"
+        app:layout_constraintStart_toEndOf="@+id/view_on_mapBtn"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout10"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rideRequestBtn">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ListView
-            android:id="@+id/messageListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="71dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/teamupsmall"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            android:stackFromBottom="true"
-            android:transcriptMode="alwaysScroll"
-            android:windowSoftInputMode="adjustPan" />
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/menu_signoutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/logout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/settingssmallgear"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/menu_profileBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/menu_profileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/userprofilewhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/menu_signoutBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
