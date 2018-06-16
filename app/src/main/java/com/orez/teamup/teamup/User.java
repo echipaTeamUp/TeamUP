@@ -7,7 +7,7 @@ public class User implements Serializable {
     private String First_name = "nu a mers:(";
     private String Last_name = "null";
     private String Birthday = "null";
-
+    protected int rating,number_of_ratings,strikes;
     public String getFirst_name() {
         return First_name;
     }
@@ -38,6 +38,9 @@ public class User implements Serializable {
         this.First_name = First_name;
         this.Last_name = Last_name;
         this.Birthday = Birthday;
+        this.rating=0;
+        this.number_of_ratings=0;
+        this.strikes=0;
     }
     public int getAge(){
         String[] items=this.Birthday.split("-");
