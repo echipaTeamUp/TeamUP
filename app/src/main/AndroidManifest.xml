@@ -37,16 +37,13 @@
         <activity
             android:name=".SportsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".FilterActivity" />
-        <activity
-            android:name=".FilterSportsActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ResultsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".LobbyActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".New_lobby_activity"></activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
