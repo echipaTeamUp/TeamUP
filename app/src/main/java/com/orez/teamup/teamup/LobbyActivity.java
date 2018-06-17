@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -56,6 +58,7 @@ public class LobbyActivity extends AppCompatActivity {
     Button get_directionsBtn;
     Button view_on_mapBtn;
     RideRequestButton requestBtn;
+    ImageButton mProfileBtn;
 
 
     @Override
@@ -67,6 +70,7 @@ public class LobbyActivity extends AppCompatActivity {
         lobby = (LobbySports) getIntent().getSerializableExtra("Lobby");
         view_on_mapBtn = (Button) findViewById(R.id.view_on_mapBtn);
         requestBtn = (RideRequestButton) findViewById(R.id.rideRequestBtn);
+        mProfileBtn=(ImageButton) findViewById(R.id.menu_profileBtn);
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
 
@@ -122,6 +126,15 @@ public class LobbyActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
+        mProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(LobbyActivity.this,ProfileActivity.class);
+                i.putExtra("Req_code",1);
+                i.putExtra("User",user);
+                startActivity(i);
+            }
+        });
 
     }
 

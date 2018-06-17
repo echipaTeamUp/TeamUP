@@ -25,13 +25,12 @@
         android:layout_marginBottom="32dp"
         android:layout_marginStart="32dp"
         android:clickable="true"
+        android:scaleType="fitCenter"
         android:src="@drawable/floatingbtnlarge"
-        android:tint="@android:color/transparent"
-        app:backgroundTint="@android:color/transparent"
         app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="@android:color/transparent" />
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton_send"

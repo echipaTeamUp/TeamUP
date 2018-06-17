@@ -44,6 +44,8 @@ public class SportsActivity extends Activity {
     FloatingActionButton mfab;
     FloatingActionButton mSendFab;
     User user;
+    LocationManager mLocationManager;
+    LocationListener mLocationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +76,12 @@ public class SportsActivity extends Activity {
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 LocationListener mLocationListener=new LocationListener() {
+                mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                  mLocationListener=new LocationListener() {
                      @Override
                      public void onLocationChanged(Location location) {
-
+                        mLocationManager.removeUpdates(mLocationListener);
+                        mLocationManager=null;
                      }
 
                      @Override
@@ -95,7 +99,7 @@ public class SportsActivity extends Activity {
 
                      }
                  };
-                LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
 
                 if (ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
