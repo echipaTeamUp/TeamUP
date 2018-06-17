@@ -33,4 +33,5 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="options">Options</string>
+    <string name="participants">Press here to see participants</string>
 </resources>
