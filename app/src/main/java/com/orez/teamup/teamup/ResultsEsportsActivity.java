@@ -25,7 +25,7 @@ public class ResultsEsportsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
+        setContentView(R.layout.activity_results_esports);
 
         user = (User) getIntent().getSerializableExtra("User");
         ArrayList<LobbyEsports> arr = (ArrayList<LobbyEsports>) getIntent().getSerializableExtra("lobbys");
@@ -66,7 +66,7 @@ public class ResultsEsportsActivity extends Activity {
         @NonNull
         @Override
         public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            ResultsActivity.ViewHolder mainViewHolder = null;
+            ViewHolder mainViewHolder = null;
 
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -85,7 +85,7 @@ public class ResultsEsportsActivity extends Activity {
                 viewHolder.mJoinBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(ResultsEsportsActivity.this, LobbyActivity.class);
+                        Intent intent = new Intent(ResultsEsportsActivity.this, LobbyEsportsActivity.class);
                         intent.putExtra("User", user);
                         LobbyEsports mlobby = (LobbyEsports) getItem(position);
                         mlobby.addUser(FirebaseAuth.getInstance().getUid());
@@ -100,7 +100,7 @@ public class ResultsEsportsActivity extends Activity {
                 viewHolder.mLocationTv.setText(getItem(position).getLocationName());
                 convertView.setTag(viewHolder);
             } else {
-                mainViewHolder = (ResultsActivity.ViewHolder) convertView.getTag();
+                mainViewHolder = (ViewHolder) convertView.getTag();
                 mainViewHolder.mSportTv.setText(getItem(position).getEsport().toString());
                 mainViewHolder.mPlayersTv.setText(getItem(position).getSize() + "/" + getItem(position).getMaxSize());
                 mainViewHolder.mLocationTv.setText(getItem(position).getLocationName());
