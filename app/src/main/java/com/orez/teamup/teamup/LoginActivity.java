@@ -186,7 +186,7 @@ public class LoginActivity extends Activity {
         GlideDrawableImageViewTarget glideTarget = new GlideDrawableImageViewTarget(gif);
 
         Glide.with(LoginActivity.this)
-                .load(R.raw.teamuppending2)
+                .load(R.raw.teamuppending)
                 .into(glideTarget);
         gif.setVisibility(View.VISIBLE);
         mEmailEt.setVisibility(View.INVISIBLE);
