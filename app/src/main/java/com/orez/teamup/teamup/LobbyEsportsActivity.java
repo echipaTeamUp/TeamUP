@@ -80,7 +80,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
         mUserEsportsListView.setVisibility(View.GONE);
 
-        //mLobbySport.setText(lobby.getEsport().toString());
+        mLobbySport.setText(lobby.getEsport().toString());
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
 
