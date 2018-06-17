@@ -27,7 +27,7 @@
     <string name="reset_password"><u>Reset password</u></string>
     <string name="change_profile">Change profile</string>
     <string name="select_sport">Select your sport</string>
-    <string name="select_esport">Select your eSport</string>
+    <string name="select_esport">Select your game</string>
     <string name="sports">Sports</string>
     <string name="esport">eSports</string>
     <string name="today">Today</string>
