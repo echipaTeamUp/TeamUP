@@ -52,7 +52,7 @@
         <activity android:name=".EsportsActivity" />
         <activity android:name=".ResultsEsportsActivity" />
         <activity android:name=".New_lobby_esports_activity" />
-        <activity android:name=".LobbyEsportsActivity"></activity>
+        <activity android:name=".LobbyEsportsActivity" />
     </application>
 
 </manifest>

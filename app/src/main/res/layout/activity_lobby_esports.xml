@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradientbackground"
     android:windowSoftInputMode="adjustPan"
-    tools:context=".LobbyActivity">
+    tools:context=".LobbyEsportsActivity">
 
     <EditText
         android:id="@+id/sendMessageEt"
@@ -42,7 +42,6 @@
         android:id="@+id/rideRequestBtn"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_below="@+id/view_on_mapBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -127,5 +126,19 @@
         app:layout_constraintVertical_bias="0.504"
         android:transcriptMode="alwaysScroll"
         android:stackFromBottom="true" />
+
+    <ListView
+        android:id="@+id/usersEsportsListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/sendMessageEt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rideRequestBtn"
+        app:layout_constraintVertical_bias="0.504" />
 
 </android.support.constraint.ConstraintLayout>

@@ -108,6 +108,7 @@ public class Lobby implements Serializable {
 
 class LobbySports extends Lobby {
 
+    protected boolean type = false; // false daca e de sports
     protected int minAge;
     protected int maxAge;
     protected sports sport;
@@ -155,6 +156,8 @@ class LobbySports extends Lobby {
         // delete lobby
         FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(this.getId()).removeValue();
     }
+
+    public boolean getType(){return type;}
 
     public int getMaxAge() {
         return maxAge;
@@ -311,6 +314,7 @@ class LobbySports extends Lobby {
 
 class LobbyEsports extends Lobby {
 
+    protected boolean type = true; //true daca e de esports
     protected esports esport;
     protected String locationName;
     protected double latitude;
@@ -350,6 +354,8 @@ class LobbyEsports extends Lobby {
         // delete lobby
         FirebaseDatabase.getInstance().getReference().child("EsportsLobby").child(this.getId()).removeValue();
     }
+
+    public boolean getType(){return type;}
 
     public esports getEsport() {
         return esport;
