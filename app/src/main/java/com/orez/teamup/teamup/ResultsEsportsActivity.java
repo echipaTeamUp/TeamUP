@@ -51,6 +51,7 @@ public class ResultsEsportsActivity extends Activity {
     public class ViewHolder {
         TextView mSportTv;
         TextView mPlayersTv;
+        TextView mLocationTv;
         Button mJoinBtn;
     }
 
@@ -94,6 +95,9 @@ public class ResultsEsportsActivity extends Activity {
                         finish();
                     }
                 });
+
+                viewHolder.mLocationTv = (TextView) convertView.findViewById(R.id.locationTV);
+                viewHolder.mLocationTv.setText(getItem(position).getLocationName());
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (ResultsActivity.ViewHolder) convertView.getTag();

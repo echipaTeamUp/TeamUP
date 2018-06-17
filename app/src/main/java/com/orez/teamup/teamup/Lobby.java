@@ -49,7 +49,6 @@ public class Lobby implements Serializable {
         return maxSize;
     }
 
-
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
     }
@@ -143,17 +142,6 @@ class LobbySports extends Lobby {
 
     }
 
-    LobbySports(String id) {
-        super(id);
-        this.maxAge = -1;
-        this.minAge = -1;
-        this.sport = sports.ANY;
-        this.skill = skillGroupSports.ALL;
-        this.adminId = "da";
-        this.longitude = -1;
-        this.latitude = -1;
-    }
-
     LobbySports() {
     }
 
@@ -209,6 +197,22 @@ class LobbySports extends Lobby {
         return adminId;
     }
 
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
     public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
@@ -218,11 +222,6 @@ class LobbySports extends Lobby {
     }
 
     public void setMaxAge(int maxAge) {
-        this.maxAge = maxAge;
-    }
-
-    public void setAge(int minAge, int maxAge) {
-        this.minAge = minAge;
         this.maxAge = maxAge;
     }
 
@@ -246,20 +245,20 @@ class LobbySports extends Lobby {
         this.adminId = adminId;
     }
 
-    public int getHour() {
-        return hour;
+    public void setMonth(int month) {
+        this.month = month;
     }
 
-    public int getMinute() {
-        return minute;
+    public void setDay(int day) {
+        this.day = day;
     }
 
-    public int getMonth() {
-        return month;
+    public void setHour(int hour) {
+        this.hour = hour;
     }
 
-    public int getDay() {
-        return day;
+    public void setMinute(int minute) {
+        this.minute = minute;
     }
 
     public static ArrayList<LobbySports> filter(DataSnapshot dataSnapshot, FilterSports filter) {
@@ -322,16 +321,16 @@ class LobbySports extends Lobby {
 class LobbyEsports extends Lobby {
 
     protected esports esport;
-    protected skillGroupSports skill;
+    protected String locationName;
     protected double latitude;
     protected double longitude;
     protected int month, day, hour, minute;
 
-    LobbyEsports(String id, int maxSize, esports esport, skillGroupSports skill, double longitude, double latitude, String adminId,
+    LobbyEsports(String id, int maxSize, esports esport, String locationName, double longitude, double latitude, String adminId,
                 int month, int day, int hour, int minute) {
         super(id, maxSize);
         this.esport = esport;
-        this.skill = skill;
+        this.locationName = locationName;
         this.longitude = longitude;
         this.latitude = latitude;
         this.adminId = adminId;
@@ -365,8 +364,8 @@ class LobbyEsports extends Lobby {
         return esport;
     }
 
-    public skillGroupSports getSkill() {
-        return skill;
+    public String getLocationName(){
+        return this.locationName;
     }
 
     public double getLatitude() {
@@ -379,27 +378,6 @@ class LobbyEsports extends Lobby {
 
     public String getAdminId() {
         return adminId;
-    }
-
-
-    public void setSport(esports esport) {
-        this.esport = esport;
-    }
-
-    public void setSkill(skillGroupSports skill) {
-        this.skill = skill;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public void setAdminId(String adminId) {
-        this.adminId = adminId;
     }
 
     public int getHour() {
@@ -416,6 +394,26 @@ class LobbyEsports extends Lobby {
 
     public int getDay() {
         return day;
+    }
+
+    public void setEsport(esports esport) {
+        this.esport = esport;
+    }
+
+    public void setLocationName(String locationName){
+        this.locationName = locationName;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 
     public static ArrayList<LobbyEsports> filter(DataSnapshot dataSnapshot, FilterEsports filter) {
