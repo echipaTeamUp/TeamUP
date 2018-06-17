@@ -192,7 +192,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
                 String name=place.getName().toString();
-                if(name.contains(",") && name.contains("'") && name.contains("."))
+                if( name.contains("'") && name.contains("."))
                     mplaceTV.setText("Location: " + place.getAddress());
                 else
                     mplaceTV.setText("Location: " + place.getName());
