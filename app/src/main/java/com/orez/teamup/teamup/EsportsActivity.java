@@ -52,7 +52,7 @@ public class EsportsActivity extends Activity {
         mfab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(EsportsActivity.this, New_lobby_activity.class);
+                Intent i = new Intent(EsportsActivity.this, New_lobby_esports_activity.class);
                 i.putExtra("User", user);
                 startActivity(i);
             }

@@ -103,7 +103,7 @@ public class ResultsEsportsActivity extends Activity {
                 mainViewHolder = (ResultsActivity.ViewHolder) convertView.getTag();
                 mainViewHolder.mSportTv.setText(getItem(position).getEsport().toString());
                 mainViewHolder.mPlayersTv.setText(getItem(position).getSize() + "/" + getItem(position).getMaxSize());
-                //mainViewHolder.mLocationTv.setText(getItem(position).getLocationName());
+                mainViewHolder.mLocationTv.setText(getItem(position).getLocationName());
             }
 
             return convertView;

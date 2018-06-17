@@ -52,15 +52,34 @@ public class MenuActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Verifica daca esti intr-un lobby
-                String LobbyID = dataSnapshot.child("id").child(uid).child("Lobby").getValue(String.class);
+                final String LobbyID = dataSnapshot.child("id").child(uid).child("Lobby").getValue(String.class);
 
                 // Daca da, te duce in lobby
                 if (LobbyID != null) {
-                    Intent i = new Intent(MenuActivity.this, LobbyActivity.class);
-                    i.putExtra("User", user);
-                    i.putExtra("Lobby", dataSnapshot.child("SportsLobby").child(LobbyID).getValue(LobbySports.class));
-                    startActivity(i);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
+                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                Intent i = new Intent(MenuActivity.this, LobbyActivity.class);
+                                i.putExtra("User", user);
+                                i.putExtra("Lobby", dataSnapshot.child("SportsLobby").child(LobbyID).getValue(LobbySports.class));
+                                startActivity(i);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                            } else {
+                                Intent i = new Intent(MenuActivity.this, LobbyEsportsActivity.class);
+                                i.putExtra("User", user);
+                                i.putExtra("Lobby", dataSnapshot.child("EsportsLobby").child(LobbyID).getValue(LobbyEsports.class));
+                                startActivity(i);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 

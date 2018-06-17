@@ -25,11 +25,6 @@ public class Lobby implements Serializable {
         this.maxSize = maxSize;
     }
 
-    public Lobby(String id) {
-        this.id = id;
-        this.maxSize = -1;
-    }
-
     public Lobby() {
     }
 
@@ -326,7 +321,7 @@ class LobbyEsports extends Lobby {
     protected double longitude;
     protected int month, day, hour, minute;
 
-    LobbyEsports(String id, int maxSize, esports esport, String locationName, double longitude, double latitude, String adminId,
+    LobbyEsports(String id, int maxSize, esports esport, double longitude, double latitude, String adminId, String locationName,
                 int month, int day, int hour, int minute) {
         super(id, maxSize);
         this.esport = esport;

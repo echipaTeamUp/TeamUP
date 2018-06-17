@@ -50,7 +50,9 @@
             android:value="AIzaSyD9ihzZiXXwE9WkXg2Rh-LwfffBhwkRJTQ" />
 
         <activity android:name=".EsportsActivity" />
-        <activity android:name=".ResultsEsportsActivity"></activity>
+        <activity android:name=".ResultsEsportsActivity" />
+        <activity android:name=".New_lobby_esports_activity" />
+        <activity android:name=".LobbyEsportsActivity"></activity>
     </application>
 
 </manifest>
