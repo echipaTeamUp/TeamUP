@@ -347,12 +347,18 @@ public class LobbyActivity extends AppCompatActivity {
     public void loadUserList(View v){
         if(!mActiveList) {
             mChatListView.setVisibility(View.GONE);
+            //asta da crash
+//            mInputMsg.setVisibility(View.GONE);
+//            mSendFab.setVisibility(View.GONE);
             mUserListView.setVisibility(View.VISIBLE);
 
             mUserListView.setAdapter(new MyUserListAdapter(LobbyActivity.this, R.layout.user_list_item, users));
             mActiveList = true;
         } else{
             mChatListView.setVisibility(View.VISIBLE);
+            //asta da crash
+//            mInputMsg.setVisibility(View.VISIBLE);
+//            mSendFab.setVisibility(View.VISIBLE);
             mUserListView.setVisibility(View.GONE);
 
             mChatListView.setAdapter(new LobbyActivity.MyListAdapter(LobbyActivity.this, R.layout.chat_message_item, data));
