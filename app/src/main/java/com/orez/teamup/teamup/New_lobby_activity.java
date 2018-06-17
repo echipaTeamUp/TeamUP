@@ -49,7 +49,8 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
     RadioButton today_Rbtn;
     RadioButton tomorrow_Rbtn;
     RadioGroup radioGroup;
-    int Lmonth,Lday,Lhour,Lminute;
+    int Lmonth, Lday, Lhour, Lminute;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +63,9 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
         mnewLobbyBtn = (Button) findViewById(R.id.new_lobbyBtn);
         mplaceTV = (TextView) findViewById(R.id.placeTV);
         mtimeTV = (TextView) findViewById(R.id.timeTV);
-        today_Rbtn=(RadioButton) findViewById(R.id.today_RBtn);
-        tomorrow_Rbtn=(RadioButton) findViewById(R.id.tomorrow_RBtn);
-        radioGroup=(RadioGroup) findViewById(R.id.radioGroup);
+        today_Rbtn = (RadioButton) findViewById(R.id.today_RBtn);
+        tomorrow_Rbtn = (RadioButton) findViewById(R.id.tomorrow_RBtn);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         user = (User) getIntent().getSerializableExtra("User");
         //adapter pentru spinner
         mspors_spinner.setAdapter(new ArrayAdapter<sports>(this, android.R.layout.simple_list_item_1, sports.values()));
@@ -73,15 +74,16 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 if (checkallfields()) {
-                    Calendar calendar=Calendar.getInstance();
-                    if(tomorrow_Rbtn.isChecked())
-                        calendar.add(Calendar.DAY_OF_YEAR,1);
-                    Lmonth=calendar.get(Calendar.MONTH);Lday=calendar.get(Calendar.DAY_OF_MONTH);
+                    Calendar calendar = Calendar.getInstance();
+                    if (tomorrow_Rbtn.isChecked())
+                        calendar.add(Calendar.DAY_OF_YEAR, 1);
+                    Lmonth = calendar.get(Calendar.MONTH);
+                    Lday = calendar.get(Calendar.DAY_OF_MONTH);
                     int maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());
                     LobbySports mlobby = new LobbySports(Lobby.getNewID(), maxlobbysize, user.getAge() - 3,
                             user.getAge() + 3, (sports) mspors_spinner.getSelectedItem(),
                             skillGroupSports.ALL, latlong.longitude, latlong.latitude, FirebaseAuth.getInstance().getUid(),
-                            mplaceTV.getText().toString(),Lmonth,Lday,Lhour,Lminute);
+                            mplaceTV.getText().toString(), Lmonth, Lday, Lhour, Lminute);
                     mlobby.setSkill(skillGroupSports.ALL);
                     Log.v("log", "apeleaza writetodb din new_lobby_activity");
                     mlobby.writeToDB();
@@ -94,6 +96,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                 }
             }
         });
+
         //onClick selectat ora
         mtimeTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,9 +112,9 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                         if (checktime(selectedHour, selectedMinute, mcurrentTime.get(Calendar.HOUR_OF_DAY),
                                 mcurrentTime.get(Calendar.MINUTE))) {
                             mtimeTV.setText("Hour: " + selectedHour + ":" + selectedMinute);
-                            Lhour=selectedHour;Lminute=selectedMinute;
-                        }
-                        else
+                            Lhour = selectedHour;
+                            Lminute = selectedMinute;
+                        } else
                             makeToast("Time should be in at least an hour from now");
                     }
                 }, hour, minute, true);//Yes 24 hour time
@@ -119,6 +122,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                 mTimePicker.show();
             }
         });
+
         //Daca schimba data, reseteaza ora
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -210,9 +214,9 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
 
     //verifica sa fie ora in cel putin o ora de la ora curenta
     public boolean checktime(int hour, int minute, int chour, int cminute) {
-        if(tomorrow_Rbtn.isChecked()&& chour<23)
+        if (tomorrow_Rbtn.isChecked() && chour < 23)
             return true;
-        if(tomorrow_Rbtn.isChecked() && chour==23 && hour==0 && minute<cminute)
+        if (tomorrow_Rbtn.isChecked() && chour == 23 && hour == 0 && minute < cminute)
             return false;
         if (hour - chour > 1)
             return true;

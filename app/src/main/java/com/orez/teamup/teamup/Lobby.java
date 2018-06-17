@@ -67,7 +67,7 @@ public class Lobby implements Serializable {
         }
 
         // check if the user is already in the lobby
-        for (String user : users){
+        for (String user : users) {
             if (user.equals(userID))
                 return;
         }
@@ -121,11 +121,11 @@ class LobbySports extends Lobby {
     protected String locationName;
     protected double latitude;
     protected double longitude;
-    protected int month,day,hour,minute;
+    protected int month, day, hour, minute;
 
     LobbySports(String id, int maxSize, int minAge, int maxAge,
                 sports sport, skillGroupSports skill, double longitude, double latitude, String adminId,
-                String locationName, int month,int day,int hour,int minute) {
+                String locationName, int month, int day, int hour, int minute) {
         super(id, maxSize);
         this.minAge = minAge;
         this.maxAge = maxAge;
@@ -136,10 +136,10 @@ class LobbySports extends Lobby {
         this.latitude = latitude;
         this.adminId = adminId;
         this.addUser(adminId);
-        this.month=month;
-        this.day=day;
-        this.hour=hour;
-        this.minute=minute;
+        this.month = month;
+        this.day = day;
+        this.hour = hour;
+        this.minute = minute;
 
     }
 
@@ -270,7 +270,7 @@ class LobbySports extends Lobby {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             LobbySports curr = ds.getValue(LobbySports.class);
             Log.d("BUGS", curr.getId());
-            
+
             // age filter
             if (curr.getMaxAge() < filter.getAge() || curr.getMinAge() > filter.getAge())
                 continue;
@@ -298,21 +298,168 @@ class LobbySports extends Lobby {
                 continue;
 
             // time filter
-            Date currentDate=Calendar.getInstance().getTime();
-            int cmonth=currentDate.getMonth(),cday=currentDate.getDay(),chour=currentDate.getHours(),cminute=currentDate.getMinutes();
-            if(!verifydate(cmonth,cday,chour,cminute,curr.getMonth(),curr.getDay(),curr.getHour(),curr.getMinute(),20))
+            Date currentDate = Calendar.getInstance().getTime();
+            int cmonth = currentDate.getMonth(), cday = currentDate.getDay(), chour = currentDate.getHours(), cminute = currentDate.getMinutes();
+            if (!verifyDate(cmonth, cday, chour, cminute, curr.getMonth(), curr.getDay(), curr.getHour(), curr.getMinute(), 20))
                 continue;
             arr.add(curr);
         }
 
         return arr;
     }
-    static boolean verifydate(int cmonth,int cday,int chour,int cminute,int month,int day,int hour,int minute,int interval){
-        if(hour<chour && day==cday)
+
+    static boolean verifyDate(int cmonth, int cday, int chour, int cminute, int month, int day, int hour, int minute, int interval) {
+        if (hour < chour && day == cday)
             return false;
-        if(hour==chour && day==cday && minute-cminute<interval)
+        if (hour == chour && day == cday && minute - cminute < interval)
             return false;
-        if(chour==23 && hour==0 && minute-cminute<interval)
+        if (chour == 23 && hour == 0 && minute - cminute < interval)
+            return false;
+        return true;
+    }
+}
+
+class LobbyEsports extends Lobby {
+
+    protected esports esport;
+    protected skillGroupSports skill;
+    protected double latitude;
+    protected double longitude;
+    protected int month, day, hour, minute;
+
+    LobbyEsports(String id, int maxSize, esports esport, skillGroupSports skill, double longitude, double latitude, String adminId,
+                int month, int day, int hour, int minute) {
+        super(id, maxSize);
+        this.esport = esport;
+        this.skill = skill;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.adminId = adminId;
+        this.addUser(adminId);
+        this.month = month;
+        this.day = day;
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    LobbyEsports() {
+    }
+
+    // writes this to the database
+    @Override
+    public void writeToDB() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("EsportsLobby").
+                child(this.getId());
+        ref.setValue(this);
+    }
+
+    @Override
+    public void delete() {
+        // delete chat
+        FirebaseDatabase.getInstance().getReference().child("Chat").child(this.getId()).removeValue();
+        // delete lobby
+        FirebaseDatabase.getInstance().getReference().child("EsportsLobby").child(this.getId()).removeValue();
+    }
+
+    public esports getEsport() {
+        return esport;
+    }
+
+    public skillGroupSports getSkill() {
+        return skill;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getAdminId() {
+        return adminId;
+    }
+
+
+    public void setSport(esports esport) {
+        this.esport = esport;
+    }
+
+    public void setSkill(skillGroupSports skill) {
+        this.skill = skill;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public static ArrayList<LobbyEsports> filter(DataSnapshot dataSnapshot, FilterEsports filter) {
+
+        ArrayList<LobbyEsports> arr = new ArrayList<>();
+
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            LobbyEsports curr = ds.getValue(LobbyEsports.class);
+
+            // sport filter
+            if (curr.getEsport() != filter.getEsport())
+                continue;
+
+            // lobby full filter
+            if (curr.getSize() == curr.getMaxSize())
+                continue;
+
+            // distance filter
+            Location mfilterLocation = new Location("filter");
+            mfilterLocation.setLatitude(filter.getLatitude());
+            mfilterLocation.setLongitude(filter.getLongitude());
+            Location mlobbyLocation = new Location("lobby");
+            mlobbyLocation.setLongitude(curr.getLongitude());
+            mlobbyLocation.setLatitude(curr.getLatitude());
+            if (mfilterLocation.distanceTo(mlobbyLocation) / 1000 > 2000)
+                continue;
+
+            // time filter
+            Date currentDate = Calendar.getInstance().getTime();
+            int cmonth = currentDate.getMonth(), cday = currentDate.getDay(), chour = currentDate.getHours(), cminute = currentDate.getMinutes();
+            if (!verifyDate(cmonth, cday, chour, cminute, curr.getMonth(), curr.getDay(), curr.getHour(), curr.getMinute(), 20))
+                continue;
+            arr.add(curr);
+        }
+
+        return arr;
+    }
+
+    static boolean verifyDate(int cmonth, int cday, int chour, int cminute, int month, int day, int hour, int minute, int interval) {
+        if (hour < chour && day == cday)
+            return false;
+        if (hour == chour && day == cday && minute - cminute < interval)
+            return false;
+        if (chour == 23 && hour == 0 && minute - cminute < interval)
             return false;
         return true;
     }

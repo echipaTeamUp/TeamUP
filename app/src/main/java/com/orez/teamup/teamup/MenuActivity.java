@@ -40,8 +40,8 @@ public class MenuActivity extends Activity {
         user = (User) i.getSerializableExtra("User");
         mprofileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         msignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
-        msportsBtn=(Button) findViewById(R.id.sportsBtn);
-        mesportsBtn=(Button) findViewById(R.id.esportsBtn);
+        msportsBtn = (Button) findViewById(R.id.sportsBtn);
+        mesportsBtn = (Button) findViewById(R.id.esportsBtn);
 
         checkLocationPermission();
 
@@ -103,11 +103,17 @@ public class MenuActivity extends Activity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
-    public void loadeSportsActivity(View view){
-        Intent i=new Intent(MenuActivity.this,ProfileActivity.class);
-        i.putExtra("Req_code",2);
-        i.putExtra("Uid","xIWQ0gd4NDhO16SAzLQAKguagOc2");
+    public void loadeSportsActivity(View view) {
+        /* sori viju
+        Intent i = new Intent(MenuActivity.this, ProfileActivity.class);
+        i.putExtra("Req_code", 2);
+        i.putExtra("Uid", "xIWQ0gd4NDhO16SAzLQAKguagOc2");
+        startActivity(i);*/
+
+        Intent i = new Intent(MenuActivity.this, EsportsActivity.class);
+        i.putExtra("User", user);
         startActivity(i);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
     public void checkLocationPermission() {
@@ -136,8 +142,8 @@ public class MenuActivity extends Activity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)) {
-        msportsBtn.setVisibility(View.GONE);
-        msportsBtn.setVisibility(View.GONE);
+            msportsBtn.setVisibility(View.GONE);
+            msportsBtn.setVisibility(View.GONE);
         }
     }
 }
