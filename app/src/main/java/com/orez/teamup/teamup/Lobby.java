@@ -145,10 +145,6 @@ class LobbySports extends Lobby {
     public void writeToDB() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby").
                 child(this.getId());
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        for (StackTraceElement s : stackTraceElements) {
-            Log.d("BUGS", s.toString());
-        }
         ref.setValue(this);
     }
 
