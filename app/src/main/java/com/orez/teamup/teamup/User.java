@@ -32,15 +32,39 @@ public class User implements Serializable {
         Birthday = birthday;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
+    public int getNumber_of_ratings() {
+        return number_of_ratings;
+    }
+
+    public int getStrikes() {
+        return strikes;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setNumber_of_ratings(int number_of_ratings) {
+        this.number_of_ratings = number_of_ratings;
+    }
+
+    public void setStrikes(int strikes) {
+        this.strikes = strikes;
+    }
+
     public User(){}
 
-    public User(String First_name, String Last_name, String Birthday) {
+    public User(String First_name, String Last_name, String Birthday,int rating,int number_of_ratings,int strikes) {
         this.First_name = First_name;
         this.Last_name = Last_name;
         this.Birthday = Birthday;
-        this.rating=0;
-        this.number_of_ratings=0;
-        this.strikes=0;
+        this.rating=rating;
+        this.number_of_ratings=number_of_ratings;
+        this.strikes=strikes;
     }
     public int getAge(){
         String[] items=this.Birthday.split("-");

@@ -36,10 +36,43 @@
                 android:layout_marginTop="32dp"
                 android:background="@drawable/profiletextview"
                 android:text="TextView"
+                android:textAlignment="center"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+            <TextView
+                android:id="@+id/profile_birthdayTV"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginStart="72dp"
+                android:layout_marginTop="92dp"
+                android:background="@drawable/profiletextview"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+            <TextView
+                android:id="@+id/profile_strikesTV"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginStart="72dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/profiletextview"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_birthdayTV" />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout2"
@@ -96,6 +129,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </android.support.constraint.ConstraintLayout>
+
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
@@ -122,35 +156,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="72dp"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/profiletextview"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_name" />
-
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="72dp"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/profiletextview"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
+            <ImageButton
+                android:id="@+id/edit_profile_image_ImgBtn"
+                android:layout_width="36dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="16dp"
+                android:src="@android:drawable/ic_menu_edit"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
+                app:layout_constraintStart_toEndOf="@+id/profile_image"
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout4" />
 
             <EditText
                 android:id="@+id/editText3"
@@ -165,7 +179,7 @@
                 android:text="Name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText2" />
+                app:layout_constraintTop_toBottomOf="@+id/profile_strikesTV" />
 
             <EditText
                 android:id="@+id/editText4"
@@ -196,6 +210,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editText4" />
+
+            <RatingBar
+                android:id="@+id/ratingBar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:theme="@style/RatingBar"
+                android:isIndicator="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

@@ -40,8 +40,8 @@ public class MenuActivity extends Activity {
         user = (User) i.getSerializableExtra("User");
         mprofileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         msignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
-        msportsBtn=(Button) findViewById(R.id.sportsBtn);
-        mesportsBtn=(Button) findViewById(R.id.esportsBtn);
+        msportsBtn = (Button) findViewById(R.id.sportsBtn);
+        mesportsBtn = (Button) findViewById(R.id.esportsBtn);
 
         checkLocationPermission();
 
@@ -52,15 +52,34 @@ public class MenuActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Verifica daca esti intr-un lobby
-                String LobbyID = dataSnapshot.child("id").child(uid).child("Lobby").getValue(String.class);
+                final String LobbyID = dataSnapshot.child("id").child(uid).child("Lobby").getValue(String.class);
 
                 // Daca da, te duce in lobby
                 if (LobbyID != null) {
-                    Intent i = new Intent(MenuActivity.this, LobbyActivity.class);
-                    i.putExtra("User", user);
-                    i.putExtra("Lobby", dataSnapshot.child("SportsLobby").child(LobbyID).getValue(LobbySports.class));
-                    startActivity(i);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
+                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                Intent i = new Intent(MenuActivity.this, LobbyActivity.class);
+                                i.putExtra("User", user);
+                                i.putExtra("Lobby", dataSnapshot.child("SportsLobby").child(LobbyID).getValue(LobbySports.class));
+                                startActivity(i);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                            } else {
+                                Intent i = new Intent(MenuActivity.this, LobbyEsportsActivity.class);
+                                i.putExtra("User", user);
+                                i.putExtra("Lobby", dataSnapshot.child("EsportsLobby").child(LobbyID).getValue(LobbyEsports.class));
+                                startActivity(i);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
@@ -103,11 +122,17 @@ public class MenuActivity extends Activity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
-    public void loadeSportsActivity(View view){
-        Intent i=new Intent(MenuActivity.this,ProfileActivity.class);
-        i.putExtra("Req_code",2);
-        i.putExtra("Uid","xIWQ0gd4NDhO16SAzLQAKguagOc2");
+    public void loadeSportsActivity(View view) {
+        /* sori viju
+        Intent i = new Intent(MenuActivity.this, ProfileActivity.class);
+        i.putExtra("Req_code", 2);
+        i.putExtra("Uid", "xIWQ0gd4NDhO16SAzLQAKguagOc2");
+        startActivity(i);*/
+
+        Intent i = new Intent(MenuActivity.this, EsportsActivity.class);
+        i.putExtra("User", user);
         startActivity(i);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
     public void checkLocationPermission() {
@@ -136,8 +161,8 @@ public class MenuActivity extends Activity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)) {
-        msportsBtn.setVisibility(View.GONE);
-        msportsBtn.setVisibility(View.GONE);
+            msportsBtn.setVisibility(View.GONE);
+            msportsBtn.setVisibility(View.GONE);
         }
     }
 }

@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +27,17 @@ import com.google.firebase.storage.StorageReference;
 
 public class ProfileActivity extends Activity {
     TextView user_nameTv;
+    TextView birthdayTv;
+    TextView strikesTv;
+    ImageButton edit_image;
     User user;
 
     ImageView mprofileImage;
     Uri file;
     String uid;
     StorageReference ref;
+    RatingBar mratingBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +45,11 @@ public class ProfileActivity extends Activity {
         setContentView(R.layout.activity_profile);
 
         user_nameTv = (TextView) findViewById(R.id.profile_name);
+        birthdayTv=(TextView) findViewById(R.id.profile_birthdayTV);
         mprofileImage = (ImageView) findViewById(R.id.profile_image);
+        mratingBar=(RatingBar) findViewById(R.id.ratingBar2);
+        strikesTv=(TextView) findViewById(R.id.profile_strikesTV);
+        edit_image=(ImageButton) findViewById(R.id.edit_profile_image_ImgBtn);
 
         int req_code=getIntent().getExtras().getInt("Req_code");
         //Daca vine din menu,ia userul curent
@@ -53,13 +64,13 @@ public class ProfileActivity extends Activity {
         else if (req_code==2){
             getUserFromDb();
             //nu mai poti schimba imaginea de profil
-            mprofileImage.setEnabled(false);}
+            edit_image.setVisibility(View.GONE);}
 
         ref = FirebaseStorage.getInstance().getReference();
         setimage();
 
 
-        mprofileImage.setOnClickListener(new View.OnClickListener() {
+        edit_image.setOnClickListener(new View.OnClickListener() {
             @Override
             //te trimite in galerie sa iti alegi poza
             public void onClick(View v) {
@@ -117,5 +128,9 @@ public class ProfileActivity extends Activity {
     //Incarca datele in TV
     public void loadData(){
         user_nameTv.setText(user.getFirst_name() + " " + user.getLast_name());
+        if(user.getNumber_of_ratings()>0)
+        mratingBar.setRating(user.getRating()/user.getNumber_of_ratings());
+        birthdayTv.setText("Birthday: "+user.getBirthday());
+        strikesTv.setText("Strikes: "+user.getStrikes());
     }
 }
