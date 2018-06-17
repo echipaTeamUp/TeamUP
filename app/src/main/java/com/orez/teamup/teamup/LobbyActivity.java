@@ -116,12 +116,17 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
 
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference()
-                .child("SportsLobby").child(lobby.getId()).child("users");
-        usersRef.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("LOL", dataSnapshot.getKey());
+                users.clear();
+                DataSnapshot id = dataSnapshot.child("id");
+                DataSnapshot usersSnapshot = dataSnapshot.child("SportsLobby").child(lobby.getId()).child("users");
+                for (DataSnapshot ds : usersSnapshot.getChildren()){
+                    users.add(id.child(ds.getValue(String.class)).child("first_name").getValue(String.class));
+                }
+
+                mUserListView.setAdapter(new LobbyActivity.MyUserListAdapter(LobbyActivity.this, R.layout.user_list_item, users));
             }
 
             @Override
@@ -314,7 +319,7 @@ public class LobbyActivity extends AppCompatActivity {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            ChatViewHolder mainViewHolder = null;
+            UserViewHolder mainViewHolder = null;
 
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -326,7 +331,7 @@ public class LobbyActivity extends AppCompatActivity {
 
                 convertView.setTag(viewHolder);
             } else {
-                mainViewHolder = (ChatViewHolder) convertView.getTag();
+                mainViewHolder = (UserViewHolder) convertView.getTag();
                 mainViewHolder.mUserTv.setText(getItem(position));
             }
 
@@ -339,7 +344,7 @@ public class LobbyActivity extends AppCompatActivity {
             mChatListView.setVisibility(View.GONE);
             mUserListView.setVisibility(View.VISIBLE);
 
-            mUserListView.setAdapter(new MyUserListAdapter(LobbyActivity.this, R.layout.user_list_item, lobby.getUsers()));
+            mUserListView.setAdapter(new MyUserListAdapter(LobbyActivity.this, R.layout.user_list_item, users));
             mActiveList = true;
         } else{
             mChatListView.setVisibility(View.VISIBLE);
