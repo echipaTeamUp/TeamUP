@@ -10,12 +10,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -53,6 +55,7 @@ public class LobbyActivity extends AppCompatActivity {
     LobbySports lobby;
     ListView mChatListView;
     ArrayList<ChatMessage> data = new ArrayList<>();
+    ArrayList<String> users = new ArrayList<>();
     EditText mInputMsg;
     Button get_directionsBtn;
     Button view_on_mapBtn;
@@ -61,7 +64,6 @@ public class LobbyActivity extends AppCompatActivity {
     TextView mLobbySport;
     ListView mUserListView;
     boolean mActiveList = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,17 +77,13 @@ public class LobbyActivity extends AppCompatActivity {
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mLobbySport = (TextView) findViewById(R.id.lobbySportTv);
         mUserListView = (ListView) findViewById(R.id.usersListView);
-
         mUserListView.setVisibility(View.GONE);
-
-        //mLobbySport.setText(lobby.getSport().toString());
-
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
 
         mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
         //Pentru Uber
         initialize_uber();
 
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +99,6 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
         mChatListView = (ListView) findViewById(R.id.messageListView);
-
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -119,21 +116,20 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
 
-        //arata locatia in Google Maps
-//        view_on_mapBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                double longitude = lobby.getLongitude();
-//                double latitude = lobby.getLatitude();
-//                Toast.makeText(LobbyActivity.this, latitude + "", Toast.LENGTH_SHORT).show();
-//                Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + latitude + "," + longitude + "(Lobby+location)");
-//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                mapIntent.setPackage("com.google.android.apps.maps");
-//                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-//                    startActivity(mapIntent);
-//                }
-//            }
-//        });
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference()
+                .child("SportsLobby").child(lobby.getId()).child("users");
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("LOL", dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         mProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -302,7 +298,6 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public class UserViewHolder {
         TextView mUserTv;
