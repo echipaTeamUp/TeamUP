@@ -79,6 +79,8 @@ public class LobbyActivity extends AppCompatActivity {
         mUserListView = (ListView) findViewById(R.id.usersListView);
         mUserListView.setVisibility(View.GONE);
 
+        mLobbySport.setText(lobby.getSport().toString());
+
         mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
         //Pentru Uber
         initialize_uber();
