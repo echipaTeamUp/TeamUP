@@ -15,42 +15,27 @@
         android:text="@string/select_sport"
         android:textAlignment="center"
         android:textSize="50sp"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout8"
         tools:layout_editor_absoluteX="16dp" />
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:id="@+id/floatingactionbutton_create"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginBottom="32dp"
-        android:layout_marginStart="32dp"
-        android:clickable="true"
-        android:src="@drawable/floatingbtnlarge"
-        android:tint="@android:color/transparent"
-        app:backgroundTint="@android:color/transparent"
-        app:elevation="0dp"
+        android:layout_marginStart="36dp"
+        android:background="@drawable/floatingbtnlarge"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="@android:color/transparent" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton_send"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="32dp"
-        android:clickable="true"
-        android:src="@drawable/places_ic_search"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="128dp"
-        android:background="@color/colorAccent"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/lobbyresultbtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -63,6 +48,17 @@
 
             android:popupBackground="@color/colorAccent" />
     </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton_send"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:src="@drawable/places_ic_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout8"
