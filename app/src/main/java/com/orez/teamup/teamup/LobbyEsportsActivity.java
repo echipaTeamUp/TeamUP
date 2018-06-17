@@ -54,6 +54,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
     LobbyEsports lobby;
     ListView mChatListView;
     ArrayList<ChatMessage> data = new ArrayList<>();
+    ArrayList<String> users = new ArrayList<>();
     EditText mInputMsg;
     Button get_directionsBtn;
     Button view_on_mapBtn;
@@ -79,7 +80,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
         mUserEsportsListView.setVisibility(View.GONE);
 
-        //mLobbySport.setText(lobby.getEsport().toString());
+        mLobbySport.setText(lobby.getEsport().toString());
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
 
@@ -120,21 +121,25 @@ public class LobbyEsportsActivity extends AppCompatActivity {
             }
         });
 
-        //arata locatia in Google Maps
-//        view_on_mapBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                double longitude = lobby.getLongitude();
-//                double latitude = lobby.getLatitude();
-//                Toast.makeText(LobbyActivity.this, latitude + "", Toast.LENGTH_SHORT).show();
-//                Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + latitude + "," + longitude + "(Lobby+location)");
-//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                mapIntent.setPackage("com.google.android.apps.maps");
-//                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-//                    startActivity(mapIntent);
-//                }
-//            }
-//        });
+        FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                users.clear();
+                DataSnapshot id = dataSnapshot.child("id");
+                DataSnapshot usersSnapshot = dataSnapshot.child("EsportsLobby").child(lobby.getId()).child("users");
+                for (DataSnapshot ds : usersSnapshot.getChildren()){
+                    users.add(id.child(ds.getValue(String.class)).child("first_name").getValue(String.class));
+                }
+
+                mUserEsportsListView.setAdapter(new LobbyEsportsActivity.MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         mProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -344,12 +349,16 @@ public class LobbyEsportsActivity extends AppCompatActivity {
     public void loadUserList(View v){
         if(!mActiveList) {
             mChatListView.setVisibility(View.GONE);
+            mInputMsg.setVisibility(View.GONE);
+            mSendFab.setVisibility(View.GONE);
             mUserEsportsListView.setVisibility(View.VISIBLE);
 
-            mUserEsportsListView.setAdapter(new MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, lobby.getUsers()));
+            mUserEsportsListView.setAdapter(new MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
             mActiveList = true;
         } else{
             mChatListView.setVisibility(View.VISIBLE);
+            mInputMsg.setVisibility(View.VISIBLE);
+            mSendFab.setVisibility(View.VISIBLE);
             mUserEsportsListView.setVisibility(View.GONE);
 
             mChatListView.setAdapter(new MyListAdapter(LobbyEsportsActivity.this, R.layout.chat_message_item, data));

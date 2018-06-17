@@ -10,14 +10,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,11 +55,11 @@ public class LobbyActivity extends AppCompatActivity {
     ArrayList<ChatMessage> data = new ArrayList<>();
     ArrayList<String> users = new ArrayList<>();
     EditText mInputMsg;
-    Button get_directionsBtn;
     Button view_on_mapBtn;
     RideRequestButton requestBtn;
     ImageButton mProfileBtn;
     TextView mLobbySport;
+    TextView mdetailsTv;
     ListView mUserListView;
     boolean mActiveList = false;
 
@@ -77,17 +75,22 @@ public class LobbyActivity extends AppCompatActivity {
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mLobbySport = (TextView) findViewById(R.id.lobbySportTv);
         mUserListView = (ListView) findViewById(R.id.usersListView);
-        mUserListView.setVisibility(View.GONE);
-
+        mdetailsTv = (TextView) findViewById(R.id.detailsTv);
         mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
+        mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
+
+        mUserListView.setVisibility(View.GONE);
+        mLobbySport.setText(lobby.getSport().toString());
+
         //Pentru Uber
         initialize_uber();
+        mLobbySport.setText(lobby.getSport().toString());
+        mdetailsTv.setText(lobby.getLocationName() + " " + lobby.getHour() + ":" + lobby.getMinute());
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
                 String message = mInputMsg.getText().toString().trim();
                 if (!message.equals("")) {
                     long xd = System.currentTimeMillis() / 1000L;
@@ -122,7 +125,7 @@ public class LobbyActivity extends AppCompatActivity {
                 users.clear();
                 DataSnapshot id = dataSnapshot.child("id");
                 DataSnapshot usersSnapshot = dataSnapshot.child("SportsLobby").child(lobby.getId()).child("users");
-                for (DataSnapshot ds : usersSnapshot.getChildren()){
+                for (DataSnapshot ds : usersSnapshot.getChildren()) {
                     users.add(id.child(ds.getValue(String.class)).child("first_name").getValue(String.class));
                 }
 
@@ -138,9 +141,9 @@ public class LobbyActivity extends AppCompatActivity {
         mProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(LobbyActivity.this,ProfileActivity.class);
-                i.putExtra("Req_code",1);
-                i.putExtra("User",user);
+                Intent i = new Intent(LobbyActivity.this, ProfileActivity.class);
+                i.putExtra("Req_code", 1);
+                i.putExtra("User", user);
                 startActivity(i);
             }
         });
@@ -278,7 +281,7 @@ public class LobbyActivity extends AppCompatActivity {
         requestBtn.setCallback(callback);
     }
 
-    public void showPopup(View v){
+    public void showPopup(View v) {
         PopupMenu mPopup = new PopupMenu(this, v);
         MenuInflater inflater = mPopup.getMenuInflater();
         inflater.inflate(R.menu.actions, mPopup.getMenu());
@@ -288,7 +291,7 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 //arata locatia in Gmaps
-                if(item.getTitle().toString().equals("View on map")) {
+                if (item.getTitle().toString().equals("View on map")) {
                     double longitude = lobby.getLongitude();
                     double latitude = lobby.getLatitude();
                     Toast.makeText(LobbyActivity.this, latitude + "", Toast.LENGTH_SHORT).show();
@@ -339,15 +342,19 @@ public class LobbyActivity extends AppCompatActivity {
         }
     }
 
-    public void loadUserList(View v){
-        if(!mActiveList) {
+    public void loadUserList(View v) {
+        if (!mActiveList) {
             mChatListView.setVisibility(View.GONE);
+            mInputMsg.setVisibility(View.GONE);
+            mSendFab.setVisibility(View.GONE);
             mUserListView.setVisibility(View.VISIBLE);
 
-            mUserListView.setAdapter(new MyUserListAdapter(LobbyActivity.this, R.layout.user_list_item, users));
+            mUserListView.setAdapter(new LobbyActivity.MyUserListAdapter(LobbyActivity.this, R.layout.user_list_item, users));
             mActiveList = true;
-        } else{
+        } else {
             mChatListView.setVisibility(View.VISIBLE);
+            mInputMsg.setVisibility(View.VISIBLE);
+            mSendFab.setVisibility(View.VISIBLE);
             mUserListView.setVisibility(View.GONE);
 
             mChatListView.setAdapter(new LobbyActivity.MyListAdapter(LobbyActivity.this, R.layout.chat_message_item, data));

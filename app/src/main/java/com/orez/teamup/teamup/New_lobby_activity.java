@@ -191,7 +191,11 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
-                mplaceTV.setText("Location: " + place.getName());
+                String name=place.getName().toString();
+                if( name.contains("'") && name.contains("."))
+                    mplaceTV.setText("Location: " + place.getAddress());
+                else
+                    mplaceTV.setText("Location: " + place.getName());
                 //astea sunt coordonatele care vor fi incarcate in FireBase
                 latlong = place.getLatLng();
                 //daca pusese alt marker inainte, il sterge pe ala
