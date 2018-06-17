@@ -349,12 +349,16 @@ public class LobbyEsportsActivity extends AppCompatActivity {
     public void loadUserList(View v){
         if(!mActiveList) {
             mChatListView.setVisibility(View.GONE);
+            mInputMsg.setVisibility(View.GONE);
+            mSendFab.setVisibility(View.GONE);
             mUserEsportsListView.setVisibility(View.VISIBLE);
 
             mUserEsportsListView.setAdapter(new MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
             mActiveList = true;
         } else{
             mChatListView.setVisibility(View.VISIBLE);
+            mInputMsg.setVisibility(View.VISIBLE);
+            mSendFab.setVisibility(View.VISIBLE);
             mUserEsportsListView.setVisibility(View.GONE);
 
             mChatListView.setAdapter(new MyListAdapter(LobbyEsportsActivity.this, R.layout.chat_message_item, data));
