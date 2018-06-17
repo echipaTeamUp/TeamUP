@@ -37,23 +37,27 @@ public class ProfileActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        user_nameTv = (TextView) findViewById(R.id.profile_name);
         mprofileImage = (ImageView) findViewById(R.id.profile_image);
+
         int req_code=getIntent().getExtras().getInt("Req_code");
         //Daca vine din menu,ia userul curent
+        //Extras intent: Req_code==1, User==user
         if(req_code==1) {
             user = (User) getIntent().getSerializableExtra("User");
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+            loadData();
         }
         //Daca vine din lobby, ia userul pe care ai apasat
+        // Extras intent: Req_code==2, Uid==user id
         else if (req_code==2){
             getUserFromDb();
             //nu mai poti schimba imaginea de profil
             mprofileImage.setEnabled(false);}
-        user_nameTv = (TextView) findViewById(R.id.profile_name);
+
         ref = FirebaseStorage.getInstance().getReference();
         setimage();
-        user_nameTv.setText(user.getFirst_name() + " " + user.getLast_name());
+
 
         mprofileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,10 +107,15 @@ public class ProfileActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
+                loadData();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+    //Incarca datele in TV
+    public void loadData(){
+        user_nameTv.setText(user.getFirst_name() + " " + user.getLast_name());
     }
 }

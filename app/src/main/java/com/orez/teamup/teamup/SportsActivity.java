@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,9 +42,11 @@ import java.util.List;
 public class SportsActivity extends Activity {
     private ArrayList<String> data;
     private ArrayList<LobbySports> arr = new ArrayList<>();
-    FloatingActionButton mfab;
+    ImageButton mfab;
     FloatingActionButton mSendFab;
     User user;
+    LocationManager mLocationManager;
+    LocationListener mLocationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class SportsActivity extends Activity {
 //        String[] sports = res.getStringArray(R.array.Sports);
         user = (User) getIntent().getSerializableExtra("User");
         data = new ArrayList<String>();
-        mfab = (FloatingActionButton) findViewById(R.id.floatingactionbutton_create);
+        mfab = (ImageButton) findViewById(R.id.floatingactionbutton_create);
         mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
 
         data.addAll(Collections.singleton(com.orez.teamup.teamup.sports.values().toString()));
@@ -74,10 +77,12 @@ public class SportsActivity extends Activity {
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 LocationListener mLocationListener=new LocationListener() {
+                mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                  mLocationListener=new LocationListener() {
                      @Override
                      public void onLocationChanged(Location location) {
-
+                        mLocationManager.removeUpdates(mLocationListener);
+                        mLocationManager=null;
                      }
 
                      @Override
@@ -95,7 +100,7 @@ public class SportsActivity extends Activity {
 
                      }
                  };
-                LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
 
                 if (ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;

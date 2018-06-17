@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -21,14 +22,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 public class MenuActivity extends Activity {
 
     ImageButton mprofileBtn;
     ImageButton msignoutBtn;
+    Button msportsBtn;
+    Button mesportsBtn;
     User user;
 
     @Override
@@ -41,6 +40,8 @@ public class MenuActivity extends Activity {
         user = (User) i.getSerializableExtra("User");
         mprofileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         msignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
+        msportsBtn=(Button) findViewById(R.id.sportsBtn);
+        mesportsBtn=(Button) findViewById(R.id.esportsBtn);
 
         checkLocationPermission();
 
@@ -80,7 +81,7 @@ public class MenuActivity extends Activity {
             }
         });
 
-
+        //Signout
         msignoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +93,7 @@ public class MenuActivity extends Activity {
 
             }
         });
+
     }
 
     public void loadSportsActivity(View view) {
@@ -99,6 +101,13 @@ public class MenuActivity extends Activity {
         i.putExtra("User", user);
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
+    public void loadeSportsActivity(View view){
+        Intent i=new Intent(MenuActivity.this,ProfileActivity.class);
+        i.putExtra("Req_code",2);
+        i.putExtra("Uid","xIWQ0gd4NDhO16SAzLQAKguagOc2");
+        startActivity(i);
     }
 
     public void checkLocationPermission() {
@@ -127,7 +136,8 @@ public class MenuActivity extends Activity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)) {
-
-        }// TODO:facem ceva sa blocam aplicatia daca nu avem permisiune de locatie
+        msportsBtn.setVisibility(View.GONE);
+        msportsBtn.setVisibility(View.GONE);
+        }
     }
 }
