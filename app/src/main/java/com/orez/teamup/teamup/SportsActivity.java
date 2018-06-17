@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ import java.util.List;
 public class SportsActivity extends Activity {
     private ArrayList<String> data;
     private ArrayList<LobbySports> arr = new ArrayList<>();
-    FloatingActionButton mfab;
+    ImageButton mfab;
     FloatingActionButton mSendFab;
     User user;
 
@@ -54,7 +55,7 @@ public class SportsActivity extends Activity {
 //        String[] sports = res.getStringArray(R.array.Sports);
         user = (User) getIntent().getSerializableExtra("User");
         data = new ArrayList<String>();
-        mfab = (FloatingActionButton) findViewById(R.id.floatingactionbutton_create);
+        mfab = (ImageButton) findViewById(R.id.floatingactionbutton_create);
         mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
 
         data.addAll(Collections.singleton(com.orez.teamup.teamup.sports.values().toString()));

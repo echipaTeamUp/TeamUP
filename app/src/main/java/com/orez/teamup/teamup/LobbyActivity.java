@@ -78,13 +78,13 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
-                String message = mInputMsg.getText().toString();
+                String message = mInputMsg.getText().toString().trim();
                 if (!message.equals("")) {
                     long xd = System.currentTimeMillis() / 1000L;
                     ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name(), xd);
                     ref.child(Long.toString(xd)).setValue(chatMessage);
-                    mInputMsg.setText("");
                 }
+                mInputMsg.setText("");
             }
         });
 
