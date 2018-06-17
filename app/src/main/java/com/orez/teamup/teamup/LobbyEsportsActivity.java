@@ -11,7 +11,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -49,29 +48,38 @@ import com.uber.sdk.rides.client.error.ApiError;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LobbyEsportsActivity extends Activity {
+public class LobbyEsportsActivity extends AppCompatActivity {
     FloatingActionButton mSendFab;
     User user;
     LobbyEsports lobby;
-    ListView mListView;
+    ListView mChatListView;
     ArrayList<ChatMessage> data = new ArrayList<>();
     EditText mInputMsg;
     Button get_directionsBtn;
     Button view_on_mapBtn;
     RideRequestButton requestBtn;
     ImageButton mProfileBtn;
+    TextView mLobbySport;
+    ListView mUserEsportsListView;
+    boolean mActiveList = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lobby);
+        setContentView(R.layout.activity_lobby_esports);
 
         user = (User) getIntent().getSerializableExtra("User");
         lobby = (LobbyEsports) getIntent().getSerializableExtra("Lobby");
         view_on_mapBtn = (Button) findViewById(R.id.view_on_mapBtn);
         requestBtn = (RideRequestButton) findViewById(R.id.rideRequestBtn);
-        mProfileBtn=(ImageButton) findViewById(R.id.menu_profileBtn);
+        mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
+        mLobbySport = (TextView) findViewById(R.id.lobbySportTv);
+        mUserEsportsListView = (ListView) findViewById(R.id.usersEsportsListView);
+
+        mUserEsportsListView.setVisibility(View.GONE);
+
+        //mLobbySport.setText(lobby.getEsport().toString());
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
 
@@ -93,7 +101,7 @@ public class LobbyEsportsActivity extends Activity {
             }
         });
 
-        mListView = (ListView) findViewById(R.id.messageListView);
+        mChatListView = (ListView) findViewById(R.id.messageListView);
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -103,7 +111,7 @@ public class LobbyEsportsActivity extends Activity {
                     data.add(ds.getValue(ChatMessage.class));
                 }
 
-                mListView.setAdapter(new LobbyEsportsActivity.MyListAdapter(LobbyEsportsActivity.this, R.layout.chat_message_item, data));
+                mChatListView.setAdapter(new LobbyEsportsActivity.MyListAdapter(LobbyEsportsActivity.this, R.layout.chat_message_item, data));
             }
 
             @Override
@@ -296,5 +304,56 @@ public class LobbyEsportsActivity extends Activity {
                 return true;
             }
         });
+    }
+
+    public class UserViewHolder {
+        TextView mUserTv;
+    }
+
+    private class MyUserListAdapter extends ArrayAdapter<String> {
+        private int layout;
+
+        public MyUserListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects) {
+            super(context, resource, objects);
+            layout = resource;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            UserViewHolder mainViewHolder = null;
+
+            if (convertView == null) {
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(layout, parent, false);
+                UserViewHolder viewHolder = new UserViewHolder();
+
+                viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
+                viewHolder.mUserTv.setText(getItem(position));
+
+                convertView.setTag(viewHolder);
+            } else {
+                mainViewHolder = (UserViewHolder) convertView.getTag();
+                mainViewHolder.mUserTv.setText(getItem(position));
+            }
+
+            return convertView;
+        }
+    }
+
+    public void loadUserList(View v){
+        if(!mActiveList) {
+            mChatListView.setVisibility(View.GONE);
+            mUserEsportsListView.setVisibility(View.VISIBLE);
+
+            mUserEsportsListView.setAdapter(new MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, lobby.getUsers()));
+            mActiveList = true;
+        } else{
+            mChatListView.setVisibility(View.VISIBLE);
+            mUserEsportsListView.setVisibility(View.GONE);
+
+            mChatListView.setAdapter(new MyListAdapter(LobbyEsportsActivity.this, R.layout.chat_message_item, data));
+            mActiveList = false;
+        }
     }
 }

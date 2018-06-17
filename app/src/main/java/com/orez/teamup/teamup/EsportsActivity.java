@@ -102,7 +102,7 @@ public class EsportsActivity extends Activity {
                         arr.clear();
                         arr.addAll(LobbyEsports.filter(dataSnapshot, mFilterEsport));
 
-                        Intent i = new Intent(EsportsActivity.this, ResultsActivity.class);
+                        Intent i = new Intent(EsportsActivity.this, ResultsEsportsActivity.class);
                         i.putExtra("User", user);
                         i.putExtra("lobbys", arr);
                         startActivity(i);
