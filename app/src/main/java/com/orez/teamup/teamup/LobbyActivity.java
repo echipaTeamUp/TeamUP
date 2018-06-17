@@ -57,11 +57,11 @@ public class LobbyActivity extends AppCompatActivity {
     ArrayList<ChatMessage> data = new ArrayList<>();
     ArrayList<String> users = new ArrayList<>();
     EditText mInputMsg;
-    Button get_directionsBtn;
     Button view_on_mapBtn;
     RideRequestButton requestBtn;
     ImageButton mProfileBtn;
     TextView mLobbySport;
+    TextView mdetailsTv;
     ListView mUserListView;
     boolean mActiveList = false;
 
@@ -77,11 +77,14 @@ public class LobbyActivity extends AppCompatActivity {
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mLobbySport = (TextView) findViewById(R.id.lobbySportTv);
         mUserListView = (ListView) findViewById(R.id.usersListView);
+        mdetailsTv=(TextView) findViewById(R.id.detailsTv);
         mUserListView.setVisibility(View.GONE);
 
         mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
         //Pentru Uber
         initialize_uber();
+        mLobbySport.setText(lobby.getSport().toString());
+        mdetailsTv.setText(lobby.getLocationName()+" "+lobby.getHour()+":"+lobby.getMinute());
 
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
