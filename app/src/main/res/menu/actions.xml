@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/view_on_mapOpt"
@@ -9,11 +8,5 @@
     <item
         android:id="@+id/get_directionsOpt"
         android:title="@string/get_directions" />
-
-    <item
-        android:id="@+id/uberOpt"
-        android:title="@string/ride_with_uber"
-        app:showAsAction="always"
-        android:actionLayout="@layout/uber_item" />
 
 </menu>
