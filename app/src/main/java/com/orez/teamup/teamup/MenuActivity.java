@@ -56,30 +56,20 @@ public class MenuActivity extends Activity {
 
                 // Daca da, te duce in lobby
                 if (LobbyID != null) {
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
-                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()){
-                                Intent i = new Intent(MenuActivity.this, LobbyActivity.class);
-                                i.putExtra("User", user);
-                                i.putExtra("Lobby", dataSnapshot.child("SportsLobby").child(LobbyID).getValue(LobbySports.class));
-                                startActivity(i);
-                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-                            } else {
-                                Intent i = new Intent(MenuActivity.this, LobbyEsportsActivity.class);
-                                i.putExtra("User", user);
-                                i.putExtra("Lobby", dataSnapshot.child("EsportsLobby").child(LobbyID).getValue(LobbyEsports.class));
-                                startActivity(i);
-                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    // verifica daca lobby-ul e de tip sports sau esports
+                    if (dataSnapshot.child("SportsLobby").child(LobbyID).exists()){
+                        Intent i = new Intent(MenuActivity.this, LobbyActivity.class);
+                        i.putExtra("User", user);
+                        i.putExtra("Lobby", dataSnapshot.child("SportsLobby").child(LobbyID).getValue(LobbySports.class));
+                        startActivity(i);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                    } else {
+                        Intent i = new Intent(MenuActivity.this, LobbyEsportsActivity.class);
+                        i.putExtra("User", user);
+                        i.putExtra("Lobby", dataSnapshot.child("EsportsLobby").child(LobbyID).getValue(LobbyEsports.class));
+                        startActivity(i);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                    }
                 }
             }
 
