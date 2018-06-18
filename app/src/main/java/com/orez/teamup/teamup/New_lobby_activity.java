@@ -2,6 +2,7 @@ package com.orez.teamup.teamup;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -49,12 +51,16 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
     RadioButton today_Rbtn;
     RadioButton tomorrow_Rbtn;
     RadioGroup radioGroup;
+    ImageButton mProfileBtn;
+    ImageButton mSignoutBtn;
+
     int Lmonth, Lday, Lhour, Lminute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_lobby_activity);
+
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -66,6 +72,32 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
         today_Rbtn = (RadioButton) findViewById(R.id.today_RBtn);
         tomorrow_Rbtn = (RadioButton) findViewById(R.id.tomorrow_RBtn);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
+        mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
+
+        //Daca apesi pe profil, te duce la profil
+        mProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(New_lobby_activity.this, ProfileActivity.class);
+                i.putExtra("User", user);
+                i.putExtra("Req_code", 1);
+                startActivity(i);
+            }
+        });
+
+        //Signout
+        mSignoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                setResult(Activity.RESULT_OK);
+                Intent i = new Intent(New_lobby_activity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
         user = (User) getIntent().getSerializableExtra("User");
         //adapter pentru spinner
         mspors_spinner.setAdapter(new ArrayAdapter<sports>(this, android.R.layout.simple_list_item_1, sports.values()));
