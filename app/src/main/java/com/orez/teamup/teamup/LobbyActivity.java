@@ -126,7 +126,22 @@ public class LobbyActivity extends AppCompatActivity {
 
             }
         });
-        //Verifica daca ai primit sau nu kick
+
+        // Updateaza adminul
+        FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(lobby.getId()).child("admin").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue(String.class).equals(FirebaseAuth.getInstance().getUid()))
+                    Toast.makeText(LobbyActivity.this, "You are now lobby admin", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // Verifica daca ai primit sau nu kick
         kicklistener = FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
                 child("Lobby").addValueEventListener(new ValueEventListener() {
             @Override
@@ -142,6 +157,7 @@ public class LobbyActivity extends AppCompatActivity {
 
             }
         });
+
         //Pune userii in lista de useri
         FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
