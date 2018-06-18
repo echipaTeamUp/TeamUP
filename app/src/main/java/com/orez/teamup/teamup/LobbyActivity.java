@@ -327,7 +327,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             UserViewHolder mainViewHolder = null;
 
             if (convertView == null) {
@@ -368,10 +368,43 @@ public class LobbyActivity extends AppCompatActivity {
                     }
                 });
 
+                viewHolder.mUserTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(LobbyActivity.this, ProfileActivity.class);
+                        if(mUserId.equals(lobby.getAdminId())) {
+                            intent.putExtra("User", user);
+                            intent.putExtra("Req_code", 1);
+                            startActivity(intent);
+                        } else{
+                            intent.putExtra("User", user);
+                            intent.putExtra("Uid", mUserId);
+                            intent.putExtra("Req_code", 2);
+                            startActivity(intent);
+                        }
+                    }
+                });
+
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (UserViewHolder) convertView.getTag();
-                mainViewHolder.mUserTv.setText(getItem(position));
+                final String mUserId = users.get(position);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
+                final UserViewHolder finalMainViewHolder = mainViewHolder;
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String mUserFirstName = dataSnapshot.child("first_name").getValue().toString();
+                        finalMainViewHolder.mUserTv.setText(mUserFirstName);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+
+                //mainViewHolder.mUserTv.setText(mUserFirstName);
                 //mainViewHolder.mProfileImage.set
             }
 
