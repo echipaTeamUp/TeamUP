@@ -26,17 +26,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.uber.sdk.android.core.UberSdk;
 import com.uber.sdk.android.rides.RideParameters;
 import com.uber.sdk.android.rides.RideRequestButton;
@@ -56,14 +62,12 @@ public class LobbyEsportsActivity extends AppCompatActivity {
     ArrayList<ChatMessage> data = new ArrayList<>();
     ArrayList<String> users = new ArrayList<>();
     EditText mInputMsg;
-    Button get_directionsBtn;
     Button view_on_mapBtn;
     RideRequestButton requestBtn;
     ImageButton mProfileBtn;
     TextView mLobbySport;
     ListView mUserEsportsListView;
     boolean mActiveList = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +99,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 String message = mInputMsg.getText().toString().trim();
                 if (!message.equals("")) {
                     long xd = System.currentTimeMillis() / 1000L;
-                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name(), xd);
+                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name() + user.getLast_name(), xd);
                     ref.child(Long.toString(xd)).setValue(chatMessage);
                 }
                 mInputMsg.setText("");
@@ -198,8 +202,10 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
                 viewHolder.mMessageTv = (TextView) convertView.findViewById(R.id.chatMessageTv);
                 viewHolder.mMessageTv.setText(getItem(position).getMessageText());
+
                 viewHolder.mTimeTv = (TextView) convertView.findViewById(R.id.chatTimeTv);
                 viewHolder.mTimeTv.setText(getItem(position).getTime());
+
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.chatUserTv);
                 viewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
                 convertView.setTag(viewHolder);
@@ -313,6 +319,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
     public class UserViewHolder {
         TextView mUserTv;
+        ImageView mProfileImage;
     }
 
     private class MyUserListAdapter extends ArrayAdapter<String> {
@@ -331,23 +338,87 @@ public class LobbyEsportsActivity extends AppCompatActivity {
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(layout, parent, false);
-                UserViewHolder viewHolder = new UserViewHolder();
+                final UserViewHolder viewHolder = new UserViewHolder();
 
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
-                viewHolder.mUserTv.setText(getItem(position));
+                viewHolder.mProfileImage = (ImageView) convertView.findViewById(R.id.list_profile_image);
+
+                final String mUserId = users.get(position);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String mUserFirstName = dataSnapshot.child("first_name").getValue().toString();
+                        viewHolder.mUserTv.setText(mUserFirstName);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+                StorageReference sref = FirebaseStorage.getInstance().getReference();
+                sref.child(mUserId).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        //daca exista poza
+                        Glide.with(LobbyEsportsActivity.this)
+                                .load(uri)
+                                .into(viewHolder.mProfileImage);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // daca nu exista poza
+                    }
+                });
+
+                viewHolder.mUserTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(LobbyEsportsActivity.this, ProfileActivity.class);
+                        if(mUserId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            intent.putExtra("User", user);
+                            intent.putExtra("Req_code", 1);
+                            startActivity(intent);
+                        } else{
+                            intent.putExtra("User", user);
+                            intent.putExtra("Uid", mUserId);
+                            intent.putExtra("Req_code", 2);
+                            startActivity(intent);
+                        }
+                    }
+                });
 
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (UserViewHolder) convertView.getTag();
-                mainViewHolder.mUserTv.setText(getItem(position));
+                final String mUserId = users.get(position);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
+                final UserViewHolder finalMainViewHolder = mainViewHolder;
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String mUserFirstName = dataSnapshot.child("first_name").getValue().toString();
+                        finalMainViewHolder.mUserTv.setText(mUserFirstName);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+
+                //mainViewHolder.mUserTv.setText(mUserFirstName);
+                //mainViewHolder.mProfileImage.set
             }
 
             return convertView;
         }
     }
 
-    public void loadUserList(View v){
-        if(!mActiveList) {
+    public void loadUserList(View v) {
+        if (!mActiveList) {
             mChatListView.setVisibility(View.GONE);
             mInputMsg.setVisibility(View.GONE);
             mSendFab.setVisibility(View.GONE);
@@ -355,7 +426,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
             mUserEsportsListView.setAdapter(new MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
             mActiveList = true;
-        } else{
+        } else {
             mChatListView.setVisibility(View.VISIBLE);
             mInputMsg.setVisibility(View.VISIBLE);
             mSendFab.setVisibility(View.VISIBLE);

@@ -99,7 +99,7 @@ public class LobbyActivity extends AppCompatActivity {
                 String message = mInputMsg.getText().toString().trim();
                 if (!message.equals("")) {
                     long xd = System.currentTimeMillis() / 1000L;
-                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name(), xd);
+                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name() + user.getLast_name(), xd);
                     ref.child(Long.toString(xd)).setValue(chatMessage);
                 }
                 mInputMsg.setText("");
@@ -107,6 +107,7 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
         mChatListView = (ListView) findViewById(R.id.messageListView);
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -201,8 +202,10 @@ public class LobbyActivity extends AppCompatActivity {
 
                 viewHolder.mMessageTv = (TextView) convertView.findViewById(R.id.chatMessageTv);
                 viewHolder.mMessageTv.setText(getItem(position).getMessageText());
+
                 viewHolder.mTimeTv = (TextView) convertView.findViewById(R.id.chatTimeTv);
                 viewHolder.mTimeTv.setText(getItem(position).getTime());
+
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.chatUserTv);
                 viewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
                 convertView.setTag(viewHolder);
@@ -328,7 +331,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             UserViewHolder mainViewHolder = null;
 
             if (convertView == null) {
@@ -375,7 +378,7 @@ public class LobbyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(LobbyActivity.this, ProfileActivity.class);
-                        if(mUserId.equals(lobby.getAdminId())) {
+                        if(mUserId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent.putExtra("User", user);
                             intent.putExtra("Req_code", 1);
                             startActivity(intent);
