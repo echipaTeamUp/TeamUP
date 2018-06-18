@@ -56,8 +56,9 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_lobby_activity);
         mapView = (MapView) findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
+        mapView.setVisibility(View.GONE);
+        //mapView.onCreate(savedInstanceState);
+        //mapView.getMapAsync(this);
         mnumber_playersEt = (EditText) findViewById(R.id.number_playersET);
         mspors_spinner = (Spinner) findViewById(R.id.sport_spinner);
         mnewLobbyBtn = (Button) findViewById(R.id.new_lobbyBtn);
@@ -238,10 +239,10 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
             return false;
         }
 
-        if (marker == null) {
-            makeToast("Please select a location");
-            return false;
-        }
+//        if (marker == null) {
+//            makeToast("Please select a location");
+//            return false;
+//        }
 
         if (mtimeTV.getText().toString().equals(R.string.select_an_hour)) {
             makeToast("Please select an hour");

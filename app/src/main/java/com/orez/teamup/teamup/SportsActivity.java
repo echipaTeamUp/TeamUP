@@ -27,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +48,8 @@ public class SportsActivity extends Activity {
     User user;
     LocationManager mLocationManager;
     LocationListener mLocationListener;
+    ImageButton mProfileBtn;
+    ImageButton mSignoutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +62,36 @@ public class SportsActivity extends Activity {
         data = new ArrayList<String>();
         mfab = (ImageButton) findViewById(R.id.floatingactionbutton_create);
         mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
+        mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
+        mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
 
         data.addAll(Collections.singleton(com.orez.teamup.teamup.sports.values().toString()));
 
         final Spinner mSelectSportSpinner = (Spinner) findViewById(R.id.select_filter_spinner);
         mSelectSportSpinner.setAdapter(new ArrayAdapter<sports>(this, android.R.layout.simple_list_item_1, sports.values()));
+
+        //Daca apesi pe profil, te duce la profil
+        mProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SportsActivity.this, ProfileActivity.class);
+                i.putExtra("User", user);
+                i.putExtra("Req_code", 1);
+                startActivity(i);
+            }
+        });
+
+        //Signout
+        mSignoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                setResult(Activity.RESULT_OK);
+                Intent i = new Intent(SportsActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         mfab.setOnClickListener(new View.OnClickListener() {
             @Override

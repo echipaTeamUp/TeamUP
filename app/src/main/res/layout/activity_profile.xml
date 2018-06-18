@@ -74,6 +74,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_birthdayTV" />
 
+            <TextView
+                android:id="@+id/profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginStart="72dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/profiletextview"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_strikesTV" />
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="0dp"
@@ -168,36 +183,36 @@
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout4" />
 
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="72dp"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/profiletextview"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_strikesTV" />
+            <!--<EditText-->
+                <!--android:id="@+id/editText3"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="45dp"-->
+                <!--android:layout_marginEnd="72dp"-->
+                <!--android:layout_marginStart="72dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:background="@drawable/profiletextview"-->
+                <!--android:ems="10"-->
+                <!--android:inputType="textPersonName"-->
+                <!--android:text="Name"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/profile_email" />-->
 
-            <EditText
-                android:id="@+id/editText4"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="72dp"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/profiletextview"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText3" />
+            <!--<EditText-->
+                <!--android:id="@+id/editText4"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="45dp"-->
+                <!--android:layout_marginEnd="72dp"-->
+                <!--android:layout_marginStart="72dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:background="@drawable/profiletextview"-->
+                <!--android:ems="10"-->
+                <!--android:inputType="textPersonName"-->
+                <!--android:text="Name"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintHorizontal_bias="0.497"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/editText3" />-->
 
             <Button
                 android:id="@+id/button"
@@ -211,7 +226,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText4" />
+                app:layout_constraintTop_toBottomOf="@+id/profile_email" />
 
             <RatingBar
                 android:id="@+id/ratingBar2"

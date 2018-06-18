@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +34,8 @@ public class EsportsActivity extends Activity {
     User user;
     LocationManager mLocationManager;
     LocationListener mLocationListener;
+    ImageButton mProfileBtn;
+    ImageButton mSignoutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,31 @@ public class EsportsActivity extends Activity {
         data = new ArrayList<String>();
         mfab = (ImageButton) findViewById(R.id.floatingactionbutton_create);
         mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
+        mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
+        mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
+
+        //Daca apesi pe profil, te duce la profil
+        mProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EsportsActivity.this, ProfileActivity.class);
+                i.putExtra("User", user);
+                i.putExtra("Req_code", 1);
+                startActivity(i);
+            }
+        });
+
+        //Signout
+        mSignoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                setResult(Activity.RESULT_OK);
+                Intent i = new Intent(EsportsActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         data.addAll(Collections.singleton(com.orez.teamup.teamup.esports.values().toString()));
 
