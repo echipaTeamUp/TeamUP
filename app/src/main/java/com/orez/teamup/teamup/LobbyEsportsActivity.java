@@ -80,7 +80,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mLobbySport = (TextView) findViewById(R.id.lobbySportTv);
         mUserListView = (ListView) findViewById(R.id.usersEsportsListView);
-        mdetailsTv = (TextView) findViewById(R.id.hintTv);
+        mdetailsTv = (TextView) findViewById(R.id.detailsTv);
         mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
         mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
         mChatListView = (ListView) findViewById(R.id.messageListView);
@@ -88,7 +88,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         mUserListView.setVisibility(View.GONE);
 
         mLobbySport.setText(lobby.getEsport().toString());
-        mdetailsTv.setText(lobby.getHour() + ":" + lobby.getMinute());
+        mdetailsTv.setText("Start time:" + lobby.getHour() + ":" + lobby.getMinute());
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
