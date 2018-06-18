@@ -16,7 +16,7 @@
         android:layout_marginTop="8dp"
         android:text="User"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="@+id/list_profile_image"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/list_profile_image"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,8 +24,11 @@
         android:id="@+id/list_profile_image"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:scaleType="fitXY"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/sym_def_app_icon" />
@@ -34,11 +37,13 @@
         android:id="@+id/kickBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="7dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/kickicon"
         android:text="@string/kick"
         android:textColor="@color/white"
-        android:background="@drawable/kickicon"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
