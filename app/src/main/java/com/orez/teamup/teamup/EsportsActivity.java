@@ -51,7 +51,7 @@ public class EsportsActivity extends Activity {
         mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
-       // mranks_spinner=(Spinner) findViewById(R.id.esports_rank_spinner);
+        // mranks_spinner=(Spinner) findViewById(R.id.esports_rank_spinner);
         mSelectSportSpinner = (Spinner) findViewById(R.id.select_filter_spinner);
 
         //Daca apesi pe profil, te duce la profil
@@ -108,8 +108,10 @@ public class EsportsActivity extends Activity {
                 mLocationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        mLocationManager.removeUpdates(mLocationListener);
-                        mLocationManager = null;
+                        if (mLocationListener != null) {
+                            mLocationManager.removeUpdates(mLocationListener);
+                            mLocationManager = null;
+                        }
                     }
 
                     @Override
