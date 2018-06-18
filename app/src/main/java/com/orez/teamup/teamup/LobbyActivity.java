@@ -180,11 +180,11 @@ public class LobbyActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
                         FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
                                 child("Lobby").removeEventListener(kicklistener);
                         lobby.removeUser(FirebaseAuth.getInstance().getUid());
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                        finish();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
