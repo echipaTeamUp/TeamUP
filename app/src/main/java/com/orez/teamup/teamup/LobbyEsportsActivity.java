@@ -1,26 +1,35 @@
 package com.orez.teamup.teamup;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,10 +42,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.uber.sdk.android.core.UberSdk;
+import com.uber.sdk.android.rides.RideParameters;
 import com.uber.sdk.android.rides.RideRequestButton;
+import com.uber.sdk.android.rides.RideRequestButtonCallback;
+import com.uber.sdk.rides.client.ServerTokenSession;
+import com.uber.sdk.rides.client.SessionConfiguration;
+import com.uber.sdk.rides.client.error.ApiError;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LobbyEsportsActivity extends AppCompatActivity {
     FloatingActionButton mSendFab;
@@ -46,10 +63,11 @@ public class LobbyEsportsActivity extends AppCompatActivity {
     ArrayList<ChatMessage> data = new ArrayList<>();
     ArrayList<String> users = new ArrayList<>();
     EditText mInputMsg;
-    RideRequestButton requestBtn;
     ImageButton mProfileBtn;
     TextView mLobbySport;
-    ListView mUserEsportsListView;
+    TextView mdetailsTv;
+    ListView mUserListView;
+    ValueEventListener kicklistener;
     boolean mActiveList = false;
 
     @Override
@@ -59,19 +77,19 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
         user = (User) getIntent().getSerializableExtra("User");
         lobby = (LobbyEsports) getIntent().getSerializableExtra("Lobby");
-        requestBtn = (RideRequestButton) findViewById(R.id.rideRequestBtn);
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mLobbySport = (TextView) findViewById(R.id.lobbySportTv);
-        mUserEsportsListView = (ListView) findViewById(R.id.usersEsportsListView);
+        mUserListView = (ListView) findViewById(R.id.usersEsportsListView);
+        mdetailsTv = (TextView) findViewById(R.id.hintTv);
+        mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
         mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
+        mChatListView = (ListView) findViewById(R.id.messageListView);
 
-        mUserEsportsListView.setVisibility(View.GONE);
+        mUserListView.setVisibility(View.GONE);
 
         mLobbySport.setText(lobby.getEsport().toString());
-
+        mdetailsTv.setText(lobby.getHour() + ":" + lobby.getMinute());
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
-
-        mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,8 +103,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
             }
         });
 
-        mChatListView = (ListView) findViewById(R.id.messageListView);
-
+        //Updateaza chatul
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -103,7 +120,23 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
             }
         });
+        //Verifica daca ai primit sau nu kick
+        kicklistener = FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
+                child("Lobby").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null) {
+                    Toast.makeText(LobbyEsportsActivity.this, "You have been kicked out the lobby", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        //Pune userii in lista de useri
         FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -114,7 +147,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                     users.add(id.child(ds.getValue(String.class)).getKey());
                 }
 
-                mUserEsportsListView.setAdapter(new LobbyEsportsActivity.MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
+                mUserListView.setAdapter(new LobbyEsportsActivity.MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
             }
 
             @Override
@@ -135,6 +168,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
     }
 
+    //Te scoate din lobby la back
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(LobbyEsportsActivity.this);
@@ -142,6 +176,8 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
+                                child("Lobby").removeEventListener(kicklistener);
                         lobby.removeUser(FirebaseAuth.getInstance().getUid());
                         finish();
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
@@ -155,7 +191,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 }).show();
     }
 
-    public class ViewHolder {
+    public class ChatViewHolder {
         TextView mMessageTv;
         TextView mUserTv;
         TextView mTimeTv;
@@ -172,12 +208,12 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LobbyEsportsActivity.ViewHolder mainViewHolder = null;
+            ChatViewHolder mainViewHolder = null;
 
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(layout, parent, false);
-                LobbyEsportsActivity.ViewHolder viewHolder = new LobbyEsportsActivity.ViewHolder();
+                ChatViewHolder viewHolder = new ChatViewHolder();
 
                 viewHolder.mMessageTv = (TextView) convertView.findViewById(R.id.chatMessageTv);
                 viewHolder.mMessageTv.setText(getItem(position).getMessageText());
@@ -189,19 +225,33 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 viewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
                 convertView.setTag(viewHolder);
             } else {
-                mainViewHolder = (LobbyEsportsActivity.ViewHolder) convertView.getTag();
+                mainViewHolder = (ChatViewHolder) convertView.getTag();
+                mainViewHolder = (ChatViewHolder) convertView.getTag();
                 mainViewHolder.mMessageTv.setText(getItem(position).getMessageText());
                 mainViewHolder.mTimeTv.setText(getItem(position).getTime());
                 mainViewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
             }
-
             return convertView;
         }
     }
 
+    public void showPopup(View v) {
+        PopupMenu mPopup = new PopupMenu(this, v);
+        MenuInflater inflater = mPopup.getMenuInflater();
+        inflater.inflate(R.menu.actions, mPopup.getMenu());
+        mPopup.show();
+
+        mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return true;
+            }
+        });
+    }
+
     public class UserViewHolder {
         TextView mUserTv;
-        ImageView mProfileImage;
+        CircleImageView mProfileImage;
         Button mKickBtn;
         Button mRateBtn;
     }
@@ -225,10 +275,9 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 final UserViewHolder viewHolder = new UserViewHolder();
 
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
-                viewHolder.mProfileImage = (ImageView) convertView.findViewById(R.id.list_profile_image);
+                viewHolder.mProfileImage = (CircleImageView) convertView.findViewById(R.id.list_profile_image);
                 viewHolder.mKickBtn = (Button) convertView.findViewById(R.id.kickBtn);
                 viewHolder.mRateBtn = (Button) convertView.findViewById(R.id.user_rateBtn);
-
                 final String mUserId = users.get(position);
                 //Nu iti poti da rating singur
                 if (mUserId.equals(FirebaseAuth.getInstance().getUid()))
@@ -344,7 +393,6 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
                     }
                 });
-
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (UserViewHolder) convertView.getTag();
@@ -362,6 +410,10 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
+
+
+                //mainViewHolder.mUserTv.setText(mUserFirstName);
+                //mainViewHolder.mProfileImage.set
             }
 
             return convertView;
@@ -373,19 +425,17 @@ public class LobbyEsportsActivity extends AppCompatActivity {
             mChatListView.setVisibility(View.GONE);
             mInputMsg.setVisibility(View.GONE);
             mSendFab.setVisibility(View.GONE);
-            mUserEsportsListView.setVisibility(View.VISIBLE);
+            mUserListView.setVisibility(View.VISIBLE);
 
-            mUserEsportsListView.setAdapter(new MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
+            mUserListView.setAdapter(new LobbyEsportsActivity.MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
             mActiveList = true;
         } else {
             mChatListView.setVisibility(View.VISIBLE);
             mInputMsg.setVisibility(View.VISIBLE);
-            mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
             mSendFab.setVisibility(View.VISIBLE);
-            mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
-            mUserEsportsListView.setVisibility(View.GONE);
+            mUserListView.setVisibility(View.GONE);
 
-            mChatListView.setAdapter(new MyListAdapter(LobbyEsportsActivity.this, R.layout.chat_message_item, data));
+            mChatListView.setAdapter(new LobbyEsportsActivity.MyListAdapter(LobbyEsportsActivity.this, R.layout.chat_message_item, data));
             mActiveList = false;
         }
     }
