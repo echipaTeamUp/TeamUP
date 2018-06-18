@@ -1,5 +1,5 @@
 README
-TeamUP-TeamUP is an app that helps you find a team, for sports or video games. For sports,you can find sport and age specific lobbies in your area. For video games, you can find game specific lobbies.
+TeamUP-TeamUP is an app that helps you find a team, for sports or video games. For sports, you can find sport and age specific lobbies in your area. For video games, you can find game specific lobbies.
 
 Built with:
 Android Studio-IDE
