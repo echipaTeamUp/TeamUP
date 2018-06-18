@@ -355,9 +355,10 @@ public class LobbyActivity extends AppCompatActivity {
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
                 viewHolder.mProfileImage = (ImageView) convertView.findViewById(R.id.list_profile_image);
                 viewHolder.mKickBtn=(Button) convertView.findViewById(R.id.kickBtn);
-                if(!lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()))
-                    viewHolder.mKickBtn.setVisibility(View.GONE);
                 final String mUserId = users.get(position);
+                if(!lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) || mUserId.equals(FirebaseAuth.getInstance().getUid()))
+                    viewHolder.mKickBtn.setVisibility(View.GONE);
+
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
