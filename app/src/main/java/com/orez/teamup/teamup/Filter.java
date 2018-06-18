@@ -92,18 +92,18 @@ class FilterSports implements Serializable {
 class FilterEsports implements Serializable {
     private int maxDistance;
     private esports esport;
-    private CSGOranks csgOrank;
-    private LoLranks loLrank;
+   /* private CSGOranks csgOrank;
+    private LoLranks loLrank;*/
     private double latitude;
     private double longitude;
 
-    public FilterEsports(int maxDistance, esports esport, double longitude, double latitude,CSGOranks csgOrank,LoLranks loLrank) {
+    public FilterEsports(int maxDistance, esports esport, double longitude, double latitude) {
         this.maxDistance = maxDistance;
         this.esport = esport;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.csgOrank=csgOrank;
-        this.loLrank=loLrank;
+       /* this.csgOrank=csgOrank;
+        this.loLrank=loLrank;*/
     }
 
     public FilterEsports(){}
@@ -132,11 +132,11 @@ class FilterEsports implements Serializable {
         return longitude;
     }
 
-    public CSGOranks getCsgOrank() {
+    /*public CSGOranks getCsgOrank() {
         return csgOrank;
     }
 
     public LoLranks getLoLrank() {
         return loLrank;
-    }
+    }*/
 }

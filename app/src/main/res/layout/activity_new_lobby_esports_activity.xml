@@ -120,29 +120,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/timeTV" />
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/constraintLayout11"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@drawable/editstyletext"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
-
-                <Spinner
-                    android:id="@+id/create_rank_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="45dp"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </android.support.constraint.ConstraintLayout>
-
             <TextView
                 android:id="@+id/placeTV"
                 android:layout_width="0dp"
@@ -232,7 +209,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
 
                 <RadioButton
                     android:id="@+id/today_RBtn"

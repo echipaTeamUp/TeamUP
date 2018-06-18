@@ -41,7 +41,7 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
     GoogleMap map;
     EditText mnumber_playersEt;
     Spinner mspors_spinner;
-    Spinner mranks_spinner;
+    //Spinner mranks_spinner;
     Button mnewLobbyBtn;
     User user;
     LatLng latlong;
@@ -68,13 +68,13 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
         mtimeTV = (TextView) findViewById(R.id.timeTV);
         today_Rbtn = (RadioButton) findViewById(R.id.today_RBtn);
         tomorrow_Rbtn = (RadioButton) findViewById(R.id.tomorrow_RBtn);
-        mranks_spinner=(Spinner) findViewById(R.id.create_rank_spinner);
+        //mranks_spinner=(Spinner) findViewById(R.id.create_rank_spinner);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         user = (User) getIntent().getSerializableExtra("User");
         //adapter pentru spinner
         mspors_spinner.setAdapter(new ArrayAdapter<esports>(this, android.R.layout.simple_list_item_1, esports.values()));
 
-        mspors_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+       /* mspors_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                changerank();
@@ -84,7 +84,7 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
 
         //onclick creare lobby
         mnewLobbyBtn.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +96,7 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
                         calendar.add(Calendar.DAY_OF_YEAR, 1);
                     Lmonth = calendar.get(Calendar.MONTH);
                     Lday = calendar.get(Calendar.DAY_OF_MONTH);
-                    CSGOranks csgorank;LoLranks LoLrank;
+                    /*CSGOranks csgorank;LoLranks LoLrank;
                     if(mspors_spinner.getSelectedItem()==esports.CSGO){
                         csgorank=(CSGOranks)mranks_spinner.getSelectedItem();
                         LoLrank=LoLranks.Bronze1;
@@ -104,10 +104,10 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
                     else{
                         csgorank=CSGOranks.Gold_Nova1;
                         LoLrank=(LoLranks)mranks_spinner.getSelectedItem();
-                    }
+                    }*/
                     int maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());
                     LobbyEsports mlobby = new LobbyEsports(Lobby.getNewID(), maxlobbysize, (esports) mspors_spinner.getSelectedItem(),
-                            FirebaseAuth.getInstance().getUid(), Lmonth, Lday, Lhour, Lminute,csgorank,LoLrank);
+                            FirebaseAuth.getInstance().getUid(), Lmonth, Lday, Lhour, Lminute);
                     Log.v("log", "apeleaza writetodb din new_lobby_activity");
                     mlobby.writeToDB();
 
@@ -154,12 +154,12 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
             }
         });
     }
-    void changerank(){
+    /*void changerank(){
         if(mspors_spinner.getSelectedItem()==esports.CSGO)
             mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this,android.R.layout.simple_list_item_1,CSGOranks.values()));
         if(mspors_spinner.getSelectedItem()==esports.LoL)
             mranks_spinner.setAdapter(new ArrayAdapter<LoLranks>(this,android.R.layout.simple_list_item_1,LoLranks.values()));
-    }
+    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
