@@ -425,7 +425,7 @@ class LobbyEsports extends Lobby {
             // time filter
             Date currentDate = Calendar.getInstance().getTime();
             int cmonth = currentDate.getMonth(), cday = currentDate.getDay(), chour = currentDate.getHours(), cminute = currentDate.getMinutes();
-            if (!verifyDate(cmonth, cday, chour, cminute, curr.getMonth(), curr.getDay(), curr.getHour(), curr.getMinute(), 20))
+            if (!verifyDate(cmonth, cday, chour, cminute, curr.getMonth(), curr.getDay(), curr.getHour(), curr.getMinute(), 5))
                 continue;
             //rank filter
            /* if(curr.getEsport()==esports.CSGO&&(curr.getCsgOrank()!=filter.getCsgOrank()))
