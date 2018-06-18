@@ -33,8 +33,6 @@ public class ProfileActivity extends Activity {
     TextView mProfileEmail;
     ImageButton edit_image;
     User user;
-    User user2;
-
     ImageView mProfileImage;
     Uri file;
     String uid;
@@ -68,15 +66,19 @@ public class ProfileActivity extends Activity {
         user = (User) getIntent().getSerializableExtra("User");
         if(req_code==1) {
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            loadData(true);
+            loadData();
+            getUserFromDb();
         }
         //Daca vine din lobby, ia userul pe care ai apasat
         // Extras intent: Req_code==2, Uid==user id
         else if (req_code==2){
+            uid=getIntent().getStringExtra("Uid");
             getUserFromDb();
             //nu mai poti schimba imaginea de profil
             mChangeProfileBtn.setVisibility(View.GONE);
             edit_image.setVisibility(View.GONE);
+            mSignoutBtn.setVisibility(View.GONE);
+            mProfileBtn.setVisibility(View.GONE);
         }
 
         ref = FirebaseStorage.getInstance().getReference();
@@ -149,14 +151,13 @@ public class ProfileActivity extends Activity {
         });
     }
     void getUserFromDb(){
-        uid=getIntent().getStringExtra("Uid");
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference myRef = database.child("id").child(uid);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                user2 = dataSnapshot.getValue(User.class);
-                loadData(false);
+                user = dataSnapshot.getValue(User.class);
+                loadData();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -164,9 +165,7 @@ public class ProfileActivity extends Activity {
         });
     }
     //Incarca datele in TV
-    public void loadData(boolean type){
-        if(type) {
-            mProfileBtn.setVisibility(View.INVISIBLE);
+    public void loadData(){
             mSignoutBtn.setVisibility(View.VISIBLE);
             user_nameTv.setText(user.getFirst_name() + " " + user.getLast_name());
             if (user.getNumber_of_ratings() > 0)
@@ -174,15 +173,5 @@ public class ProfileActivity extends Activity {
             birthdayTv.setText("Birthday: " + user.getBirthday());
             strikesTv.setText("Strikes: " + user.getStrikes());
             mProfileEmail.setText(user.getEmail());
-        } else{
-            mProfileBtn.setVisibility(View.VISIBLE);
-            mSignoutBtn.setVisibility(View.GONE);
-            user_nameTv.setText(user2.getFirst_name() + " " + user2.getLast_name());
-            if (user2.getNumber_of_ratings() > 0)
-                mratingBar.setRating(user2.getRating() / user2.getNumber_of_ratings());
-            birthdayTv.setText("Birthday: " + user2.getBirthday());
-            strikesTv.setText("Strikes: " + user2.getStrikes());
-            mProfileEmail.setText(user2.getEmail());
-        }
     }
 }
