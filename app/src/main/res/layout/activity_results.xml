@@ -7,6 +7,7 @@
     tools:context=".ResultsActivity"
     android:background="@color/grey">
 
+
         <TextView
             android:id="@+id/resultsTitleTV"
             android:layout_width="match_parent"
@@ -75,4 +76,5 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
+
 </android.support.constraint.ConstraintLayout>

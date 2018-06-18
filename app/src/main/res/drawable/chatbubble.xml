@@ -3,14 +3,14 @@
 
     android:padding ="40dp"
     android:shape = "rectangle">
-    <solid android:color="@color/translucentWhite">
+<solid android:color="@color/translucentWhite">
 
-    </solid>
-    <corners android:bottomLeftRadius="8dp"
-        android:bottomRightRadius="8dp"
-        android:topLeftRadius="8dp"
-        android:topRightRadius="8dp"
-        >
-    </corners>
+</solid>
+<corners android:bottomLeftRadius="8dp"
+android:bottomRightRadius="8dp"
+android:topLeftRadius="8dp"
+android:topRightRadius="8dp"
+    >
+</corners>
 
-</shape>
+    </shape>
