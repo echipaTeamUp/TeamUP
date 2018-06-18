@@ -340,7 +340,6 @@ public class LobbyActivity extends AppCompatActivity {
                 if (item.getTitle().toString().equals("View on map")) {
                     double longitude = lobby.getLongitude();
                     double latitude = lobby.getLatitude();
-                    Toast.makeText(LobbyActivity.this, latitude + "", Toast.LENGTH_SHORT).show();
                     Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + latitude + "," + longitude + "(Lobby+location)");
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
