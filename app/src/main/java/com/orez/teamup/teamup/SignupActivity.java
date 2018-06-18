@@ -193,7 +193,7 @@ public class SignupActivity extends Activity {
 
             }
         });}
-        else
+
         mDatabase.child("id").child(user.getUid()).
                 setValue(muser);
     }
