@@ -108,7 +108,7 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         //Daca ora e buna
                         if (checktime(selectedHour, selectedMinute, mcurrentTime.get(Calendar.HOUR_OF_DAY),
-                                mcurrentTime.get(Calendar.MINUTE))) {
+                                mcurrentTime.get(Calendar.MINUTE)) || tomorrow_Rbtn.isChecked()) {
                             mtimeTV.setText("Hour: " + selectedHour + ":" + selectedMinute);
                             Lhour = selectedHour;
                             Lminute = selectedMinute;
@@ -126,7 +126,6 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 mtimeTV.setText(R.string.select_an_hour);
-
             }
         });
     }

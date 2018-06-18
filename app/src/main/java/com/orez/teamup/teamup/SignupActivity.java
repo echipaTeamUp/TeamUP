@@ -183,14 +183,17 @@ public class SignupActivity extends Activity {
     void setvalues() {
         muser = new User(mfirstnameEt.getText().toString().trim(), mlastnameEt.getText().toString().trim(),
                 mbirthdayEt.getText().toString(),0,0,0, memailEt.getText().toString());
-        StorageReference ref = mStorageRef.child(user.getUid());
-        ref.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+        if(checkBox.isChecked())
+        {StorageReference ref = mStorageRef.child(user.getUid());
+            ref.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 photouri = taskSnapshot.getDownloadUrl();
-                mphotoBtn.setText(photouri.toString());
+
             }
-        });
+        });}
+        else
         mDatabase.child("id").child(user.getUid()).
                 setValue(muser);
     }
@@ -201,6 +204,7 @@ public class SignupActivity extends Activity {
         i.putExtra("email", memailEt.getText().toString());
         i.putExtra("pass", mpassEt.getText().toString());
         setResult(Activity.RESULT_OK, i);
+        mAuth.signOut();
         finish();
     }
 
