@@ -107,6 +107,7 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
         mChatListView = (ListView) findViewById(R.id.messageListView);
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -327,7 +328,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             UserViewHolder mainViewHolder = null;
 
             if (convertView == null) {
@@ -372,7 +373,7 @@ public class LobbyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(LobbyActivity.this, ProfileActivity.class);
-                        if(mUserId.equals(lobby.getAdminId())) {
+                        if(mUserId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent.putExtra("User", user);
                             intent.putExtra("Req_code", 1);
                             startActivity(intent);
