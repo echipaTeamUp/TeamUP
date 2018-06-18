@@ -2,30 +2,18 @@ package com.orez.teamup.teamup;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,9 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 
 public class SportsActivity extends Activity {
@@ -106,28 +92,28 @@ public class SportsActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                  mLocationListener=new LocationListener() {
-                     @Override
-                     public void onLocationChanged(Location location) {
+                mLocationListener = new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
                         mLocationManager.removeUpdates(mLocationListener);
-                        mLocationManager=null;
-                     }
+                        mLocationManager = null;
+                    }
 
-                     @Override
-                     public void onStatusChanged(String provider, int status, Bundle extras) {
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
 
-                     }
+                    }
 
-                     @Override
-                     public void onProviderEnabled(String provider) {
+                    @Override
+                    public void onProviderEnabled(String provider) {
 
-                     }
+                    }
 
-                     @Override
-                     public void onProviderDisabled(String provider) {
+                    @Override
+                    public void onProviderDisabled(String provider) {
 
-                     }
-                 };
+                    }
+                };
 
 
                 if (ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -137,7 +123,7 @@ public class SportsActivity extends Activity {
                         300, mLocationListener);
 
                 final FilterSports mFilterSport = new FilterSports(user.getAge(),
-                        20,skillGroupSports.ALL,(sports) mSelectSportSpinner.getSelectedItem(),mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).
+                        20, skillGroupSports.ALL, (sports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).
                         getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude());
 
                 // TODO: in loc de filtrele astea trebuie luate sporturile din listview si atasate la niste filtre
