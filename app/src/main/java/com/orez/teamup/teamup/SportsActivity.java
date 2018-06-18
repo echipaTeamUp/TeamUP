@@ -101,16 +101,16 @@ public class SportsActivity extends Activity {
                 startActivity(i);
             }
         });
-
+        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
                   mLocationListener=new LocationListener() {
                      @Override
                      public void onLocationChanged(Location location) {
                         mLocationManager.removeUpdates(mLocationListener);
-                        //mLocationManager=null;
+                        mLocationManager=null;
                      }
 
                      @Override
