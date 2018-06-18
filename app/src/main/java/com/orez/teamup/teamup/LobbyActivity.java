@@ -99,7 +99,7 @@ public class LobbyActivity extends AppCompatActivity {
                 String message = mInputMsg.getText().toString().trim();
                 if (!message.equals("")) {
                     long xd = System.currentTimeMillis() / 1000L;
-                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name() + user.getLast_name(), xd);
+                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name() + " W" + user.getLast_name(), xd);
                     ref.child(Long.toString(xd)).setValue(chatMessage);
                 }
                 mInputMsg.setText("");
