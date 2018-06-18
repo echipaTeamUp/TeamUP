@@ -128,7 +128,7 @@ public class LobbyActivity extends AppCompatActivity {
                 child("Lobby").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.getValue().toString().equals(lobby.getId()))
+                if(dataSnapshot.getValue()==null)
                 {Toast.makeText(LobbyActivity.this,"You have been kicked out the lobby",Toast.LENGTH_LONG).show();
                 finish();}
             }
