@@ -1,7 +1,6 @@
 package com.orez.teamup.teamup;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,7 +25,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
@@ -41,9 +39,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.database.ValueEventListener;
 import com.uber.sdk.android.core.UberSdk;
 import com.uber.sdk.android.rides.RideParameters;
 import com.uber.sdk.android.rides.RideRequestButton;
@@ -129,13 +127,12 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
         //Verifica daca ai primit sau nu kick
-        kicklistener=FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
+        kicklistener = FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
                 child("Lobby").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue()==null)
-                {
-                    Toast.makeText(LobbyActivity.this,"You have been kicked out the lobby",Toast.LENGTH_LONG).show();
+                if (dataSnapshot.getValue() == null) {
+                    Toast.makeText(LobbyActivity.this, "You have been kicked out the lobby", Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
@@ -176,6 +173,7 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
     }
+
     //Te scoate din lobby la back
     @Override
     public void onBackPressed() {
@@ -365,14 +363,14 @@ public class LobbyActivity extends AppCompatActivity {
 
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
                 viewHolder.mProfileImage = (CircleImageView) convertView.findViewById(R.id.list_profile_image);
-                viewHolder.mKickBtn=(Button) convertView.findViewById(R.id.kickBtn);
-                viewHolder.mRateBtn=(Button) convertView.findViewById(R.id.user_rateBtn);
+                viewHolder.mKickBtn = (Button) convertView.findViewById(R.id.kickBtn);
+                viewHolder.mRateBtn = (Button) convertView.findViewById(R.id.user_rateBtn);
                 final String mUserId = users.get(position);
                 //Nu iti poti da rating singur
-                if(mUserId.equals(FirebaseAuth.getInstance().getUid()))
+                if (mUserId.equals(FirebaseAuth.getInstance().getUid()))
                     viewHolder.mRateBtn.setVisibility(View.GONE);
                 //Nu poti sa dai kick daca nu esti admin si nu iti poti da kick singur
-                if(!lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) || mUserId.equals(FirebaseAuth.getInstance().getUid()))
+                if (!lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) || mUserId.equals(FirebaseAuth.getInstance().getUid()))
                     viewHolder.mKickBtn.setVisibility(View.GONE);
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
@@ -408,11 +406,11 @@ public class LobbyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(LobbyActivity.this, ProfileActivity.class);
-                        if(mUserId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        if (mUserId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent.putExtra("User", user);
                             intent.putExtra("Req_code", 1);
                             startActivity(intent);
-                        } else{
+                        } else {
                             intent.putExtra("User", user);
                             intent.putExtra("Uid", mUserId);
                             intent.putExtra("Req_code", 2);
@@ -429,15 +427,15 @@ public class LobbyActivity extends AppCompatActivity {
                 viewHolder.mRateBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog.Builder rating_dialog=new AlertDialog.Builder(LobbyActivity.this);
-                        View dialog_view=getLayoutInflater().inflate(R.layout.rating_dialog,null);
-                        final RatingBar dialog_rating=dialog_view.findViewById(R.id.dialog_ratingBar);
-                        TextView dialog_titleTv=dialog_view.findViewById(R.id.dialog_titleTV);
-                        Button dialog_rateBtn=dialog_view.findViewById(R.id.dialog_rateBtn);
-                        Button dialog_cancelBtn=dialog_view.findViewById(R.id.dialog_cancelBtn);
+                        AlertDialog.Builder rating_dialog = new AlertDialog.Builder(LobbyActivity.this);
+                        View dialog_view = getLayoutInflater().inflate(R.layout.rating_dialog, null);
+                        final RatingBar dialog_rating = dialog_view.findViewById(R.id.dialog_ratingBar);
+                        TextView dialog_titleTv = dialog_view.findViewById(R.id.dialog_titleTV);
+                        Button dialog_rateBtn = dialog_view.findViewById(R.id.dialog_rateBtn);
+                        Button dialog_cancelBtn = dialog_view.findViewById(R.id.dialog_cancelBtn);
                         rating_dialog.setView(dialog_view);
-                        final AlertDialog dialog=rating_dialog.create();
-                        dialog_titleTv.setText("Rate "+viewHolder.mUserTv.getText().toString());
+                        final AlertDialog dialog = rating_dialog.create();
+                        dialog_titleTv.setText("Rate " + viewHolder.mUserTv.getText().toString());
                         dialog.show();
                         dialog_cancelBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -448,15 +446,15 @@ public class LobbyActivity extends AppCompatActivity {
                         dialog_rateBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final float rating=dialog_rating.getRating();
-                                DatabaseReference ref=FirebaseDatabase.getInstance().getReference();
-                                final DatabaseReference ratingRef=ref.child("id").child(mUserId).child("rating");
-                                final DatabaseReference nr_ratingsRef=ref.child("id").child(mUserId).child("number_of_ratings");
+                                final float rating = dialog_rating.getRating();
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                final DatabaseReference ratingRef = ref.child("id").child(mUserId).child("rating");
+                                final DatabaseReference nr_ratingsRef = ref.child("id").child(mUserId).child("number_of_ratings");
                                 ratingRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        float crating= dataSnapshot.getValue(float.class);
-                                        ratingRef.setValue((float)crating+(float)rating);
+                                        float crating = dataSnapshot.getValue(float.class);
+                                        ratingRef.setValue((float) crating + (float) rating);
                                     }
 
                                     @Override
@@ -467,8 +465,8 @@ public class LobbyActivity extends AppCompatActivity {
                                 nr_ratingsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                       int nr_ratings=dataSnapshot.getValue(int.class);
-                                       nr_ratingsRef.setValue(nr_ratings+1);
+                                        int nr_ratings = dataSnapshot.getValue(int.class);
+                                        nr_ratingsRef.setValue(nr_ratings + 1);
                                     }
 
                                     @Override
