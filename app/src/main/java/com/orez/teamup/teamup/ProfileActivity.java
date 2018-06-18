@@ -30,6 +30,7 @@ public class ProfileActivity extends Activity {
     TextView user_nameTv;
     TextView birthdayTv;
     TextView strikesTv;
+    TextView mProfileEmail;
     ImageButton edit_image;
     User user;
     User user2;
@@ -57,6 +58,7 @@ public class ProfileActivity extends Activity {
         mChangeProfileBtn = (Button) findViewById(R.id.button);
         mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
+        mProfileEmail = (TextView) findViewById(R.id.profile_email);
 
         int req_code=getIntent().getExtras().getInt("Req_code");
         //Daca vine din menu,ia userul curent
@@ -166,12 +168,14 @@ public class ProfileActivity extends Activity {
                 mratingBar.setRating(user.getRating() / user.getNumber_of_ratings());
             birthdayTv.setText("Birthday: " + user.getBirthday());
             strikesTv.setText("Strikes: " + user.getStrikes());
+            mProfileEmail.setText(user.getEmail());
         } else{
             user_nameTv.setText(user2.getFirst_name() + " " + user2.getLast_name());
             if (user2.getNumber_of_ratings() > 0)
                 mratingBar.setRating(user2.getRating() / user2.getNumber_of_ratings());
             birthdayTv.setText("Birthday: " + user2.getBirthday());
             strikesTv.setText("Strikes: " + user2.getStrikes());
+            mProfileEmail.setText(user2.getEmail());
         }
     }
 }
