@@ -159,10 +159,10 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         });
 
         // updateaza obiectul lobby
-        FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(lobby.getId()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("EsportsLobby").child(lobby.getId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                lobby = dataSnapshot.getValue(LobbySports.class);
+                lobby = dataSnapshot.getValue(LobbyEsports.class);
             }
 
             @Override
