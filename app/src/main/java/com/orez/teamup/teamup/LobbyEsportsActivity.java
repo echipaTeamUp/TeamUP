@@ -1,25 +1,16 @@
 package com.orez.teamup.teamup;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -28,10 +19,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,13 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.uber.sdk.android.core.UberSdk;
-import com.uber.sdk.android.rides.RideParameters;
 import com.uber.sdk.android.rides.RideRequestButton;
-import com.uber.sdk.android.rides.RideRequestButtonCallback;
-import com.uber.sdk.rides.client.ServerTokenSession;
-import com.uber.sdk.rides.client.SessionConfiguration;
-import com.uber.sdk.rides.client.error.ApiError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +65,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         mUserEsportsListView = (ListView) findViewById(R.id.usersEsportsListView);
         mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
 
-        mUserEsportsListView.setVisibility(View.VISIBLE);
+        mUserEsportsListView.setVisibility(View.GONE);
 
         mLobbySport.setText(lobby.getEsport().toString());
 
@@ -127,7 +110,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 users.clear();
                 DataSnapshot id = dataSnapshot.child("id");
                 DataSnapshot usersSnapshot = dataSnapshot.child("EsportsLobby").child(lobby.getId()).child("users");
-                for (DataSnapshot ds : usersSnapshot.getChildren()){
+                for (DataSnapshot ds : usersSnapshot.getChildren()) {
                     users.add(id.child(ds.getValue(String.class)).getKey());
                 }
 
@@ -143,9 +126,9 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         mProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(LobbyEsportsActivity.this,ProfileActivity.class);
-                i.putExtra("Req_code",1);
-                i.putExtra("User",user);
+                Intent i = new Intent(LobbyEsportsActivity.this, ProfileActivity.class);
+                i.putExtra("Req_code", 1);
+                i.putExtra("User", user);
                 startActivity(i);
             }
         });
@@ -243,15 +226,15 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
                 viewHolder.mProfileImage = (ImageView) convertView.findViewById(R.id.list_profile_image);
-                viewHolder.mKickBtn=(Button) convertView.findViewById(R.id.kickBtn);
-                viewHolder.mRateBtn=(Button) convertView.findViewById(R.id.user_rateBtn);
+                viewHolder.mKickBtn = (Button) convertView.findViewById(R.id.kickBtn);
+                viewHolder.mRateBtn = (Button) convertView.findViewById(R.id.user_rateBtn);
 
                 final String mUserId = users.get(position);
                 //Nu iti poti da rating singur
-                if(mUserId.equals(FirebaseAuth.getInstance().getUid()))
+                if (mUserId.equals(FirebaseAuth.getInstance().getUid()))
                     viewHolder.mRateBtn.setVisibility(View.GONE);
                 //Nu poti sa dai kick daca nu esti admin si nu iti poti da kick singur
-                if(!lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) || mUserId.equals(FirebaseAuth.getInstance().getUid()))
+                if (!lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) || mUserId.equals(FirebaseAuth.getInstance().getUid()))
                     viewHolder.mKickBtn.setVisibility(View.GONE);
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
@@ -287,11 +270,11 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(LobbyEsportsActivity.this, ProfileActivity.class);
-                        if(mUserId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        if (mUserId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent.putExtra("User", user);
                             intent.putExtra("Req_code", 1);
                             startActivity(intent);
-                        } else{
+                        } else {
                             intent.putExtra("User", user);
                             intent.putExtra("Uid", mUserId);
                             intent.putExtra("Req_code", 2);
@@ -308,15 +291,15 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 viewHolder.mRateBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog.Builder rating_dialog=new AlertDialog.Builder(LobbyEsportsActivity.this);
-                        View dialog_view=getLayoutInflater().inflate(R.layout.rating_dialog,null);
-                        final RatingBar dialog_rating=dialog_view.findViewById(R.id.dialog_ratingBar);
-                        TextView dialog_titleTv=dialog_view.findViewById(R.id.dialog_titleTV);
-                        Button dialog_rateBtn=dialog_view.findViewById(R.id.dialog_rateBtn);
-                        Button dialog_cancelBtn=dialog_view.findViewById(R.id.dialog_cancelBtn);
+                        AlertDialog.Builder rating_dialog = new AlertDialog.Builder(LobbyEsportsActivity.this);
+                        View dialog_view = getLayoutInflater().inflate(R.layout.rating_dialog, null);
+                        final RatingBar dialog_rating = dialog_view.findViewById(R.id.dialog_ratingBar);
+                        TextView dialog_titleTv = dialog_view.findViewById(R.id.dialog_titleTV);
+                        Button dialog_rateBtn = dialog_view.findViewById(R.id.dialog_rateBtn);
+                        Button dialog_cancelBtn = dialog_view.findViewById(R.id.dialog_cancelBtn);
                         rating_dialog.setView(dialog_view);
-                        final AlertDialog dialog=rating_dialog.create();
-                        dialog_titleTv.setText("Rate "+viewHolder.mUserTv.getText().toString());
+                        final AlertDialog dialog = rating_dialog.create();
+                        dialog_titleTv.setText("Rate " + viewHolder.mUserTv.getText().toString());
                         dialog.show();
                         dialog_cancelBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -327,15 +310,15 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                         dialog_rateBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final float rating=dialog_rating.getRating();
-                                DatabaseReference ref=FirebaseDatabase.getInstance().getReference();
-                                final DatabaseReference ratingRef=ref.child("id").child(mUserId).child("rating");
-                                final DatabaseReference nr_ratingsRef=ref.child("id").child(mUserId).child("number_of_ratings");
+                                final float rating = dialog_rating.getRating();
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                final DatabaseReference ratingRef = ref.child("id").child(mUserId).child("rating");
+                                final DatabaseReference nr_ratingsRef = ref.child("id").child(mUserId).child("number_of_ratings");
                                 ratingRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        float crating= dataSnapshot.getValue(float.class);
-                                        ratingRef.setValue((float)crating+(float)rating);
+                                        float crating = dataSnapshot.getValue(float.class);
+                                        ratingRef.setValue((float) crating + (float) rating);
                                     }
 
                                     @Override
@@ -346,8 +329,8 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                                 nr_ratingsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        int nr_ratings=dataSnapshot.getValue(int.class);
-                                        nr_ratingsRef.setValue(nr_ratings+1);
+                                        int nr_ratings = dataSnapshot.getValue(int.class);
+                                        nr_ratingsRef.setValue(nr_ratings + 1);
                                     }
 
                                     @Override
