@@ -19,7 +19,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:hint="User"
+            android:hint="@string/user"
             android:textStyle="bold|italic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,9 +30,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/chatUserTv"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="1dp"
             android:hint="@string/message"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chatUserTv" />
 
@@ -43,7 +45,7 @@
             android:layout_above="@+id/chatUserTv"
             android:layout_alignParentStart="true"
             android:layout_marginEnd="16dp"
-            android:hint="00:00"
+            android:hint="@string/hour"
             app:layout_constraintBaseline_toBaselineOf="@id/chatUserTv"
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteY="26dp" />
