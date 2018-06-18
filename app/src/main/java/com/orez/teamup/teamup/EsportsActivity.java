@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -36,6 +37,8 @@ public class EsportsActivity extends Activity {
     LocationListener mLocationListener;
     ImageButton mProfileBtn;
     ImageButton mSignoutBtn;
+    Spinner mranks_spinner;
+    Spinner mSelectSportSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,8 @@ public class EsportsActivity extends Activity {
         mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
+        mranks_spinner=(Spinner) findViewById(R.id.esports_rank_spinner);
+        mSelectSportSpinner = (Spinner) findViewById(R.id.select_filter_spinner);
 
         //Daca apesi pe profil, te duce la profil
         mProfileBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,10 +76,20 @@ public class EsportsActivity extends Activity {
                 finish();
             }
         });
-
+        mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this,android.R.layout.simple_list_item_1,CSGOranks.values()));
         data.addAll(Collections.singleton(com.orez.teamup.teamup.esports.values().toString()));
 
-        final Spinner mSelectSportSpinner = (Spinner) findViewById(R.id.select_filter_spinner);
+        mSelectSportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //changeranks();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         mSelectSportSpinner.setAdapter(new ArrayAdapter<esports>(this, android.R.layout.simple_list_item_1, esports.values()));
 
         mfab.setOnClickListener(new View.OnClickListener() {
@@ -119,9 +134,17 @@ public class EsportsActivity extends Activity {
                 }
                 mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
                         300, mLocationListener);
-
+                CSGOranks csgorank;LoLranks LoLrank;
+                if(mSelectSportSpinner.getSelectedItem()==esports.CSGO){
+                    csgorank=(CSGOranks)mranks_spinner.getSelectedItem();
+                    LoLrank=LoLranks.Bronze1;
+                }
+                else{
+                    csgorank=CSGOranks.Gold_Nova1;
+                    LoLrank=(LoLranks)mranks_spinner.getSelectedItem();
+                }
                 final FilterEsports mFilterEsport = new FilterEsports(20, (esports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).
-                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude());
+                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),csgorank,LoLrank);
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("EsportsLobby");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -144,6 +167,12 @@ public class EsportsActivity extends Activity {
                 });
             }
         });
+    }
+    void changeranks(){
+        if(mSelectSportSpinner.getSelectedItem()==esports.CSGO)
+            mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this,android.R.layout.simple_list_item_1,CSGOranks.values()));
+        if(mSelectSportSpinner.getSelectedItem()==esports.LoL)
+            mranks_spinner.setAdapter(new ArrayAdapter<LoLranks>(this,android.R.layout.simple_list_item_1,LoLranks.values()));
     }
 
     // animeaza cand apesi pe back ca sa te intorci in activitatea trecuta
