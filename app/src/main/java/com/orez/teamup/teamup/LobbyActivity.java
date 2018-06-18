@@ -70,6 +70,7 @@ public class LobbyActivity extends AppCompatActivity {
     TextView mdetailsTv;
     ListView mUserListView;
     ValueEventListener kicklistener;
+    ValueEventListener userListener;
     boolean mActiveList = false;
 
     @Override
@@ -144,8 +145,22 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
 
+        // updateaza obiectul lobby
+        FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(lobby.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                lobby = dataSnapshot.getValue(LobbySports.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         //Pune userii in lista de useri
-        FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
+        DatabaseReference baseRef = FirebaseDatabase.getInstance().getReference();
+        userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 users.clear();
@@ -162,20 +177,8 @@ public class LobbyActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
-
-        // updateaza obiectul lobby
-        FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(lobby.getId()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                lobby = dataSnapshot.getValue(LobbySports.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        };
+        baseRef.addValueEventListener(userListener);
 
         mProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,6 +204,8 @@ public class LobbyActivity extends AppCompatActivity {
 
                         FirebaseDatabase.getInstance().getReference().child("id").child(uid).
                                 child("Lobby").removeEventListener(kicklistener);
+                        FirebaseDatabase.getInstance().getReference().removeEventListener(userListener);
+
                         lobby.removeUser(uid);
                         finish();
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
