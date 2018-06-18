@@ -38,16 +38,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.uber.sdk.android.rides.RideRequestButton
-        android:id="@+id/rideRequestBtn"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -81,22 +71,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/optionsBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:contentDescription="@string/options"
-            android:onClick="showPopup"
-            android:src="@drawable/ic_menu_dots"
-            android:tint="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
             android:id="@+id/menu_profileBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,7 +80,7 @@
             android:background="@android:color/transparent"
             android:src="@drawable/userprofilewhite"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/optionsBtn"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -166,7 +140,7 @@
         app:layout_constraintBottom_toTopOf="@+id/sendMessageEt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rideRequestBtn"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10"
         app:layout_constraintVertical_bias="0.504" />
 
 </android.support.constraint.ConstraintLayout>

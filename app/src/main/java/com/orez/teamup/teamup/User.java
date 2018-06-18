@@ -8,7 +8,8 @@ public class User implements Serializable {
     private String Last_name = "null";
     private String Birthday = "null";
     private String Email = "";
-    protected int rating,number_of_ratings,strikes;
+    protected float rating;
+    protected int number_of_ratings,strikes;
 
     public String getEmail() { return Email; }
 
@@ -38,7 +39,7 @@ public class User implements Serializable {
         Birthday = birthday;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
@@ -50,7 +51,7 @@ public class User implements Serializable {
         return strikes;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
