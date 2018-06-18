@@ -82,8 +82,7 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
                     Lday = calendar.get(Calendar.DAY_OF_MONTH);
                     int maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());
                     LobbyEsports mlobby = new LobbyEsports(Lobby.getNewID(), maxlobbysize, (esports) mspors_spinner.getSelectedItem(),
-                            latlong.longitude, latlong.latitude, FirebaseAuth.getInstance().getUid(),
-                            mplaceTV.getText().toString(), Lmonth, Lday, Lhour, Lminute);
+                            FirebaseAuth.getInstance().getUid(), Lmonth, Lday, Lhour, Lminute);
                     Log.v("log", "apeleaza writetodb din new_lobby_activity");
                     mlobby.writeToDB();
 
@@ -109,7 +108,7 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         //Daca ora e buna
                         if (checktime(selectedHour, selectedMinute, mcurrentTime.get(Calendar.HOUR_OF_DAY),
-                                mcurrentTime.get(Calendar.MINUTE))) {
+                                mcurrentTime.get(Calendar.MINUTE)) || tomorrow_Rbtn.isChecked()) {
                             mtimeTV.setText("Hour: " + selectedHour + ":" + selectedMinute);
                             Lhour = selectedHour;
                             Lminute = selectedMinute;
@@ -127,7 +126,6 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 mtimeTV.setText(R.string.select_an_hour);
-
             }
         });
     }
@@ -159,30 +157,30 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
     }
 
 
-    @Override
-    public void onResume() {
-        mapView.onResume();
-        super.onResume();
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
+//    @Override
+//    public void onResume() {
+//        mapView.onResume();
+//        super.onResume();
+//    }
+//
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mapView.onPause();
+//    }
+//
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        mapView.onDestroy();
+//    }
+//
+//    @Override
+//    public void onLowMemory() {
+//        super.onLowMemory();
+//        mapView.onLowMemory();
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

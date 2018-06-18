@@ -81,6 +81,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mLobbySport = (TextView) findViewById(R.id.lobbySportTv);
         mUserEsportsListView = (ListView) findViewById(R.id.usersEsportsListView);
+        mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
 
         mUserEsportsListView.setVisibility(View.GONE);
 
@@ -90,16 +91,15 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
         mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
         //Pentru Uber
-        initialize_uber();
+        //initialize_uber();
 
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
                 String message = mInputMsg.getText().toString().trim();
                 if (!message.equals("")) {
                     long xd = System.currentTimeMillis() / 1000L;
-                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name() + user.getLast_name(), xd);
+                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name() + " " + user.getLast_name(), xd);
                     ref.child(Long.toString(xd)).setValue(chatMessage);
                 }
                 mInputMsg.setText("");
@@ -132,7 +132,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 DataSnapshot id = dataSnapshot.child("id");
                 DataSnapshot usersSnapshot = dataSnapshot.child("EsportsLobby").child(lobby.getId()).child("users");
                 for (DataSnapshot ds : usersSnapshot.getChildren()){
-                    users.add(id.child(ds.getValue(String.class)).child("first_name").getValue(String.class));
+                    users.add(id.child(ds.getValue(String.class)).getKey());
                 }
 
                 mUserEsportsListView.setAdapter(new LobbyEsportsActivity.MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
@@ -221,100 +221,12 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         }
     }
 
-    LocationManager mLocationManager;
-    LocationListener mLocationListener;
-
-    void initialize_uber() {
-        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mLocationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                mLocationManager.removeUpdates(mLocationListener);
-                mLocationManager = null;
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
-                300, mLocationListener);
-        SessionConfiguration config = new SessionConfiguration.Builder()
-                .setClientId("FyEMGUBPhsd3tdZpQF3S2spa1W5nYifH")
-                .setServerToken("SEN3_I3iKJCKoQfoYJF6WD2YbceHRt_rMf_zmka3")
-                .setRedirectUri("teamup.com/redirecturi")
-                .setEnvironment(SessionConfiguration.Environment.SANDBOX)
-                .build();
-        UberSdk.initialize(config);
-        RideParameters rideParams = new RideParameters.Builder()
-                .setDropoffLocation(
-                        lobby.getLatitude(), lobby.getLongitude(), "Lobby location", lobby.getLocationName())
-                .setPickupLocation(mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),
-                        mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude(),
-                        "Your location", "")
-                .build();
-        requestBtn.setRideParameters(rideParams);
-        ServerTokenSession session = new ServerTokenSession(config);
-        requestBtn.setSession(session);
-        requestBtn.loadRideInformation();
-        RideRequestButtonCallback callback = new RideRequestButtonCallback() {
-
-            @Override
-            public void onRideInformationLoaded() {
-                // react to the displayed estimates
-            }
-
-            @Override
-            public void onError(ApiError apiError) {
-                // API error details: /docs/riders/references/api#section-errors
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                // Unexpected error, very likely an IOException
-            }
-        };
-        requestBtn.setCallback(callback);
-    }
-
     public void showPopup(View v){
         PopupMenu mPopup = new PopupMenu(this, v);
         MenuInflater inflater = mPopup.getMenuInflater();
         inflater.inflate(R.menu.actions, mPopup.getMenu());
         mPopup.show();
 
-        mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                //arata locatia in Gmaps
-                if(item.getTitle().toString().equals("View on map")) {
-                    double longitude = lobby.getLongitude();
-                    double latitude = lobby.getLatitude();
-                    Toast.makeText(LobbyEsportsActivity.this, latitude + "", Toast.LENGTH_SHORT).show();
-                    Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude + "?q=" + latitude + "," + longitude + "(Lobby+location)");
-                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                    mapIntent.setPackage("com.google.android.apps.maps");
-                    if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(mapIntent);
-                    }
-                }
-                return true;
-            }
-        });
     }
 
     public class UserViewHolder {
@@ -429,7 +341,9 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         } else {
             mChatListView.setVisibility(View.VISIBLE);
             mInputMsg.setVisibility(View.VISIBLE);
+            mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
             mSendFab.setVisibility(View.VISIBLE);
+            mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
             mUserEsportsListView.setVisibility(View.GONE);
 
             mChatListView.setAdapter(new MyListAdapter(LobbyEsportsActivity.this, R.layout.chat_message_item, data));

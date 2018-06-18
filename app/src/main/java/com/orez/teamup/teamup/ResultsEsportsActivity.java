@@ -125,14 +125,14 @@ public class ResultsEsportsActivity extends Activity {
                     }
                 });
 
-                viewHolder.mLocationTv = (TextView) convertView.findViewById(R.id.locationTV);
-                viewHolder.mLocationTv.setText(getItem(position).getLocationName());
+//                viewHolder.mLocationTv = (TextView) convertView.findViewById(R.id.locationTV);
+//                viewHolder.mLocationTv.setText(getItem(position).getLocationName());
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (ViewHolder) convertView.getTag();
                 mainViewHolder.mSportTv.setText(getItem(position).getEsport().toString());
                 mainViewHolder.mPlayersTv.setText(getItem(position).getSize() + "/" + getItem(position).getMaxSize());
-                mainViewHolder.mLocationTv.setText(getItem(position).getLocationName());
+//                mainViewHolder.mLocationTv.setText(getItem(position).getLocationName());
             }
 
             return convertView;
