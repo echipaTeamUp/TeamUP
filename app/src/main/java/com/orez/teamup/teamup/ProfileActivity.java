@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -31,13 +32,16 @@ public class ProfileActivity extends Activity {
     TextView strikesTv;
     ImageButton edit_image;
     User user;
+    User user2;
 
-    ImageView mprofileImage;
+    ImageView mProfileImage;
     Uri file;
     String uid;
     StorageReference ref;
     RatingBar mratingBar;
-
+    Button mChangeProfileBtn;
+    ImageButton mSignoutBtn;
+    ImageButton mProfileBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,25 +50,30 @@ public class ProfileActivity extends Activity {
 
         user_nameTv = (TextView) findViewById(R.id.profile_name);
         birthdayTv=(TextView) findViewById(R.id.profile_birthdayTV);
-        mprofileImage = (ImageView) findViewById(R.id.profile_image);
+        mProfileImage = (ImageView) findViewById(R.id.profile_image);
         mratingBar=(RatingBar) findViewById(R.id.ratingBar2);
         strikesTv=(TextView) findViewById(R.id.profile_strikesTV);
         edit_image=(ImageButton) findViewById(R.id.edit_profile_image_ImgBtn);
+        mChangeProfileBtn = (Button) findViewById(R.id.button);
+        mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
+        mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
 
         int req_code=getIntent().getExtras().getInt("Req_code");
         //Daca vine din menu,ia userul curent
         //Extras intent: Req_code==1, User==user
+        user = (User) getIntent().getSerializableExtra("User");
         if(req_code==1) {
-            user = (User) getIntent().getSerializableExtra("User");
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            loadData();
+            loadData(true);
         }
         //Daca vine din lobby, ia userul pe care ai apasat
         // Extras intent: Req_code==2, Uid==user id
         else if (req_code==2){
             getUserFromDb();
             //nu mai poti schimba imaginea de profil
-            edit_image.setVisibility(View.GONE);}
+            mChangeProfileBtn.setVisibility(View.GONE);
+            edit_image.setVisibility(View.GONE);
+        }
 
         ref = FirebaseStorage.getInstance().getReference();
         setimage();
@@ -77,6 +86,30 @@ public class ProfileActivity extends Activity {
                 Intent i = new Intent(Intent.ACTION_PICK);
                 i.setType("image/*");
                 startActivityForResult(i, 1);
+            }
+        });
+
+        //te duce la profilul tau
+        mProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ProfileActivity.this, ProfileActivity.class);
+                i.putExtra("User", user);
+                i.putExtra("Req_code", 1);
+                startActivity(i);
+                //finish();
+            }
+        });
+
+        //Signout
+        mSignoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                setResult(Activity.RESULT_OK);
+                Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
             }
         });
     }
@@ -100,7 +133,7 @@ public class ProfileActivity extends Activity {
                 //daca exista poza
                 Glide.with(ProfileActivity.this)
                         .load(uri)
-                        .into(mprofileImage);
+                        .into(mProfileImage);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -117,8 +150,8 @@ public class ProfileActivity extends Activity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                loadData();
+                user2 = dataSnapshot.getValue(User.class);
+                loadData(false);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -126,11 +159,19 @@ public class ProfileActivity extends Activity {
         });
     }
     //Incarca datele in TV
-    public void loadData(){
-        user_nameTv.setText(user.getFirst_name() + " " + user.getLast_name());
-        if(user.getNumber_of_ratings()>0)
-        mratingBar.setRating(user.getRating()/user.getNumber_of_ratings());
-        birthdayTv.setText("Birthday: "+user.getBirthday());
-        strikesTv.setText("Strikes: "+user.getStrikes());
+    public void loadData(boolean type){
+        if(type) {
+            user_nameTv.setText(user.getFirst_name() + " " + user.getLast_name());
+            if (user.getNumber_of_ratings() > 0)
+                mratingBar.setRating(user.getRating() / user.getNumber_of_ratings());
+            birthdayTv.setText("Birthday: " + user.getBirthday());
+            strikesTv.setText("Strikes: " + user.getStrikes());
+        } else{
+            user_nameTv.setText(user2.getFirst_name() + " " + user2.getLast_name());
+            if (user2.getNumber_of_ratings() > 0)
+                mratingBar.setRating(user2.getRating() / user2.getNumber_of_ratings());
+            birthdayTv.setText("Birthday: " + user2.getBirthday());
+            strikesTv.setText("Strikes: " + user2.getStrikes());
+        }
     }
 }

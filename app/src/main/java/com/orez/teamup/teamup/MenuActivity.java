@@ -24,10 +24,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MenuActivity extends Activity {
 
-    ImageButton mprofileBtn;
-    ImageButton msignoutBtn;
-    Button msportsBtn;
-    Button mesportsBtn;
+    ImageButton mProfileBtn;
+    ImageButton mSignoutBtn;
+    Button mSportsBtn;
+    Button mEsportsBtn;
     User user;
 
     @Override
@@ -38,10 +38,10 @@ public class MenuActivity extends Activity {
         Intent i = getIntent();
 
         user = (User) i.getSerializableExtra("User");
-        mprofileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
-        msignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
-        msportsBtn = (Button) findViewById(R.id.sportsBtn);
-        mesportsBtn = (Button) findViewById(R.id.esportsBtn);
+        mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
+        mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
+        mSportsBtn = (Button) findViewById(R.id.sportsBtn);
+        mEsportsBtn = (Button) findViewById(R.id.esportsBtn);
 
         checkLocationPermission();
 
@@ -80,7 +80,7 @@ public class MenuActivity extends Activity {
         });
 
         //Daca apesi pe profil, te duce la profil
-        mprofileBtn.setOnClickListener(new View.OnClickListener() {
+        mProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MenuActivity.this, ProfileActivity.class);
@@ -91,7 +91,7 @@ public class MenuActivity extends Activity {
         });
 
         //Signout
-        msignoutBtn.setOnClickListener(new View.OnClickListener() {
+        mSignoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
@@ -99,7 +99,6 @@ public class MenuActivity extends Activity {
                 Intent i = new Intent(MenuActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
-
             }
         });
 
@@ -151,8 +150,8 @@ public class MenuActivity extends Activity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)) {
-            msportsBtn.setVisibility(View.GONE);
-            msportsBtn.setVisibility(View.GONE);
+            mSportsBtn.setVisibility(View.GONE);
+            mSportsBtn.setVisibility(View.GONE);
         }
     }
 }
