@@ -127,20 +127,6 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
 
-        // Updateaza adminul
-        FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(lobby.getId()).child("admin").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue(String.class).equals(FirebaseAuth.getInstance().getUid()))
-                    Toast.makeText(LobbyActivity.this, "You are now lobby admin", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         // Verifica daca ai primit sau nu kick
         kicklistener = FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
                 child("Lobby").addValueEventListener(new ValueEventListener() {
@@ -198,9 +184,11 @@ public class LobbyActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
+                        String uid = FirebaseAuth.getInstance().getUid();
+
+                        FirebaseDatabase.getInstance().getReference().child("id").child(uid).
                                 child("Lobby").removeEventListener(kicklistener);
-                        lobby.removeUser(FirebaseAuth.getInstance().getUid());
+                        lobby.removeUser(uid);
                         finish();
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                     }
