@@ -99,7 +99,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 String message = mInputMsg.getText().toString().trim();
                 if (!message.equals("")) {
                     long xd = System.currentTimeMillis() / 1000L;
-                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name(), xd);
+                    ChatMessage chatMessage = new ChatMessage(message, user.getFirst_name() + user.getLast_name(), xd);
                     ref.child(Long.toString(xd)).setValue(chatMessage);
                 }
                 mInputMsg.setText("");
@@ -202,8 +202,10 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
                 viewHolder.mMessageTv = (TextView) convertView.findViewById(R.id.chatMessageTv);
                 viewHolder.mMessageTv.setText(getItem(position).getMessageText());
+
                 viewHolder.mTimeTv = (TextView) convertView.findViewById(R.id.chatTimeTv);
                 viewHolder.mTimeTv.setText(getItem(position).getTime());
+
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.chatUserTv);
                 viewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
                 convertView.setTag(viewHolder);
