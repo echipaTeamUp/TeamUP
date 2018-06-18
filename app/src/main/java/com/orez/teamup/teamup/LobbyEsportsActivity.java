@@ -82,7 +82,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         mUserEsportsListView = (ListView) findViewById(R.id.usersEsportsListView);
         mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
 
-        mUserEsportsListView.setVisibility(View.GONE);
+        mUserEsportsListView.setVisibility(View.VISIBLE);
 
         mLobbySport.setText(lobby.getEsport().toString());
 
