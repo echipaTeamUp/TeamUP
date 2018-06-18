@@ -316,10 +316,12 @@ class LobbyEsports extends Lobby {
 
     protected boolean type = true; //true daca e de esports
     protected esports esport;
+    private CSGOranks csgOrank;
+    private LoLranks loLrank;
     protected int month, day, hour, minute;
 
     LobbyEsports(String id, int maxSize, esports esport, String adminId,
-                int month, int day, int hour, int minute) {
+                int month, int day, int hour, int minute,CSGOranks csgOrank,LoLranks loLrank) {
         super(id, maxSize);
         this.esport = esport;
         this.adminId = adminId;
@@ -328,6 +330,8 @@ class LobbyEsports extends Lobby {
         this.day = day;
         this.hour = hour;
         this.minute = minute;
+        this.csgOrank=csgOrank;
+        this.loLrank=loLrank;
     }
 
     LobbyEsports() {
@@ -375,6 +379,18 @@ class LobbyEsports extends Lobby {
         return day;
     }
 
+    public boolean isType() {
+        return type;
+    }
+
+    public CSGOranks getCsgOrank() {
+        return csgOrank;
+    }
+
+    public LoLranks getLoLrank() {
+        return loLrank;
+    }
+
     public void setEsport(esports esport) {
         this.esport = esport;
     }
@@ -390,7 +406,7 @@ class LobbyEsports extends Lobby {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             LobbyEsports curr = ds.getValue(LobbyEsports.class);
 
-            // sport filter
+            // esport filter
             if (curr.getEsport() != filter.getEsport())
                 continue;
 
@@ -410,6 +426,11 @@ class LobbyEsports extends Lobby {
             Date currentDate = Calendar.getInstance().getTime();
             int cmonth = currentDate.getMonth(), cday = currentDate.getDay(), chour = currentDate.getHours(), cminute = currentDate.getMinutes();
             if (!verifyDate(cmonth, cday, chour, cminute, curr.getMonth(), curr.getDay(), curr.getHour(), curr.getMinute(), 20))
+                continue;
+            //rank filter
+            if(curr.getEsport()==esports.CSGO&&(curr.getCsgOrank()!=filter.getCsgOrank()))
+                continue;
+            if(curr.getEsport()==esports.LoL&&(curr.getLoLrank()!=filter.getLoLrank()))
                 continue;
             arr.add(curr);
         }

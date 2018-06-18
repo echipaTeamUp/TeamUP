@@ -10,7 +10,17 @@ enum skillGroupSports {
 enum sports {
     BASKETBALL, FOOTBALL, TENNIS, RUGBY, HANDBALL, CYCLING, PINGPONG, BADMINTON
 }
-
+enum CSGOranks{
+    Silver1, Silver2, Silver3, Silver4, Silver_Elite,Silver_Elite_Master,
+    Gold_Nova1,Gold_Nova2,Gold_Nova3,Gold_Nova_Master,Master_Guardian1,Master_Guardian2,
+    Master_Guardian_Elite,Distinguished_Master_Guardian,Legendary_Eagle,Legendary_Eagle_Master,
+    Supreme_Master_First_Class,The_Global_Elite
+}
+enum LoLranks{
+    Bronze1,Bronze2,Bronze3,Bronze4,Bronze5,Silver1,Silver2,Silver3,Silver4,Silver5,
+    Gold1,Gold2,Gold3,Gold4,Gold5,Platinum1,Platinum2,Platinum3,Platinum4,Platinum5,
+    Diamond1,Diamond2,Diamond3,Diamond4,Diamond5,Master,Challenger
+}
 enum esports {
     CSGO, LoL
 }
@@ -82,14 +92,18 @@ class FilterSports implements Serializable {
 class FilterEsports implements Serializable {
     private int maxDistance;
     private esports esport;
+    private CSGOranks csgOrank;
+    private LoLranks loLrank;
     private double latitude;
     private double longitude;
 
-    public FilterEsports(int maxDistance, esports esport, double longitude, double latitude) {
+    public FilterEsports(int maxDistance, esports esport, double longitude, double latitude,CSGOranks csgOrank,LoLranks loLrank) {
         this.maxDistance = maxDistance;
         this.esport = esport;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.csgOrank=csgOrank;
+        this.loLrank=loLrank;
     }
 
     public FilterEsports(){}
@@ -116,5 +130,13 @@ class FilterEsports implements Serializable {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public CSGOranks getCsgOrank() {
+        return csgOrank;
+    }
+
+    public LoLranks getLoLrank() {
+        return loLrank;
     }
 }
