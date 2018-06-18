@@ -163,6 +163,8 @@ public class ProfileActivity extends Activity {
     //Incarca datele in TV
     public void loadData(boolean type){
         if(type) {
+            mProfileBtn.setVisibility(View.VISIBLE);
+            mSignoutBtn.setVisibility(View.VISIBLE);
             user_nameTv.setText(user.getFirst_name() + " " + user.getLast_name());
             if (user.getNumber_of_ratings() > 0)
                 mratingBar.setRating(user.getRating() / user.getNumber_of_ratings());
@@ -170,6 +172,8 @@ public class ProfileActivity extends Activity {
             strikesTv.setText("Strikes: " + user.getStrikes());
             mProfileEmail.setText(user.getEmail());
         } else{
+            mProfileBtn.setVisibility(View.GONE);
+            mSignoutBtn.setVisibility(View.GONE);
             user_nameTv.setText(user2.getFirst_name() + " " + user2.getLast_name());
             if (user2.getNumber_of_ratings() > 0)
                 mratingBar.setRating(user2.getRating() / user2.getNumber_of_ratings());

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,13 +36,41 @@ import java.util.concurrent.TimeUnit;
 
 public class ResultsActivity extends Activity {
     User user;
+    ImageButton mProfileBtn;
+    ImageButton mSignoutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
+        mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
+        mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
         user = (User) getIntent().getSerializableExtra("User");
+
+        //Daca apesi pe profil, te duce la profil
+        mProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ResultsActivity.this, ProfileActivity.class);
+                i.putExtra("User", user);
+                i.putExtra("Req_code", 1);
+                startActivity(i);
+            }
+        });
+
+        //Signout
+        mSignoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                setResult(Activity.RESULT_OK);
+                Intent i = new Intent(ResultsActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
         ArrayList<LobbySports> arr = (ArrayList<LobbySports>) getIntent().getSerializableExtra("lobbys");
 
         ListView mListView = (ListView) findViewById(R.id.resultsLV);
