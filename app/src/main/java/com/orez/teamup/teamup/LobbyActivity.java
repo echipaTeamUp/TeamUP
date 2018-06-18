@@ -95,7 +95,7 @@ public class LobbyActivity extends AppCompatActivity {
         //Pentru Uber
         initialize_uber();
         mLobbySport.setText(lobby.getSport().toString());
-        mdetailsTv.setText(lobby.getLocationName() + " " + lobby.getHour() + ":" + lobby.getMinute());
+        mdetailsTv.setText(lobby.getLocationName() + " | " + lobby.getHour() + ":" + lobby.getMinute());
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -456,7 +456,6 @@ public class LobbyActivity extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         float crating= dataSnapshot.getValue(float.class);
-                                        Toast.makeText(LobbyActivity.this,dataSnapshot.getValue().toString(),Toast.LENGTH_SHORT).show();
                                         ratingRef.setValue((float)crating+(float)rating);
                                     }
 
