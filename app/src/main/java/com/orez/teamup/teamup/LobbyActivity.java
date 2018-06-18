@@ -182,7 +182,7 @@ public class LobbyActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
                                 child("Lobby").removeEventListener(kicklistener);
-                        //lobby.removeUser(FirebaseAuth.getInstance().getUid());
+                        lobby.removeUser(FirebaseAuth.getInstance().getUid());
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                         finish();
                     }
