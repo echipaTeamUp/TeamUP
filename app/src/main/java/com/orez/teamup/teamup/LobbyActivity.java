@@ -315,6 +315,7 @@ public class LobbyActivity extends AppCompatActivity {
     public class UserViewHolder {
         TextView mUserTv;
         ImageView mProfileImage;
+        Button mKickBtn;
     }
 
     private class MyUserListAdapter extends ArrayAdapter<String> {
@@ -337,7 +338,9 @@ public class LobbyActivity extends AppCompatActivity {
 
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
                 viewHolder.mProfileImage = (ImageView) convertView.findViewById(R.id.list_profile_image);
-
+                viewHolder.mKickBtn=(Button) convertView.findViewById(R.id.kickBtn);
+                if(!lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()))
+                    viewHolder.mKickBtn.setVisibility(View.GONE);
                 final String mUserId = users.get(position);
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
                 ref.addValueEventListener(new ValueEventListener() {
@@ -384,7 +387,12 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                     }
                 });
-
+                viewHolder.mKickBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        lobby.removeUser(mUserId);
+                    }
+                });
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (UserViewHolder) convertView.getTag();

@@ -184,7 +184,8 @@ public class SignupActivity extends Activity {
         muser = new User(mfirstnameEt.getText().toString().trim(), mlastnameEt.getText().toString().trim(),
                 mbirthdayEt.getText().toString(),0,0,0, memailEt.getText().toString());
         StorageReference ref = mStorageRef.child(user.getUid());
-        ref.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        if(checkBox.isChecked())
+            ref.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 photouri = taskSnapshot.getDownloadUrl();
