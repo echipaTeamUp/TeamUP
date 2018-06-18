@@ -8,7 +8,7 @@ enum skillGroupSports {
 }
 
 enum sports {
-    ANY, BASKETBALL, FOOTBALL, TENNIS, RUGBY, HANDBALL, CYCLING, PINGPONG
+    BASKETBALL, FOOTBALL, TENNIS, RUGBY, HANDBALL, CYCLING, PINGPONG, BADMINTON
 }
 
 enum esports {
@@ -36,8 +36,6 @@ class FilterSports implements Serializable {
         this.age = -1;
         this.maxDistance = 20;
         this.skill = skillGroupSports.ALL;
-        this.sport = sports.ANY;
-
     }
 
     public void setAge(int age) {

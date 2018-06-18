@@ -58,7 +58,7 @@ public class LoginActivity extends Activity {
         mAuth = FirebaseAuth.getInstance();
         //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
-            Toast.makeText(LoginActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
+            makeToast("Please connect to the internet");
 
         //daca esti deja logat te duce direct in menu activity
         if (mAuth.getCurrentUser() != null) {
@@ -114,21 +114,18 @@ public class LoginActivity extends Activity {
                                     startgif();
                                     retrieve_user();
                                 } else {
-                                    Toast.makeText(LoginActivity.this, "Please verify your email" +
-                                            " adress before you sign in", Toast.LENGTH_LONG).show();
+                                    makeToast("Please verify your email adress before you sign in");
                                     makeresendvisible();
                                 }
 
                             } else {
                                 // Nu a mers
-                                Toast.makeText(LoginActivity.this, "Ai gresit datele, baiatul meu",
-                                        Toast.LENGTH_SHORT).show();
+                                makeToast("Invalid credentials");
                             }
                         }
                     });
         } else {
-            Toast.makeText(LoginActivity.this, "N-ai introdus datele, baiatul meu",
-                    Toast.LENGTH_SHORT).show();
+            makeToast("Please enter your credentials");
         }
     }
 
@@ -205,8 +202,7 @@ public class LoginActivity extends Activity {
 
     void makeresendvisible() {
         mresend_verificationBtn.setVisibility(View.VISIBLE);
-        Toast.makeText(LoginActivity.this, "Signup succeded",
-                Toast.LENGTH_SHORT).show();
+        makeToast("Signup succeded");
         final FirebaseUser fuser = mAuth.getCurrentUser();
         fuser.sendEmailVerification()
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
@@ -214,13 +210,9 @@ public class LoginActivity extends Activity {
                     public void onComplete(@NonNull Task task) {
 
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this,
-                                    "Verification email sent to " + fuser.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
+                            makeToast("Verification email sent to " + fuser.getEmail());
                         } else {
-                            Toast.makeText(LoginActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
+                            makeToast("Failed to send verification email.");
                         }
                     }
                 });
@@ -229,14 +221,14 @@ public class LoginActivity extends Activity {
     void resetpassword() {
         String email = mEmailEt.getText().toString().trim();
         if (!isEmailValid(email))
-            Toast.makeText(LoginActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
+            makeToast("Please enter your email");
         else {
             mAuth.sendPasswordResetEmail(email)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Password reset email sent", Toast.LENGTH_SHORT).show();
+                                makeToast("Password reset email sent");
                             }
                         }
                     });
@@ -245,6 +237,9 @@ public class LoginActivity extends Activity {
 
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+    void makeToast(String string){
+        Toast.makeText(LoginActivity.this, string,Toast.LENGTH_SHORT).show();
     }
 
 }
