@@ -164,6 +164,19 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
 
+        // updateaza obiectul lobby
+        FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(lobby.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                lobby = dataSnapshot.getValue(LobbySports.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         mProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
