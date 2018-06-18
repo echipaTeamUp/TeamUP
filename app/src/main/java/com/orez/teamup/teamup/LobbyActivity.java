@@ -185,8 +185,8 @@ public class LobbyActivity extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
                                 child("Lobby").removeEventListener(kicklistener);
                         lobby.removeUser(FirebaseAuth.getInstance().getUid());
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                         finish();
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -232,6 +232,7 @@ public class LobbyActivity extends AppCompatActivity {
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (ChatViewHolder) convertView.getTag();
+                mainViewHolder = (ChatViewHolder) convertView.getTag();
                 mainViewHolder.mMessageTv.setText(getItem(position).getMessageText());
                 mainViewHolder.mTimeTv.setText(getItem(position).getTime());
                 mainViewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
@@ -249,7 +250,7 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 mLocationManager.removeUpdates(mLocationListener);
-                mLocationManager = null;
+                //mLocationManager = null;
             }
 
             @Override
