@@ -89,7 +89,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         mUserListView.setVisibility(View.GONE);
 
         mLobbySport.setText(lobby.getEsport().toString());
-        mdetailsTv.setText("Start time:" + lobby.getHour() + ":" + lobby.getMinute());
+        mdetailsTv.setText("Start time: " + lobby.getHour() + ":" + lobby.getMinute());
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
