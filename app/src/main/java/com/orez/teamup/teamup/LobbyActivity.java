@@ -25,16 +25,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.database.ValueEventListener;
 import com.uber.sdk.android.core.UberSdk;
 import com.uber.sdk.android.rides.RideParameters;
@@ -80,7 +86,6 @@ public class LobbyActivity extends AppCompatActivity {
         mInputMsg = (EditText) findViewById(R.id.sendMessageEt);
 
         mUserListView.setVisibility(View.GONE);
-        mLobbySport.setText(lobby.getSport().toString());
 
         //Pentru Uber
         initialize_uber();
@@ -126,7 +131,7 @@ public class LobbyActivity extends AppCompatActivity {
                 DataSnapshot id = dataSnapshot.child("id");
                 DataSnapshot usersSnapshot = dataSnapshot.child("SportsLobby").child(lobby.getId()).child("users");
                 for (DataSnapshot ds : usersSnapshot.getChildren()) {
-                    users.add(id.child(ds.getValue(String.class)).child("first_name").getValue(String.class));
+                    users.add(id.child(ds.getValue(String.class)).getKey());
                 }
 
                 mUserListView.setAdapter(new LobbyActivity.MyUserListAdapter(LobbyActivity.this, R.layout.user_list_item, users));
@@ -309,6 +314,7 @@ public class LobbyActivity extends AppCompatActivity {
 
     public class UserViewHolder {
         TextView mUserTv;
+        ImageView mProfileImage;
     }
 
     private class MyUserListAdapter extends ArrayAdapter<String> {
@@ -327,15 +333,46 @@ public class LobbyActivity extends AppCompatActivity {
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(layout, parent, false);
-                UserViewHolder viewHolder = new UserViewHolder();
+                final UserViewHolder viewHolder = new UserViewHolder();
 
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
-                viewHolder.mUserTv.setText(getItem(position));
+                viewHolder.mProfileImage = (ImageView) convertView.findViewById(R.id.list_profile_image);
+
+                final String mUserId = users.get(position);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String mUserFirstName = dataSnapshot.child("first_name").getValue().toString();
+                        viewHolder.mUserTv.setText(mUserFirstName);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+                StorageReference sref = FirebaseStorage.getInstance().getReference();
+                sref.child(mUserId).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        //daca exista poza
+                        Glide.with(LobbyActivity.this)
+                                .load(uri)
+                                .into(viewHolder.mProfileImage);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // daca nu exista poza
+                    }
+                });
 
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (UserViewHolder) convertView.getTag();
                 mainViewHolder.mUserTv.setText(getItem(position));
+                //mainViewHolder.mProfileImage.set
             }
 
             return convertView;
