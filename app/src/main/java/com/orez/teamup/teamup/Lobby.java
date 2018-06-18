@@ -417,7 +417,7 @@ class LobbyEsports extends Lobby {
             mfilterLocation.setLatitude(filter.getLatitude());
             mfilterLocation.setLongitude(filter.getLongitude());
             Location mlobbyLocation = new Location("lobby");
-            if (mfilterLocation.distanceTo(mlobbyLocation) / 1000 > 2000)
+            if (mfilterLocation.distanceTo(mlobbyLocation) / 1000 > 2000000)
                 continue;
 
             // time filter
