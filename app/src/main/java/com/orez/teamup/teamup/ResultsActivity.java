@@ -138,7 +138,7 @@ public class ResultsActivity extends Activity {
                         intent.putExtra("Lobby", mlobby);
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-                        finish();
+                       // finish();
                     }
                 });
                 convertView.setTag(viewHolder);

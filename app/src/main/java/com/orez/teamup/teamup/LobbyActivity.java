@@ -124,7 +124,20 @@ public class LobbyActivity extends AppCompatActivity {
 
             }
         });
+        FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
+                child("Lobby").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()==null)
+                {Toast.makeText(LobbyActivity.this,"You have been kicked out the lobby",Toast.LENGTH_LONG).show();
+                finish();}
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
