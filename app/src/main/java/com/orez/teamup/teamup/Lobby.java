@@ -379,9 +379,7 @@ class LobbyEsports extends Lobby {
         return day;
     }
 
-    public boolean isType() {
-        return type;
-    }
+
 
     /*public CSGOranks getCsgOrank() {
         return csgOrank;
