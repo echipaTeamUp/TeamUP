@@ -44,6 +44,8 @@ public class ProfileActivity extends Activity {
     ImageButton mSignoutBtn;
     ImageButton mProfileBtn;
 
+    int req_code = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,7 @@ public class ProfileActivity extends Activity {
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mProfileEmail = (TextView) findViewById(R.id.profile_email);
 
-        int req_code=getIntent().getExtras().getInt("Req_code");
+        req_code=getIntent().getExtras().getInt("Req_code");
         //Daca vine din menu,ia userul curent
         //Extras intent: Req_code==1, User==user
         user = (User) getIntent().getSerializableExtra("User");
@@ -141,7 +143,8 @@ public class ProfileActivity extends Activity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // daca nu exista poza
-                Toast.makeText(ProfileActivity.this, "Please upload a profile photo", Toast.LENGTH_SHORT).show();
+                if(req_code == 1)
+                    Toast.makeText(ProfileActivity.this, "Please upload a profile photo", Toast.LENGTH_SHORT).show();
             }
         });
     }
