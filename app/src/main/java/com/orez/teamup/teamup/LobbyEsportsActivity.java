@@ -103,7 +103,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
             }
         });
 
-        //Updateaza chatul
+        // Updateaza chatul
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -137,6 +137,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
             }
         });
+
         //Pune userii in lista de useri
         FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
@@ -149,6 +150,19 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 }
 
                 mUserListView.setAdapter(new LobbyEsportsActivity.MyUserListAdapter(LobbyEsportsActivity.this, R.layout.user_list_item, users));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // updateaza obiectul lobby
+        FirebaseDatabase.getInstance().getReference().child("SportsLobby").child(lobby.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                lobby = dataSnapshot.getValue(LobbySports.class);
             }
 
             @Override
