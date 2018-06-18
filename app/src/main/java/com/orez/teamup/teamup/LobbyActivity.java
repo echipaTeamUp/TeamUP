@@ -67,6 +67,7 @@ public class LobbyActivity extends AppCompatActivity {
     TextView mLobbySport;
     TextView mdetailsTv;
     ListView mUserListView;
+    ValueEventListener kicklistener;
     boolean mActiveList = false;
 
     @Override
@@ -91,7 +92,6 @@ public class LobbyActivity extends AppCompatActivity {
         initialize_uber();
         mLobbySport.setText(lobby.getSport().toString());
         mdetailsTv.setText(lobby.getLocationName() + " " + lobby.getHour() + ":" + lobby.getMinute());
-
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +107,7 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
         mChatListView = (ListView) findViewById(R.id.messageListView);
-
+        //Updateaza chatul
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -124,13 +124,16 @@ public class LobbyActivity extends AppCompatActivity {
 
             }
         });
-        FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
+        //Verifica daca ai primit sau nu kick
+        kicklistener=FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
                 child("Lobby").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue()==null)
-                {Toast.makeText(LobbyActivity.this,"You have been kicked out the lobby",Toast.LENGTH_LONG).show();
-                finish();}
+                {
+                    Toast.makeText(LobbyActivity.this,"You have been kicked out the lobby",Toast.LENGTH_LONG).show();
+                    finish();
+                }
             }
 
             @Override
@@ -138,6 +141,7 @@ public class LobbyActivity extends AppCompatActivity {
 
             }
         });
+        //Pune userii in lista de useri
         FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -168,7 +172,7 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
     }
-
+    //Te scoate din lobby la back
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(LobbyActivity.this);
@@ -176,9 +180,11 @@ public class LobbyActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        FirebaseDatabase.getInstance().getReference().child("id").child(FirebaseAuth.getInstance().getUid()).
+                                child("Lobby").removeEventListener(kicklistener);
                         lobby.removeUser(FirebaseAuth.getInstance().getUid());
-                        finish();
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                        finish();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -356,6 +362,7 @@ public class LobbyActivity extends AppCompatActivity {
                 viewHolder.mProfileImage = (ImageView) convertView.findViewById(R.id.list_profile_image);
                 viewHolder.mKickBtn=(Button) convertView.findViewById(R.id.kickBtn);
                 final String mUserId = users.get(position);
+                //Nu poti sa dai kick daca nu esti admin si nu iti poti da kick singur
                 if(!lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) || mUserId.equals(FirebaseAuth.getInstance().getUid()))
                     viewHolder.mKickBtn.setVisibility(View.GONE);
 

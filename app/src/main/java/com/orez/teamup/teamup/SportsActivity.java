@@ -110,7 +110,7 @@ public class SportsActivity extends Activity {
                      @Override
                      public void onLocationChanged(Location location) {
                         mLocationManager.removeUpdates(mLocationListener);
-                        mLocationManager=null;
+                        //mLocationManager=null;
                      }
 
                      @Override

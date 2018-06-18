@@ -44,6 +44,8 @@ public class ProfileActivity extends Activity {
     ImageButton mSignoutBtn;
     ImageButton mProfileBtn;
 
+    int req_code = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,7 @@ public class ProfileActivity extends Activity {
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mProfileEmail = (TextView) findViewById(R.id.profile_email);
 
-        int req_code=getIntent().getExtras().getInt("Req_code");
+        req_code=getIntent().getExtras().getInt("Req_code");
         //Daca vine din menu,ia userul curent
         //Extras intent: Req_code==1, User==user
         user = (User) getIntent().getSerializableExtra("User");
@@ -141,7 +143,8 @@ public class ProfileActivity extends Activity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // daca nu exista poza
-                Toast.makeText(ProfileActivity.this, "Please upload a profile photo", Toast.LENGTH_SHORT).show();
+                if(req_code == 1)
+                    Toast.makeText(ProfileActivity.this, "Please upload a profile photo", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -163,7 +166,7 @@ public class ProfileActivity extends Activity {
     //Incarca datele in TV
     public void loadData(boolean type){
         if(type) {
-            mProfileBtn.setVisibility(View.VISIBLE);
+            mProfileBtn.setVisibility(View.INVISIBLE);
             mSignoutBtn.setVisibility(View.VISIBLE);
             user_nameTv.setText(user.getFirst_name() + " " + user.getLast_name());
             if (user.getNumber_of_ratings() > 0)
@@ -172,7 +175,7 @@ public class ProfileActivity extends Activity {
             strikesTv.setText("Strikes: " + user.getStrikes());
             mProfileEmail.setText(user.getEmail());
         } else{
-            mProfileBtn.setVisibility(View.GONE);
+            mProfileBtn.setVisibility(View.VISIBLE);
             mSignoutBtn.setVisibility(View.GONE);
             user_nameTv.setText(user2.getFirst_name() + " " + user2.getLast_name());
             if (user2.getNumber_of_ratings() > 0)
