@@ -316,18 +316,12 @@ class LobbyEsports extends Lobby {
 
     protected boolean type = true; //true daca e de esports
     protected esports esport;
-    protected String locationName;
-    protected double latitude;
-    protected double longitude;
     protected int month, day, hour, minute;
 
-    LobbyEsports(String id, int maxSize, esports esport, double longitude, double latitude, String adminId, String locationName,
+    LobbyEsports(String id, int maxSize, esports esport, String adminId,
                 int month, int day, int hour, int minute) {
         super(id, maxSize);
         this.esport = esport;
-        this.locationName = locationName;
-        this.longitude = longitude;
-        this.latitude = latitude;
         this.adminId = adminId;
         this.addUser(adminId);
         this.month = month;
@@ -361,18 +355,6 @@ class LobbyEsports extends Lobby {
         return esport;
     }
 
-    public String getLocationName(){
-        return this.locationName;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
     public String getAdminId() {
         return adminId;
     }
@@ -395,18 +377,6 @@ class LobbyEsports extends Lobby {
 
     public void setEsport(esports esport) {
         this.esport = esport;
-    }
-
-    public void setLocationName(String locationName){
-        this.locationName = locationName;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public void setAdminId(String adminId) {
@@ -433,8 +403,6 @@ class LobbyEsports extends Lobby {
             mfilterLocation.setLatitude(filter.getLatitude());
             mfilterLocation.setLongitude(filter.getLongitude());
             Location mlobbyLocation = new Location("lobby");
-            mlobbyLocation.setLongitude(curr.getLongitude());
-            mlobbyLocation.setLatitude(curr.getLatitude());
             if (mfilterLocation.distanceTo(mlobbyLocation) / 1000 > 2000)
                 continue;
 

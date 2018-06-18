@@ -82,8 +82,7 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
                     Lday = calendar.get(Calendar.DAY_OF_MONTH);
                     int maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());
                     LobbyEsports mlobby = new LobbyEsports(Lobby.getNewID(), maxlobbysize, (esports) mspors_spinner.getSelectedItem(),
-                            latlong.longitude, latlong.latitude, FirebaseAuth.getInstance().getUid(),
-                            mplaceTV.getText().toString(), Lmonth, Lday, Lhour, Lminute);
+                            FirebaseAuth.getInstance().getUid(), Lmonth, Lday, Lhour, Lminute);
                     Log.v("log", "apeleaza writetodb din new_lobby_activity");
                     mlobby.writeToDB();
 
@@ -159,30 +158,30 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
     }
 
 
-    @Override
-    public void onResume() {
-        mapView.onResume();
-        super.onResume();
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
+//    @Override
+//    public void onResume() {
+//        mapView.onResume();
+//        super.onResume();
+//    }
+//
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mapView.onPause();
+//    }
+//
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        mapView.onDestroy();
+//    }
+//
+//    @Override
+//    public void onLowMemory() {
+//        super.onLowMemory();
+//        mapView.onLowMemory();
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
