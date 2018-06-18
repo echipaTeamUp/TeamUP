@@ -77,8 +77,10 @@ public class Lobby implements Serializable {
         FirebaseDatabase.getInstance().getReference().child("id").child(userID).child("Lobby").setValue(null);
         if (users.size() == 0)
             delete();
-        else
+        else {
+            adminId = users.get(0);
             writeToDB();
+        }
     }
 
     // deletes this lobby from the DB
