@@ -446,10 +446,40 @@ public class LobbyActivity extends AppCompatActivity {
                         dialog_rateBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                               // float rating=dialog_rating.getRating();
+                                final float rating=dialog_rating.getRating();
+                                Toast.makeText(LobbyActivity.this,"yes",Toast.LENGTH_SHORT).show();
+                                DatabaseReference ref=FirebaseDatabase.getInstance().getReference();
+                                final DatabaseReference ratingRef=ref.child("id").child(mUserId).child("rating");
+                                final DatabaseReference nr_ratingsRef=ref.child("id").child(mUserId).child("number_of_ratings");
+                                ratingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        float crating=(float) dataSnapshot.getValue();
+                                        Toast.makeText(LobbyActivity.this,crating+"",Toast.LENGTH_SHORT).show();
+                                        ratingRef.setValue((float)crating+rating);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                                nr_ratingsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        int nr_ratings=(int)dataSnapshot.getValue();
+                                        nr_ratingsRef.setValue(nr_ratings+1);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                                 dialog.cancel();
                             }
                         });
+
                     }
                 });
                 convertView.setTag(viewHolder);
