@@ -53,6 +53,8 @@ import com.uber.sdk.rides.client.error.ApiError;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class LobbyActivity extends AppCompatActivity {
     FloatingActionButton mSendFab;
     User user;
@@ -336,7 +338,7 @@ public class LobbyActivity extends AppCompatActivity {
 
     public class UserViewHolder {
         TextView mUserTv;
-        ImageView mProfileImage;
+        CircleImageView mProfileImage;
         Button mKickBtn;
     }
 
@@ -359,7 +361,7 @@ public class LobbyActivity extends AppCompatActivity {
                 final UserViewHolder viewHolder = new UserViewHolder();
 
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
-                viewHolder.mProfileImage = (ImageView) convertView.findViewById(R.id.list_profile_image);
+                viewHolder.mProfileImage = (CircleImageView) convertView.findViewById(R.id.list_profile_image);
                 viewHolder.mKickBtn=(Button) convertView.findViewById(R.id.kickBtn);
                 final String mUserId = users.get(position);
                 //Nu poti sa dai kick daca nu esti admin si nu iti poti da kick singur

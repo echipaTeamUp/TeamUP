@@ -159,7 +159,8 @@
 
             </android.support.constraint.ConstraintLayout>
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
@@ -167,10 +168,13 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="120dp"
                 android:src="@android:drawable/sym_def_app_icon"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFffffff"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <ImageButton
                 android:id="@+id/edit_profile_image_ImgBtn"

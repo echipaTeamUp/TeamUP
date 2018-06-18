@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Sport"
+            android:text="@string/single_e_sport"
             android:textSize="30sp"
             android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/imageView2"

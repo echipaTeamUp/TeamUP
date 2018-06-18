@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.uber.sdk:rides-android:0.5.3'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 
 }
 apply plugin: 'com.google.gms.google-services'
