@@ -62,7 +62,6 @@ public class LobbyEsportsActivity extends AppCompatActivity {
     ArrayList<ChatMessage> data = new ArrayList<>();
     ArrayList<String> users = new ArrayList<>();
     EditText mInputMsg;
-    Button view_on_mapBtn;
     RideRequestButton requestBtn;
     ImageButton mProfileBtn;
     TextView mLobbySport;
@@ -76,7 +75,6 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
         user = (User) getIntent().getSerializableExtra("User");
         lobby = (LobbyEsports) getIntent().getSerializableExtra("Lobby");
-        view_on_mapBtn = (Button) findViewById(R.id.view_on_mapBtn);
         requestBtn = (RideRequestButton) findViewById(R.id.rideRequestBtn);
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mLobbySport = (TextView) findViewById(R.id.lobbySportTv);
@@ -90,9 +88,6 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
 
         mSendFab = (FloatingActionButton) findViewById(R.id.sendMessageFab);
-        //Pentru Uber
-        //initialize_uber();
-
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,19 +209,10 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 mainViewHolder.mMessageTv.setText(getItem(position).getMessageText());
                 mainViewHolder.mTimeTv.setText(getItem(position).getTime());
                 mainViewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
-                mainViewHolder.mUserTv.setText(getItem(position).getMessageUser() + ":");
             }
 
             return convertView;
         }
-    }
-
-    public void showPopup(View v){
-        PopupMenu mPopup = new PopupMenu(this, v);
-        MenuInflater inflater = mPopup.getMenuInflater();
-        inflater.inflate(R.menu.actions, mPopup.getMenu());
-        mPopup.show();
-
     }
 
     public class UserViewHolder {
@@ -319,10 +305,6 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-
-
-                //mainViewHolder.mUserTv.setText(mUserFirstName);
-                //mainViewHolder.mProfileImage.set
             }
 
             return convertView;
