@@ -38,7 +38,6 @@ public class ProfileActivity extends Activity {
     String uid;
     StorageReference ref;
     RatingBar mratingBar;
-    Button mChangeProfileBtn;
     ImageButton mSignoutBtn;
     ImageButton mProfileBtn;
 
@@ -55,7 +54,6 @@ public class ProfileActivity extends Activity {
         mratingBar=(RatingBar) findViewById(R.id.ratingBar2);
         strikesTv=(TextView) findViewById(R.id.profile_strikesTV);
         edit_image=(ImageButton) findViewById(R.id.edit_profile_image_ImgBtn);
-        mChangeProfileBtn = (Button) findViewById(R.id.button);
         mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mProfileEmail = (TextView) findViewById(R.id.profile_email);
@@ -75,7 +73,7 @@ public class ProfileActivity extends Activity {
             uid=getIntent().getStringExtra("Uid");
             getUserFromDb();
             //nu mai poti schimba imaginea de profil
-            mChangeProfileBtn.setVisibility(View.GONE);
+
             edit_image.setVisibility(View.GONE);
             mSignoutBtn.setVisibility(View.GONE);
             mProfileBtn.setVisibility(View.GONE);
