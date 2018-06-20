@@ -44,15 +44,16 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".New_lobby_activity" />
+        <activity android:name=".ResultsEsportsActivity" />
+        <activity android:name=".New_lobby_esports_activity" />
+        <activity android:name=".LobbyEsportsActivity" />
+        <activity android:name=".EsportsActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD9ihzZiXXwE9WkXg2Rh-LwfffBhwkRJTQ" />
 
-        <activity android:name=".EsportsActivity" />
-        <activity android:name=".ResultsEsportsActivity" />
-        <activity android:name=".New_lobby_esports_activity" />
-        <activity android:name=".LobbyEsportsActivity" />
+
     </application>
 
 </manifest>
