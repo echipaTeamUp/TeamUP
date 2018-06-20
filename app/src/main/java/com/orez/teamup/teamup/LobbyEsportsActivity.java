@@ -87,6 +87,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         mChatListView = (ListView) findViewById(R.id.messageListView);
 
         mUserListView.setVisibility(View.GONE);
+        mChatListView.setVisibility(View.VISIBLE);
 
         mLobbySport.setText(lobby.getEsport().toString());
         mdetailsTv.setText("Start time: " + lobby.getHour() + ":" + lobby.getMinute());
