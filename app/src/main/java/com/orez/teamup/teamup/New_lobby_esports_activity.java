@@ -1,13 +1,10 @@
 package com.orez.teamup.teamup;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,34 +17,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
 
-public class New_lobby_esports_activity extends Activity implements OnMapReadyCallback {
-    MapView mapView;
-    GoogleMap map;
+public class New_lobby_esports_activity extends Activity  {
+
     EditText mnumber_playersEt;
-    Spinner mspors_spinner;
-    //Spinner mranks_spinner;
+    Spinner mSelectSportSpinner;
+    Spinner mranks_spinner;
     Button mnewLobbyBtn;
     User user;
-    LatLng latlong;
-    TextView mplaceTV;
     TextView mtimeTV;
-    Marker marker;
     RadioButton today_Rbtn;
     RadioButton tomorrow_Rbtn;
     RadioGroup radioGroup;
@@ -56,35 +37,32 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_lobby_activity);
-        mapView = (MapView) findViewById(R.id.mapView);
-        mapView.setVisibility(View.GONE);
-        //mapView.onCreate(savedInstanceState);
-        //mapView.getMapAsync(this);
+        setContentView(R.layout.activity_new_lobby_esports_activity);
+
+
         mnumber_playersEt = (EditText) findViewById(R.id.number_playersET);
-        mspors_spinner = (Spinner) findViewById(R.id.sport_spinner);
+        mSelectSportSpinner = (Spinner) findViewById(R.id.sport_spinner);
         mnewLobbyBtn = (Button) findViewById(R.id.new_lobbyBtn);
-        mplaceTV = (TextView) findViewById(R.id.placeTV);
         mtimeTV = (TextView) findViewById(R.id.timeTV);
         today_Rbtn = (RadioButton) findViewById(R.id.today_RBtn);
         tomorrow_Rbtn = (RadioButton) findViewById(R.id.tomorrow_RBtn);
-        //mranks_spinner=(Spinner) findViewById(R.id.create_rank_spinner);
+        mranks_spinner=(Spinner) findViewById(R.id.create_rank_spinner);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         user = (User) getIntent().getSerializableExtra("User");
         //adapter pentru spinner
-        mspors_spinner.setAdapter(new ArrayAdapter<esports>(this, android.R.layout.simple_list_item_1, esports.values()));
+        mSelectSportSpinner.setAdapter(new ArrayAdapter<esports>(this, android.R.layout.simple_list_item_1, esports.values()));
 
-       /* mspors_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSelectSportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               changerank();
+               changeranks();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });*/
+        });
 
         //onclick creare lobby
         mnewLobbyBtn.setOnClickListener(new View.OnClickListener() {
@@ -96,18 +74,24 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
                         calendar.add(Calendar.DAY_OF_YEAR, 1);
                     Lmonth = calendar.get(Calendar.MONTH);
                     Lday = calendar.get(Calendar.DAY_OF_MONTH);
-                    /*CSGOranks csgorank;LoLranks LoLrank;
-                    if(mspors_spinner.getSelectedItem()==esports.CSGO){
-                        csgorank=(CSGOranks)mranks_spinner.getSelectedItem();
-                        LoLrank=LoLranks.Bronze1;
+                    CSGOranks csgorank;LoLranks LoLrank;
+                    switch ((esports) mSelectSportSpinner.getSelectedItem()) {
+                        case CSGO:
+                            csgorank = (CSGOranks) mranks_spinner.getSelectedItem();
+                            LoLrank = LoLranks.Bronze1;
+                            break;
+                        case LoL:
+                            csgorank = CSGOranks.Gold_Nova1;
+                            LoLrank = (LoLranks) mranks_spinner.getSelectedItem();
+                            break;
+                        default:
+                            csgorank = (CSGOranks) mranks_spinner.getSelectedItem();
+                            LoLrank = LoLranks.Bronze1;
+                            break;
                     }
-                    else{
-                        csgorank=CSGOranks.Gold_Nova1;
-                        LoLrank=(LoLranks)mranks_spinner.getSelectedItem();
-                    }*/
                     int maxlobbysize = Integer.parseInt(mnumber_playersEt.getText().toString());
-                    LobbyEsports mlobby = new LobbyEsports(Lobby.getNewID(), maxlobbysize, (esports) mspors_spinner.getSelectedItem(),
-                            FirebaseAuth.getInstance().getUid(), Lmonth, Lday, Lhour, Lminute);
+                    LobbyEsports mlobby = new LobbyEsports(Lobby.getNewID(), maxlobbysize, (esports) mSelectSportSpinner.getSelectedItem(),
+                            FirebaseAuth.getInstance().getUid(), Lmonth, Lday, Lhour, Lminute,csgorank,LoLrank);
                     Log.v("log", "apeleaza writetodb din new_lobby_activity");
                     mlobby.writeToDB();
 
@@ -154,90 +138,18 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
             }
         });
     }
-    /*void changerank(){
-        if(mspors_spinner.getSelectedItem()==esports.CSGO)
-            mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this,android.R.layout.simple_list_item_1,CSGOranks.values()));
-        if(mspors_spinner.getSelectedItem()==esports.LoL)
-            mranks_spinner.setAdapter(new ArrayAdapter<LoLranks>(this,android.R.layout.simple_list_item_1,LoLranks.values()));
-    }*/
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng arg0) {
-
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-                try {
-                    startActivityForResult(builder.build(New_lobby_esports_activity.this), 1);
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        if (ActivityCompat.checkSelfPermission(New_lobby_esports_activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(New_lobby_esports_activity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+    void changeranks() {
+        switch ((esports) mSelectSportSpinner.getSelectedItem()) {
+            case CSGO:
+                mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this, android.R.layout.simple_list_item_1, CSGOranks.values()));
+                break;
+            case LoL:
+                mranks_spinner.setAdapter(new ArrayAdapter<LoLranks>(this, android.R.layout.simple_list_item_1, LoLranks.values()));
+                break;
         }
-        map.setMyLocationEnabled(true);
 
     }
 
-
-//    @Override
-//    public void onResume() {
-//        mapView.onResume();
-//        super.onResume();
-//    }
-//
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        mapView.onPause();
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        mapView.onDestroy();
-//    }
-//
-//    @Override
-//    public void onLowMemory() {
-//        super.onLowMemory();
-//        mapView.onLowMemory();
-//    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //cand se intoarce din placepicker
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                mplaceTV.setText("Location: " + place.getAddress());
-                //astea sunt coordonatele care vor fi incarcate in FireBase
-                latlong = place.getLatLng();
-                //daca pusese alt marker inainte, il sterge pe ala
-                if (marker != null)
-                    marker.remove();
-                marker = map.addMarker(new MarkerOptions()
-                        .position(latlong)
-                        .title("Lobby location"));
-                zoomcamera(latlong);
-            }
-        }
-    }
-
-    //duce camera unde vrei
-    protected void zoomcamera(LatLng latLng) {
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-        map.animateCamera(CameraUpdateFactory.zoomIn());
-        map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-    }
 
     //verifica sa fie ora in cel putin o ora de la ora curenta
     public boolean checktime(int hour, int minute, int chour, int cminute) {
@@ -266,11 +178,6 @@ public class New_lobby_esports_activity extends Activity implements OnMapReadyCa
             makeToast("The max lobby size shoud be at least 2");
             return false;
         }
-
-//        if (marker == null) {
-//            makeToast("Please select a location");
-//            return false;
-//        }
 
         if (mtimeTV.getText().toString().equals(R.string.select_an_hour)) {
             makeToast("Please select an hour");

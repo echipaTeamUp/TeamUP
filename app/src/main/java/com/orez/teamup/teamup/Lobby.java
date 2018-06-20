@@ -318,12 +318,12 @@ class LobbyEsports extends Lobby {
 
     protected boolean type = true; //true daca e de esports
     protected esports esport;
-    private CSGOranks csgOrank;
-    private LoLranks loLrank;
+    private CSGOranks CSGOrank;
+    private LoLranks LoLrank;
     protected int month, day, hour, minute;
 
     LobbyEsports(String id, int maxSize, esports esport, String adminId,
-                int month, int day, int hour, int minute) {
+                int month, int day, int hour, int minute,CSGOranks csgOrank,LoLranks loLrank) {
         super(id, maxSize);
         this.esport = esport;
         this.adminId = adminId;
@@ -332,8 +332,8 @@ class LobbyEsports extends Lobby {
         this.day = day;
         this.hour = hour;
         this.minute = minute;
-        /*this.csgOrank=csgOrank;
-        this.loLrank=loLrank;*/
+        this.CSGOrank=csgOrank;
+        this.LoLrank=loLrank;
     }
 
     LobbyEsports() {
@@ -381,15 +381,13 @@ class LobbyEsports extends Lobby {
         return day;
     }
 
-
-
-    /*public CSGOranks getCsgOrank() {
-        return csgOrank;
+    public CSGOranks getCSGOrank() {
+        return CSGOrank;
     }
 
     public LoLranks getLoLrank() {
-        return loLrank;
-    }*/
+        return LoLrank;
+    }
 
     public void setEsport(esports esport) {
         this.esport = esport;
@@ -428,10 +426,10 @@ class LobbyEsports extends Lobby {
             if (!verifyDate(cmonth, cday, chour, cminute, curr.getMonth(), curr.getDay(), curr.getHour(), curr.getMinute(), 5))
                 continue;
             //rank filter
-           /* if(curr.getEsport()==esports.CSGO&&(curr.getCsgOrank()!=filter.getCsgOrank()))
+            if(curr.getEsport()==esports.CSGO&&(curr.getCSGOrank()!=filter.getCSGOrank()))
                 continue;
             if(curr.getEsport()==esports.LoL&&(curr.getLoLrank()!=filter.getLoLrank()))
-                continue;*/
+                continue;
             arr.add(curr);
         }
 

@@ -76,7 +76,7 @@ public class EsportsActivity extends Activity {
                 finish();
             }
         });
-        mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this, android.R.layout.simple_list_item_1, CSGOranks.values()));
+
         data.addAll(Collections.singleton(com.orez.teamup.teamup.esports.values().toString()));
 
         mSelectSportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -147,10 +147,14 @@ public class EsportsActivity extends Activity {
                         csgorank = CSGOranks.Gold_Nova1;
                         LoLrank = (LoLranks) mranks_spinner.getSelectedItem();
                         break;
+                    default:
+                        csgorank = (CSGOranks) mranks_spinner.getSelectedItem();
+                        LoLrank = LoLranks.Bronze1;
+                        break;
                 }
 
                 final FilterEsports mFilterEsport = new FilterEsports(20, (esports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).
-                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude());
+                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),csgorank,LoLrank);
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("EsportsLobby");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
