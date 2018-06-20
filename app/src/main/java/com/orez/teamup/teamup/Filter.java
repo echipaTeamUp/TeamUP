@@ -156,10 +156,10 @@ class FilterEsports implements Serializable {
     }
 
     public CSGOranks getCSGOrank() {
-        return CSGOrank;
+        return this.CSGOrank;
     }
 
     public LoLranks getLoLrank() {
-        return LoLrank;
+        return this.LoLrank;
     }
 }

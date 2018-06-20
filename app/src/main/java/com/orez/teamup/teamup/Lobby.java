@@ -382,11 +382,11 @@ class LobbyEsports extends Lobby {
     }
 
     public CSGOranks getCSGOrank() {
-        return CSGOrank;
+        return this.CSGOrank;
     }
 
     public LoLranks getLoLrank() {
-        return LoLrank;
+        return this.LoLrank;
     }
 
     public void setEsport(esports esport) {
@@ -412,23 +412,18 @@ class LobbyEsports extends Lobby {
             if (curr.getSize() == curr.getMaxSize())
                 continue;
 
-            // distance filter
-            Location mfilterLocation = new Location("filter");
-            mfilterLocation.setLatitude(filter.getLatitude());
-            mfilterLocation.setLongitude(filter.getLongitude());
-            Location mlobbyLocation = new Location("lobby");
-            if (mfilterLocation.distanceTo(mlobbyLocation) / 1000 > 2000000)
-                continue;
-
             // time filter
             Date currentDate = Calendar.getInstance().getTime();
             int cmonth = currentDate.getMonth(), cday = currentDate.getDay(), chour = currentDate.getHours(), cminute = currentDate.getMinutes();
             if (!verifyDate(cmonth, cday, chour, cminute, curr.getMonth(), curr.getDay(), curr.getHour(), curr.getMinute(), 5))
                 continue;
             //rank filter
-            if(curr.getEsport()==esports.CSGO&&(curr.getCSGOrank()!=filter.getCSGOrank()))
+            if(filter.getEsport()==esports.CSGO && (curr.getCSGOrank()!=filter.getCSGOrank())){
+                Log.v("log","curr: "+curr.getCSGOrank().toString()+" filter: "+filter.getCSGOrank().toString());
                 continue;
-            if(curr.getEsport()==esports.LoL&&(curr.getLoLrank()!=filter.getLoLrank()))
+            }
+
+            if(filter.getEsport()==esports.LoL &&(curr.getLoLrank()!=filter.getLoLrank()))
                 continue;
             arr.add(curr);
         }

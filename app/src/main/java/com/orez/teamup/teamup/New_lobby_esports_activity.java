@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.Calendar;
 
 public class New_lobby_esports_activity extends Activity  {

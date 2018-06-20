@@ -108,7 +108,7 @@ public class EsportsActivity extends Activity {
                 mLocationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        if (mLocationListener != null) {
+                        if (mLocationManager != null) {
                             mLocationManager.removeUpdates(mLocationListener);
                             mLocationManager = null;
                         }
