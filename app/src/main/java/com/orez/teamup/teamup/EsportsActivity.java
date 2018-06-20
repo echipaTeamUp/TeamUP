@@ -37,7 +37,7 @@ public class EsportsActivity extends Activity {
     LocationListener mLocationListener;
     ImageButton mProfileBtn;
     ImageButton mSignoutBtn;
-    //Spinner mranks_spinner;
+    Spinner mranks_spinner;
     Spinner mSelectSportSpinner;
 
     @Override
@@ -51,7 +51,7 @@ public class EsportsActivity extends Activity {
         mSendFab = (FloatingActionButton) findViewById(R.id.floatingActionButton_send);
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
-        // mranks_spinner=(Spinner) findViewById(R.id.esports_rank_spinner);
+        mranks_spinner=(Spinner) findViewById(R.id.esports_rank_spinner);
         mSelectSportSpinner = (Spinner) findViewById(R.id.select_filter_spinner);
 
         //Daca apesi pe profil, te duce la profil
@@ -76,13 +76,13 @@ public class EsportsActivity extends Activity {
                 finish();
             }
         });
-        //mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this,android.R.layout.simple_list_item_1,CSGOranks.values()));
+        mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this,android.R.layout.simple_list_item_1,CSGOranks.values()));
         data.addAll(Collections.singleton(com.orez.teamup.teamup.esports.values().toString()));
 
         mSelectSportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //changeranks();
+                changeranks();
             }
 
             @Override
@@ -136,15 +136,18 @@ public class EsportsActivity extends Activity {
                 }
                 mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
                         300, mLocationListener);
-               /* CSGOranks csgorank;LoLranks LoLrank;
-                if(mSelectSportSpinner.getSelectedItem()==esports.CSGO){
-                    csgorank=(CSGOranks)mranks_spinner.getSelectedItem();
-                    LoLrank=LoLranks.Bronze1;
+                CSGOranks csgorank;LoLranks LoLrank;
+                switch ((esports)mSelectSportSpinner.getSelectedItem()){
+                    case CSGO:
+                        csgorank=(CSGOranks)mranks_spinner.getSelectedItem();
+                        LoLrank=LoLranks.Bronze1;
+                        break;
+                    case LoL:
+                        csgorank=CSGOranks.Gold_Nova1;
+                        LoLrank=(LoLranks)mranks_spinner.getSelectedItem();
+                        break;
                 }
-                else{
-                    csgorank=CSGOranks.Gold_Nova1;
-                    LoLrank=(LoLranks)mranks_spinner.getSelectedItem();
-                }*/
+
                 final FilterEsports mFilterEsport = new FilterEsports(20, (esports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).
                         getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude());
 
@@ -170,12 +173,17 @@ public class EsportsActivity extends Activity {
             }
         });
     }
-    /*void changeranks(){
-        if(mSelectSportSpinner.getSelectedItem()==esports.CSGO)
-            mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this,android.R.layout.simple_list_item_1,CSGOranks.values()));
-        if(mSelectSportSpinner.getSelectedItem()==esports.LoL)
-            mranks_spinner.setAdapter(new ArrayAdapter<LoLranks>(this,android.R.layout.simple_list_item_1,LoLranks.values()));
-    }*/
+    void changeranks(){
+        switch ((esports)mSelectSportSpinner.getSelectedItem()){
+            case CSGO:
+                mranks_spinner.setAdapter(new ArrayAdapter<CSGOranks>(this,android.R.layout.simple_list_item_1,CSGOranks.values()));
+                break;
+            case LoL:
+                mranks_spinner.setAdapter(new ArrayAdapter<LoLranks>(this,android.R.layout.simple_list_item_1,LoLranks.values()));
+                break;
+        }
+
+    }
 
     // animeaza cand apesi pe back ca sa te intorci in activitatea trecuta
     @Override
