@@ -122,11 +122,12 @@ public class ProfileActivity extends Activity {
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mfullProfileImage.setVisibility(View.VISIBLE);
+
                 ref.child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         //daca exista poza
+                        mfullProfileImage.setVisibility(View.VISIBLE);
                         Glide.with(ProfileActivity.this)
                                 .load(uri)
                                 .into(mfullProfileImage);
