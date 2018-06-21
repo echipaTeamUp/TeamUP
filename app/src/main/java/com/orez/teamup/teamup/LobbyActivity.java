@@ -378,7 +378,7 @@ public class LobbyActivity extends AppCompatActivity {
         mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getTitle().toString().equals("kick")){
+                if (item.getTitle().toString().equals("Kick")){
                     lobby.removeUser(uId);
                 } else if (item.getTitle().toString().equals("Rate")){
                     AlertDialog.Builder rating_dialog = new AlertDialog.Builder(LobbyActivity.this);
