@@ -231,8 +231,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
+
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
-
+    <ImageView
+        android:id="@+id/profile_full_ImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/chatbubble"
+        android:visibility="gone" />
 
 </android.support.constraint.ConstraintLayout>

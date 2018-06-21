@@ -34,6 +34,7 @@ public class ProfileActivity extends Activity {
     ImageButton edit_image;
     User user;
     ImageView mProfileImage;
+    ImageView mfullProfileImage;
     Uri file;
     String uid;
     StorageReference ref;
@@ -57,6 +58,7 @@ public class ProfileActivity extends Activity {
         mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
         mProfileEmail = (TextView) findViewById(R.id.profile_email);
+        mfullProfileImage=(ImageView) findViewById(R.id.profile_full_ImageView);
 
         req_code=getIntent().getExtras().getInt("Req_code");
         //Daca vine din menu,ia userul curent
@@ -77,6 +79,7 @@ public class ProfileActivity extends Activity {
             edit_image.setVisibility(View.GONE);
             mSignoutBtn.setVisibility(View.GONE);
             mProfileBtn.setVisibility(View.GONE);
+            mProfileEmail.setVisibility(View.GONE);
         }
 
         ref = FirebaseStorage.getInstance().getReference();
@@ -114,6 +117,27 @@ public class ProfileActivity extends Activity {
                 Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
+            }
+        });
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mfullProfileImage.setVisibility(View.VISIBLE);
+                ref.child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        //daca exista poza
+                        Glide.with(ProfileActivity.this)
+                                .load(uri)
+                                .into(mfullProfileImage);
+                    }
+                });
+            }
+        });
+        mfullProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mfullProfileImage.setVisibility(View.GONE);
             }
         });
     }
