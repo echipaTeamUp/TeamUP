@@ -372,7 +372,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         if (!rateAvailable)
             rate_item.setVisible(false);
-        
+
         mPopup.show();
 
         mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -468,6 +468,10 @@ public class LobbyActivity extends AppCompatActivity {
                 final String mUserId = users.get(position);
                 final Boolean kickAvailable = !mUserId.equals(FirebaseAuth.getInstance().getUid());
                 final Boolean rateAvailable = lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) && !mUserId.equals(FirebaseAuth.getInstance().getUid());
+
+                if (!kickAvailable && !rateAvailable){
+                    viewHolder.mImageButton.setVisibility(View.GONE);
+                }
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
                 ref.addValueEventListener(new ValueEventListener() {
