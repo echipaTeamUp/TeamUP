@@ -90,7 +90,10 @@ public class LobbyEsportsActivity extends AppCompatActivity {
         mChatListView.setVisibility(View.VISIBLE);
 
         mLobbySport.setText(lobby.getEsport().toString());
-        mdetailsTv.setText("Start time: " + lobby.getHour() + ":" + lobby.getMinute());
+        if(lobby.getEsport()==esports.CSGO)
+            mdetailsTv.setText("Start time: " + lobby.getHour() + ":" + lobby.getMinute()+" |Rank: "+lobby.getCSGOrank());
+        else
+            mdetailsTv.setText("Start time: " + lobby.getHour() + ":" + lobby.getMinute()+" |Rank: "+lobby.getLoLrank());
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -333,6 +336,9 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         // daca nu exista poza
+                        Glide.with(LobbyEsportsActivity.this)
+                                .load(R.drawable.userprofilewhitelarge)
+                                .into(viewHolder.mProfileImage);
                     }
                 });
 

@@ -145,6 +145,9 @@ public class ProfileActivity extends Activity {
                 // daca nu exista poza
                 if(req_code == 1)
                     Toast.makeText(ProfileActivity.this, "Please upload a profile photo", Toast.LENGTH_SHORT).show();
+                Glide.with(ProfileActivity.this)
+                        .load(R.drawable.userprofilewhitelarge)
+                        .into(mProfileImage);
             }
         });
     }

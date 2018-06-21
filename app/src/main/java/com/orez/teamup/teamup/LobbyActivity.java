@@ -421,6 +421,9 @@ public class LobbyActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         // daca nu exista poza
+                        Glide.with(LobbyActivity.this)
+                                .load(R.drawable.userprofilewhitelarge)
+                                .into(viewHolder.mProfileImage);
                     }
                 });
 

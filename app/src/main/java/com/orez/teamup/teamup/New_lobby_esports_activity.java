@@ -77,10 +77,10 @@ public class New_lobby_esports_activity extends Activity  {
                     switch ((esports) mSelectSportSpinner.getSelectedItem()) {
                         case CSGO:
                             csgorank = (CSGOranks) mranks_spinner.getSelectedItem();
-                            LoLrank = LoLranks.Bronze1;
+                            LoLrank = null;
                             break;
                         case LoL:
-                            csgorank = CSGOranks.Gold_Nova1;
+                            csgorank = null;
                             LoLrank = (LoLranks) mranks_spinner.getSelectedItem();
                             break;
                         default:
