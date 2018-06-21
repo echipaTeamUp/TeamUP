@@ -323,7 +323,7 @@ class LobbyEsports extends Lobby {
     protected int month, day, hour, minute;
 
     LobbyEsports(String id, int maxSize, esports esport, String adminId,
-                int month, int day, int hour, int minute,CSGOranks csgOrank,LoLranks loLrank) {
+                int month, int day, int hour, int minute,CSGOranks CSGOrank,LoLranks LoLrank) {
         super(id, maxSize);
         this.esport = esport;
         this.adminId = adminId;
@@ -332,8 +332,8 @@ class LobbyEsports extends Lobby {
         this.day = day;
         this.hour = hour;
         this.minute = minute;
-        this.CSGOrank=csgOrank;
-        this.LoLrank=loLrank;
+        this.CSGOrank=CSGOrank;
+        this.LoLrank=LoLrank;
     }
 
     LobbyEsports() {
@@ -397,6 +397,30 @@ class LobbyEsports extends Lobby {
         this.adminId = adminId;
     }
 
+    public void setCSGOrank(CSGOranks CSGOrank) {
+        this.CSGOrank = CSGOrank;
+    }
+
+    public void setLoLrank(LoLranks loLrank) {
+        LoLrank = loLrank;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
     public static ArrayList<LobbyEsports> filter(DataSnapshot dataSnapshot, FilterEsports filter) {
 
         ArrayList<LobbyEsports> arr = new ArrayList<>();
@@ -419,7 +443,7 @@ class LobbyEsports extends Lobby {
                 continue;
             //rank filter
             if(filter.getEsport()==esports.CSGO && (curr.getCSGOrank()!=filter.getCSGOrank())){
-                Log.v("log","curr: "+curr.getCSGOrank().toString()+" filter: "+filter.getCSGOrank().toString());
+                Log.v("log","curr: "+curr.getCSGOrank()+" filter: "+filter.getCSGOrank());
                 continue;
             }
 

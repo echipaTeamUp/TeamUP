@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -155,7 +156,6 @@ public class EsportsActivity extends Activity {
 
                 final FilterEsports mFilterEsport = new FilterEsports(20, (esports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).
                         getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),csgorank,LoLrank);
-
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("EsportsLobby");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

@@ -87,11 +87,11 @@ public class SportsActivity extends Activity {
                 startActivity(i);
             }
         });
-        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 mLocationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
@@ -116,11 +116,10 @@ public class SportsActivity extends Activity {
 
                     }
                 };
-
-
                 if (ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
+
                 mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
                         300, mLocationListener);
 
@@ -159,4 +158,9 @@ public class SportsActivity extends Activity {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+         }
 }
