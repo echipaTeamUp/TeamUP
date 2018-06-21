@@ -300,8 +300,7 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
                 viewHolder.mProfileImage = (CircleImageView) convertView.findViewById(R.id.list_profile_image);
-                viewHolder.mKickBtn = (Button) convertView.findViewById(R.id.kickBtn);
-                viewHolder.mRateBtn = (Button) convertView.findViewById(R.id.user_rateBtn);
+
                 final String mUserId = users.get(position);
                 //Nu iti poti da rating singur
                 if (mUserId.equals(FirebaseAuth.getInstance().getUid()))

@@ -358,11 +358,89 @@ public class LobbyActivity extends AppCompatActivity {
         });
     }
 
+    public void showUserOptionsPopup(View v, final Boolean kickAvailable, final Boolean rateAvailable,
+                                     final String uId, final String userName){
+        PopupMenu mPopup = new PopupMenu(this, v);
+        MenuInflater inflater = mPopup.getMenuInflater();
+        inflater.inflate(R.menu.user_options, mPopup.getMenu());
+
+        MenuItem kick_item = mPopup.getMenu().findItem(R.id.kick_opt);
+        MenuItem rate_item = mPopup.getMenu().findItem(R.id.rate_opt);
+
+        if (!kickAvailable)
+            kick_item.setVisible(false);
+
+        if (!rateAvailable)
+            rate_item.setVisible(false);
+        
+        mPopup.show();
+
+        mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getTitle().toString().equals("kick")){
+                    lobby.removeUser(uId);
+                } else if (item.getTitle().toString().equals("Rate")){
+                    AlertDialog.Builder rating_dialog = new AlertDialog.Builder(LobbyActivity.this);
+                    View dialog_view = getLayoutInflater().inflate(R.layout.rating_dialog, null);
+                    final RatingBar dialog_rating = dialog_view.findViewById(R.id.dialog_ratingBar);
+                    TextView dialog_titleTv = dialog_view.findViewById(R.id.dialog_titleTV);
+                    Button dialog_rateBtn = dialog_view.findViewById(R.id.dialog_rateBtn);
+                    Button dialog_cancelBtn = dialog_view.findViewById(R.id.dialog_cancelBtn);
+                    rating_dialog.setView(dialog_view);
+                    final AlertDialog dialog = rating_dialog.create();
+                    dialog_titleTv.setText("Rate " + userName);
+                    dialog.show();
+                    dialog_cancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.cancel();
+                        }
+                    });
+                    dialog_rateBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final float rating = dialog_rating.getRating();
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                            final DatabaseReference ratingRef = ref.child("id").child(uId).child("rating");
+                            final DatabaseReference nr_ratingsRef = ref.child("id").child(uId).child("number_of_ratings");
+                            ratingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    float crating = dataSnapshot.getValue(float.class);
+                                    ratingRef.setValue((float) crating + (float) rating);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                            nr_ratingsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    int nr_ratings = dataSnapshot.getValue(int.class);
+                                    nr_ratingsRef.setValue(nr_ratings + 1);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                            dialog.cancel();
+                        }
+                    });
+                }
+                return true;
+            }
+        });
+    }
+
     public class UserViewHolder {
         TextView mUserTv;
         CircleImageView mProfileImage;
-        Button mKickBtn;
-        Button mRateBtn;
+        ImageButton mImageButton;
     }
 
     private class MyUserListAdapter extends ArrayAdapter<String> {
@@ -375,7 +453,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             UserViewHolder mainViewHolder = null;
 
             if (convertView == null) {
@@ -385,15 +463,11 @@ public class LobbyActivity extends AppCompatActivity {
 
                 viewHolder.mUserTv = (TextView) convertView.findViewById(R.id.userTv);
                 viewHolder.mProfileImage = (CircleImageView) convertView.findViewById(R.id.list_profile_image);
-                viewHolder.mKickBtn = (Button) convertView.findViewById(R.id.kickBtn);
-                viewHolder.mRateBtn = (Button) convertView.findViewById(R.id.user_rateBtn);
+                viewHolder.mImageButton = (ImageButton) convertView.findViewById(R.id.userOptionsBtn);
+
                 final String mUserId = users.get(position);
-                //Nu iti poti da rating singur
-                if (mUserId.equals(FirebaseAuth.getInstance().getUid()))
-                    viewHolder.mRateBtn.setVisibility(View.GONE);
-                //Nu poti sa dai kick daca nu esti admin si nu iti poti da kick singur
-                if (!lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) || mUserId.equals(FirebaseAuth.getInstance().getUid()))
-                    viewHolder.mKickBtn.setVisibility(View.GONE);
+                final Boolean kickAvailable = !mUserId.equals(FirebaseAuth.getInstance().getUid());
+                final Boolean rateAvailable = lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) && !mUserId.equals(FirebaseAuth.getInstance().getUid());
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("id").child(mUserId);
                 ref.addValueEventListener(new ValueEventListener() {
@@ -427,6 +501,13 @@ public class LobbyActivity extends AppCompatActivity {
                     }
                 });
 
+                viewHolder.mImageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showUserOptionsPopup(v, kickAvailable, rateAvailable, mUserId, viewHolder.mUserTv.getText().toString());
+                    }
+                });
+
                 viewHolder.mUserTv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -443,68 +524,7 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                     }
                 });
-                viewHolder.mKickBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lobby.removeUser(mUserId);
-                    }
-                });
-                viewHolder.mRateBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AlertDialog.Builder rating_dialog = new AlertDialog.Builder(LobbyActivity.this);
-                        View dialog_view = getLayoutInflater().inflate(R.layout.rating_dialog, null);
-                        final RatingBar dialog_rating = dialog_view.findViewById(R.id.dialog_ratingBar);
-                        TextView dialog_titleTv = dialog_view.findViewById(R.id.dialog_titleTV);
-                        Button dialog_rateBtn = dialog_view.findViewById(R.id.dialog_rateBtn);
-                        Button dialog_cancelBtn = dialog_view.findViewById(R.id.dialog_cancelBtn);
-                        rating_dialog.setView(dialog_view);
-                        final AlertDialog dialog = rating_dialog.create();
-                        dialog_titleTv.setText("Rate " + viewHolder.mUserTv.getText().toString());
-                        dialog.show();
-                        dialog_cancelBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.cancel();
-                            }
-                        });
-                        dialog_rateBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                final float rating = dialog_rating.getRating();
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                                final DatabaseReference ratingRef = ref.child("id").child(mUserId).child("rating");
-                                final DatabaseReference nr_ratingsRef = ref.child("id").child(mUserId).child("number_of_ratings");
-                                ratingRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        float crating = dataSnapshot.getValue(float.class);
-                                        ratingRef.setValue((float) crating + (float) rating);
-                                    }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                                nr_ratingsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        int nr_ratings = dataSnapshot.getValue(int.class);
-                                        nr_ratingsRef.setValue(nr_ratings + 1);
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                                dialog.cancel();
-                            }
-                        });
-
-                    }
-                });
                 convertView.setTag(viewHolder);
             } else {
                 mainViewHolder = (UserViewHolder) convertView.getTag();
