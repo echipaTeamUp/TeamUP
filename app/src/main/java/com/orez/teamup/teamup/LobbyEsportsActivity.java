@@ -91,9 +91,9 @@ public class LobbyEsportsActivity extends AppCompatActivity {
 
         mLobbySport.setText(lobby.getEsport().toString());
         if(lobby.getEsport()==esports.CSGO)
-            mdetailsTv.setText("Start time: " + lobby.getHour() + ":" + lobby.getMinute()+" |Rank: "+lobby.getCSGOrank());
+            mdetailsTv.setText("Start time: " +lobby.getDay()+"/"+(lobby.getMonth()+1)+" "+lobby.getHour() + ":" + lobby.getMinute()+" |Rank: "+lobby.getCSGOrank());
         else
-            mdetailsTv.setText("Start time: " + lobby.getHour() + ":" + lobby.getMinute()+" |Rank: "+lobby.getLoLrank());
+            mdetailsTv.setText("Start time: " +lobby.getDay()+"/"+(lobby.getMonth()+1)+" "+lobby.getHour() + ":" + lobby.getMinute()+" |Rank: "+lobby.getLoLrank());
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -94,7 +94,7 @@ public class LobbyActivity extends AppCompatActivity {
         //Pentru Uber
         initialize_uber();
         mLobbySport.setText(lobby.getSport().toString());
-        mdetailsTv.setText(lobby.getLocationName() + " | " + lobby.getHour() + ":" + lobby.getMinute());
+        mdetailsTv.setText(lobby.getLocationName() + " | " +lobby.getDay()+"/"+(lobby.getMonth()+1)+" "+lobby.getHour() + ":" + lobby.getMinute());
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chat").child(lobby.getId());
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,11 +201,9 @@ public class LobbyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String uid = FirebaseAuth.getInstance().getUid();
-
                         FirebaseDatabase.getInstance().getReference().child("id").child(uid).
                                 child("Lobby").removeEventListener(kicklistener);
                         FirebaseDatabase.getInstance().getReference().removeEventListener(userListener);
-
                         lobby.removeUser(uid);
                         finish();
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);

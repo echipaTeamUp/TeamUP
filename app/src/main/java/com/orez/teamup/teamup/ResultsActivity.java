@@ -95,6 +95,7 @@ public class ResultsActivity extends Activity {
         TextView mSportTv;
         TextView mPlayersTv;
         TextView mLocationTv;
+        TextView mTimeTv;
         Button mJoinBtn;
     }
 
@@ -126,6 +127,10 @@ public class ResultsActivity extends Activity {
 
                 viewHolder.mLocationTv = (TextView) convertView.findViewById(R.id.locationTV);
                 viewHolder.mLocationTv.setText(getItem(position).getLocationName());
+
+                viewHolder.mTimeTv=(TextView) convertView.findViewById(R.id.results_timeTV);
+                viewHolder.mTimeTv.setText(getItem(position).getDay()+"/"+(getItem(position).getMonth()+1)+"  "+getItem(position).getHour()
+                +":"+getItem(position).getMinute());
 
                 viewHolder.mJoinBtn = (Button) convertView.findViewById(R.id.joinLobbyBtn);
                 viewHolder.mJoinBtn.setOnClickListener(new View.OnClickListener() {
