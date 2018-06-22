@@ -125,6 +125,7 @@ public class New_lobby_activity extends AppCompatActivity implements OnMapReadyC
                     i.putExtra("User", user);
                     makeToast("Lobby created");
                     startActivity(i);
+                    finish();
                 }
             }
         });
