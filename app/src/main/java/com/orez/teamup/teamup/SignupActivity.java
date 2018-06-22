@@ -182,7 +182,7 @@ public class SignupActivity extends Activity {
     //pune ce mai trebuie in database
     void setvalues() {
         muser = new User(mfirstnameEt.getText().toString().trim(), mlastnameEt.getText().toString().trim(),
-                mbirthdayEt.getText().toString(),0,0,0, memailEt.getText().toString());
+                mbirthdayEt.getText().toString(),0,0, memailEt.getText().toString());
 
         if(checkBox.isChecked())
         {StorageReference ref = mStorageRef.child(user.getUid());

@@ -99,6 +99,7 @@ public class New_lobby_esports_activity extends Activity  {
                     i.putExtra("User", user);
                     makeToast("Lobby created");
                     startActivity(i);
+                    finish();
                 }
             }
         });

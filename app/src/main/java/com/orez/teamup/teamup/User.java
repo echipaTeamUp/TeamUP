@@ -9,7 +9,7 @@ public class User implements Serializable {
     private String Birthday = "null";
     private String Email = "";
     protected float rating;
-    protected int number_of_ratings,strikes;
+    protected int number_of_ratings;
 
     public String getEmail() { return Email; }
 
@@ -47,9 +47,6 @@ public class User implements Serializable {
         return number_of_ratings;
     }
 
-    public int getStrikes() {
-        return strikes;
-    }
 
     public void setRating(float rating) {
         this.rating = rating;
@@ -59,19 +56,15 @@ public class User implements Serializable {
         this.number_of_ratings = number_of_ratings;
     }
 
-    public void setStrikes(int strikes) {
-        this.strikes = strikes;
-    }
 
     public User(){}
 
-    public User(String First_name, String Last_name, String Birthday,int rating,int number_of_ratings,int strikes, String Email) {
+    public User(String First_name, String Last_name, String Birthday,int rating,int number_of_ratings, String Email) {
         this.First_name = First_name;
         this.Last_name = Last_name;
         this.Birthday = Birthday;
         this.rating=rating;
         this.number_of_ratings=number_of_ratings;
-        this.strikes=strikes;
         this.Email = Email;
     }
     public int getAge(){

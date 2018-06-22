@@ -56,6 +56,7 @@ public class LoginActivity extends Activity {
         mresend_verificationBtn = (Button) findViewById(R.id.resend_verificationBtn);
         mreset_passwordBtn = (Button) findViewById(R.id.reset_passwordBtn);
         mAuth = FirebaseAuth.getInstance();
+        mresend_verificationBtn.setEnabled(false);
         //Verifica daca esti conectat la internet
         if (!verifyInternetConnectivty())
             makeToast("Please connect to the internet");
@@ -201,21 +202,26 @@ public class LoginActivity extends Activity {
     }
 
     void makeresendvisible() {
-        mresend_verificationBtn.setVisibility(View.VISIBLE);
-        makeToast("Signup succeded");
+        mresend_verificationBtn.setEnabled(true);
+        mresend_verificationBtn.setTextColor(getResources().getColor(R.color.grey));
         final FirebaseUser fuser = mAuth.getCurrentUser();
-        fuser.sendEmailVerification()
-                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
+        mresend_verificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fuser.sendEmailVerification()
+                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                if (task.isSuccessful()) {
+                                    makeToast("Verification email sent to " + fuser.getEmail());
+                                } else {
+                                    makeToast("Failed to send verification email.");
+                                }
+                            }
+                        });
+            }
+        });
 
-                        if (task.isSuccessful()) {
-                            makeToast("Verification email sent to " + fuser.getEmail());
-                        } else {
-                            makeToast("Failed to send verification email.");
-                        }
-                    }
-                });
     }
 
     void resetpassword() {

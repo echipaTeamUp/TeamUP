@@ -381,8 +381,8 @@ public class LobbyEsportsActivity extends AppCompatActivity {
                 viewHolder.mImageButton = (ImageButton) convertView.findViewById(R.id.userOptionsBtn);
 
                 final String mUserId = users.get(position);
-                final Boolean kickAvailable = !mUserId.equals(FirebaseAuth.getInstance().getUid());
-                final Boolean rateAvailable = lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) && !mUserId.equals(FirebaseAuth.getInstance().getUid());
+                final Boolean kickAvailable = lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) && !mUserId.equals(FirebaseAuth.getInstance().getUid());
+                final Boolean rateAvailable = !mUserId.equals(FirebaseAuth.getInstance().getUid());
 
                 if (!kickAvailable && !rateAvailable){
                     viewHolder.mImageButton.setVisibility(View.GONE);

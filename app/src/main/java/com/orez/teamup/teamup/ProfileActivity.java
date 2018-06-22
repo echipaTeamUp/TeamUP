@@ -29,7 +29,6 @@ import com.google.firebase.storage.StorageReference;
 public class ProfileActivity extends Activity {
     TextView user_nameTv;
     TextView birthdayTv;
-    TextView strikesTv;
     TextView mProfileEmail;
     ImageButton edit_image;
     User user;
@@ -53,7 +52,6 @@ public class ProfileActivity extends Activity {
         birthdayTv=(TextView) findViewById(R.id.profile_birthdayTV);
         mProfileImage = (ImageView) findViewById(R.id.profile_image);
         mratingBar=(RatingBar) findViewById(R.id.ratingBar2);
-        strikesTv=(TextView) findViewById(R.id.profile_strikesTV);
         edit_image=(ImageButton) findViewById(R.id.edit_profile_image_ImgBtn);
         mSignoutBtn = (ImageButton) findViewById(R.id.menu_signoutBtn);
         mProfileBtn = (ImageButton) findViewById(R.id.menu_profileBtn);
@@ -197,7 +195,6 @@ public class ProfileActivity extends Activity {
             if (user.getNumber_of_ratings() > 0)
                 mratingBar.setRating(user.getRating() / user.getNumber_of_ratings());
             birthdayTv.setText("Birthday: " + user.getBirthday());
-            strikesTv.setText("Strikes: " + user.getStrikes());
             mProfileEmail.setText(user.getEmail());
     }
 }

@@ -363,7 +363,6 @@ public class LobbyActivity extends AppCompatActivity {
         PopupMenu mPopup = new PopupMenu(this, v);
         MenuInflater inflater = mPopup.getMenuInflater();
         inflater.inflate(R.menu.user_options, mPopup.getMenu());
-
         MenuItem kick_item = mPopup.getMenu().findItem(R.id.kick_opt);
         MenuItem rate_item = mPopup.getMenu().findItem(R.id.rate_opt);
 
@@ -374,7 +373,6 @@ public class LobbyActivity extends AppCompatActivity {
             rate_item.setVisible(false);
 
         mPopup.show();
-
         mPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -466,8 +464,8 @@ public class LobbyActivity extends AppCompatActivity {
                 viewHolder.mImageButton = (ImageButton) convertView.findViewById(R.id.userOptionsBtn);
 
                 final String mUserId = users.get(position);
-                final Boolean kickAvailable = !mUserId.equals(FirebaseAuth.getInstance().getUid());
-                final Boolean rateAvailable = lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) && !mUserId.equals(FirebaseAuth.getInstance().getUid());
+                final Boolean kickAvailable = lobby.getAdminId().equals(FirebaseAuth.getInstance().getUid()) && !mUserId.equals(FirebaseAuth.getInstance().getUid());
+                final Boolean rateAvailable = !mUserId.equals(FirebaseAuth.getInstance().getUid());
 
                 if (!kickAvailable && !rateAvailable){
                     viewHolder.mImageButton.setVisibility(View.GONE);

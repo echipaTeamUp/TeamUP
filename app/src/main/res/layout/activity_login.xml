@@ -122,7 +122,7 @@
         android:background="@android:color/transparent"
         android:text="@string/resend_verification"
         android:textAllCaps="false"
-        android:textColor="@color/blueButtonText"
+        android:textColor="@android:color/darker_gray"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
