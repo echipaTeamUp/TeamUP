@@ -66,6 +66,7 @@ public class ProfileActivity extends Activity {
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             loadData();
             getUserFromDb();
+            mProfileBtn.setEnabled(false);
         }
         //Daca vine din lobby, ia userul pe care ai apasat
         // Extras intent: Req_code==2, Uid==user id
