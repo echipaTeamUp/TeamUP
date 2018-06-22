@@ -2,7 +2,7 @@ package com.orez.teamup.teamup;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
+
 
 public class ChatMessage {
     private String messageText;
