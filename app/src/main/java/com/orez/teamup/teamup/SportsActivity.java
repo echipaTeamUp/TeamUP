@@ -93,9 +93,6 @@ public class SportsActivity extends Activity {
         mSendFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                if(mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-                {
                 mLocationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
@@ -120,16 +117,37 @@ public class SportsActivity extends Activity {
 
                     }
                 };
-                if (ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                double longitude=0,latitude=0;
+                mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    if (ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+
+                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
+                            300, mLocationListener);
+                    longitude=mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+                    latitude=mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+                }
+                else if(mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+                    if (ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(SportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+
+                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000,
+                            300, mLocationListener);
+                    longitude=mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
+                    latitude=mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+                }
+                else {
+                    Toast.makeText(SportsActivity.this,"Please enable your location services",Toast.LENGTH_SHORT);
                     return;
                 }
 
-                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000,
-                        300, mLocationListener);
+
 
                 final FilterSports mFilterSport = new FilterSports(user.getAge(),
-                        20, skillGroupSports.ALL, (sports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).
-                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude());
+                        20, skillGroupSports.ALL, (sports) mSelectSportSpinner.getSelectedItem(), longitude,latitude);
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -147,11 +165,10 @@ public class SportsActivity extends Activity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // TODO: HANDLE ERROR
                     }
                 });
-            }
-            else Toast.makeText(SportsActivity.this,"Please enable your location services",Toast.LENGTH_SHORT).show();
+
+
             }
         });
     }
