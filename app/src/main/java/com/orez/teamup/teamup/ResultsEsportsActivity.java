@@ -64,7 +64,7 @@ public class ResultsEsportsActivity extends Activity {
 
         TextView resultsTV = (TextView) findViewById(R.id.resultsTitleTV);
         if (arr.size() == 0)
-            resultsTV.setText("No results match the searching criteria");
+            resultsTV.setText("No results match the search");
         else if (arr.size() == 1)
             resultsTV.setText("One result found:");
         else
