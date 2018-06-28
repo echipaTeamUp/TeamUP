@@ -132,13 +132,31 @@ public class EsportsActivity extends Activity {
 
                     }
                 };
+                double longitude=0,latitude=0;
+                    if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                        if (ActivityCompat.checkSelfPermission(EsportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(EsportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }
 
+                        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
+                                300, mLocationListener);
+                        longitude=mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+                        latitude=mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+                    }
+                    else if(mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+                        if (ActivityCompat.checkSelfPermission(EsportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(EsportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }
 
-                if (ActivityCompat.checkSelfPermission(EsportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(EsportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000,
-                        300, mLocationListener);
+                        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000,
+                                300, mLocationListener);
+                        longitude=mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
+                        latitude=mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+                    }
+                    else {
+                        Toast.makeText(EsportsActivity.this,"Please enable your location services",Toast.LENGTH_SHORT);
+                        return;
+                    }
                 CSGOranks csgorank;
                 LoLranks LoLrank;
                 switch ((esports) mSelectSportSpinner.getSelectedItem()) {
@@ -156,8 +174,7 @@ public class EsportsActivity extends Activity {
                         break;
                 }
 
-                final FilterEsports mFilterEsport = new FilterEsports(20, (esports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).
-                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude(),csgorank,LoLrank);
+                final FilterEsports mFilterEsport = new FilterEsports(20, (esports) mSelectSportSpinner.getSelectedItem(), longitude,latitude,csgorank,LoLrank);
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("EsportsLobby");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
