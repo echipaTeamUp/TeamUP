@@ -287,11 +287,31 @@ public class LobbyActivity extends AppCompatActivity {
 
             }
         };
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        double latitude=0,longitude=0;
+        if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            if (ActivityCompat.checkSelfPermission(LobbyActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LobbyActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
+                    300, mLocationListener);
+            longitude=mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+            latitude=mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+        }
+        else if(mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            if (ActivityCompat.checkSelfPermission(LobbyActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LobbyActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000,
+                    300, mLocationListener);
+            longitude=mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
+            latitude=mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+        }
+        else {
+            Toast.makeText(LobbyActivity.this,"Please enable your location services",Toast.LENGTH_SHORT);
             return;
         }
-        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000,
-                300, mLocationListener);
         SessionConfiguration config = new SessionConfiguration.Builder()
                 .setClientId("FyEMGUBPhsd3tdZpQF3S2spa1W5nYifH")
                 .setServerToken("SEN3_I3iKJCKoQfoYJF6WD2YbceHRt_rMf_zmka3")
@@ -302,8 +322,8 @@ public class LobbyActivity extends AppCompatActivity {
         RideParameters rideParams = new RideParameters.Builder()
                 .setDropoffLocation(
                         lobby.getLatitude(), lobby.getLongitude(), "Lobby location", lobby.getLocationName())
-                .setPickupLocation(mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude(),
-                        mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude(),
+                .setPickupLocation(latitude,
+                        longitude,
                         "Your location", "")
                 .build();
         requestBtn.setRideParameters(rideParams);
