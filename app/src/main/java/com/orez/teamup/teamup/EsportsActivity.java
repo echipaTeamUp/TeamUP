@@ -133,7 +133,7 @@ public class EsportsActivity extends Activity {
                 if (ActivityCompat.checkSelfPermission(EsportsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(EsportsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
+                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000,
                         300, mLocationListener);
                 CSGOranks csgorank;
                 LoLranks LoLrank;
@@ -152,8 +152,8 @@ public class EsportsActivity extends Activity {
                         break;
                 }
 
-                final FilterEsports mFilterEsport = new FilterEsports(20, (esports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).
-                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),csgorank,LoLrank);
+                final FilterEsports mFilterEsport = new FilterEsports(20, (esports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).
+                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude(),csgorank,LoLrank);
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("EsportsLobby");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

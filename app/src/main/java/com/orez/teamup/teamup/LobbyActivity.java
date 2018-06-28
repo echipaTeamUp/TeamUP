@@ -302,8 +302,8 @@ public class LobbyActivity extends AppCompatActivity {
         RideParameters rideParams = new RideParameters.Builder()
                 .setDropoffLocation(
                         lobby.getLatitude(), lobby.getLongitude(), "Lobby location", lobby.getLocationName())
-                .setPickupLocation(mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),
-                        mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude(),
+                .setPickupLocation(mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude(),
+                        mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude(),
                         "Your location", "")
                 .build();
         requestBtn.setRideParameters(rideParams);

@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -120,14 +121,12 @@ public class SportsActivity extends Activity {
                     return;
                 }
 
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
+                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000,
                         300, mLocationListener);
 
                 final FilterSports mFilterSport = new FilterSports(user.getAge(),
-                        20, skillGroupSports.ALL, (sports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).
-                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude());
-
-                // TODO: in loc de filtrele astea trebuie luate sporturile din listview si atasate la niste filtre
+                        20, skillGroupSports.ALL, (sports) mSelectSportSpinner.getSelectedItem(), mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).
+                        getLongitude(), mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude());
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("SportsLobby");
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
