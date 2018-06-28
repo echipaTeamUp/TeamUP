@@ -290,7 +290,7 @@ public class LobbyActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,
+        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000,
                 300, mLocationListener);
         SessionConfiguration config = new SessionConfiguration.Builder()
                 .setClientId("FyEMGUBPhsd3tdZpQF3S2spa1W5nYifH")
