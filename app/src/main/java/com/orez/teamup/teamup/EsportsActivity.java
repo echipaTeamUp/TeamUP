@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -104,6 +106,8 @@ public class EsportsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if(mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+                {
                 mLocationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
@@ -173,7 +177,9 @@ public class EsportsActivity extends Activity {
                         // TODO: HANDLE ERROR
                     }
                 });
+            }else Toast.makeText(EsportsActivity.this,"Please enable your location services",Toast.LENGTH_SHORT).show();
             }
+
         });
     }
 

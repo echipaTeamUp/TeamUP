@@ -304,6 +304,8 @@ class LobbySports extends Lobby {
     }
 
     static boolean verifyDate(int cmonth, int cday, int chour, int cminute, int month, int day, int hour, int minute, int interval) {
+        if(day<cday && month==cmonth)
+            return false;
         if (hour < chour && day == cday)
             return false;
         if (hour == chour && day == cday && minute - cminute < interval)
