@@ -118,52 +118,52 @@ public class SignupActivity extends Activity {
         });
     }
 
-    protected void signup() {
-        mAuth.createUserWithEmailAndPassword(memailEt.getText().toString(), mpassEt.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //Daca a fost inregistrat cu succes
-                            user = mAuth.getCurrentUser();
-                            Toast.makeText(SignupActivity.this, "Signup succeded",
-                                    Toast.LENGTH_SHORT).show();
-                            user.sendEmailVerification()
-                                    .addOnCompleteListener(SignupActivity.this, new OnCompleteListener() {
-                                        @Override
-                                        public void onComplete(@NonNull Task task) {
-
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(SignupActivity.this,
-                                                        "Verification email sent to " + user.getEmail(),
-                                                        Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                Toast.makeText(SignupActivity.this,
-                                                        "Failed to send verification email.",
-                                                        Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                            setvalues();
-                            returntologin();
-                        } else {
-                            try {
-                                throw task.getException();
-                            } catch (FirebaseAuthUserCollisionException existEmail) {
-                                //Daca mailul e deja folosit
-                                Toast.makeText(SignupActivity.this, "Email already exists",
+        protected void signup() {
+            mAuth.createUserWithEmailAndPassword(memailEt.getText().toString(), mpassEt.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                //Daca a fost inregistrat cu succes
+                                user = mAuth.getCurrentUser();
+                                Toast.makeText(SignupActivity.this, "Signup succeded",
                                         Toast.LENGTH_SHORT).show();
-                                return;
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                user.sendEmailVerification()
+                                        .addOnCompleteListener(SignupActivity.this, new OnCompleteListener() {
+                                            @Override
+                                            public void onComplete(@NonNull Task task) {
+
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(SignupActivity.this,
+                                                            "Verification email sent to " + user.getEmail(),
+                                                            Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(SignupActivity.this,
+                                                            "Failed to send verification email.",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                setvalues();
+                                returntologin();
+                            } else {
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthUserCollisionException existEmail) {
+                                    //Daca mailul e deja folosit
+                                    Toast.makeText(SignupActivity.this, "Email already exists",
+                                            Toast.LENGTH_SHORT).show();
+                                    return;
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                //Daca nu a fost inregistrat cu succes din alt motiv
+                                Toast.makeText(SignupActivity.this, "Signup failed.",
+                                        Toast.LENGTH_SHORT).show();
                             }
-                            //Daca nu a fost inregistrat cu succes din alt motiv
-                            Toast.makeText(SignupActivity.this, "Signup failed.",
-                                    Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
-    }
+                    });
+        }
 
     //Verifica validitatea mailului
     boolean isEmailValid(CharSequence email) {
