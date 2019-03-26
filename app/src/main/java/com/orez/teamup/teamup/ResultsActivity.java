@@ -79,8 +79,8 @@ public class ResultsActivity extends Activity {
     }
 
     public class ViewHolder {
-        TextView mPetNameTv;
-        TextView mOwnerTv;
+        TextView mSportTv;
+        TextView mPlayersTv;
         TextView mLocationTv;
         TextView mTimeTv;
         Button mJoinBtn;
